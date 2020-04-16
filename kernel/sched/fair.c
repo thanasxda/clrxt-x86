@@ -7136,6 +7136,8 @@ eenv_pd_max_util(struct energy_env *eenv, struct cpumask *pd_cpus,
 	return min(max_util, eenv->cpu_cap);
 }
 
+
+static unsigned int once_in_a_while;
 /*
  * select_task_rq_fair: Select target runqueue for the waking task in domains
  * that have the relevant SD flag set. In practice, this is SD_BALANCE_WAKE,
@@ -7186,6 +7188,32 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
 
 
 	rcu_read_lock();
+
+	once_in_a_while++;
+
+	if (cpu_rq(prev_cpu)->nr_running || (once_in_a_while & 15) == 0) {
+		int _cpu;
+		int bestprio = -5000;
+		int bestcpu = -1;
+
+		for_each_online_cpu(_cpu) {
+			if (!cpumask_test_cpu(_cpu, p->cpus_ptr)
+				|| cpu_rq(_cpu)->nr_running)
+				continue;
+			if (arch_asym_cpu_priority(_cpu) > bestprio
+				|| (prev_cpu == _cpu
+					&& bestprio == arch_asym_cpu_priority(_cpu))) {
+				bestcpu = _cpu;
+				bestprio = arch_asym_cpu_priority(_cpu);
+			}
+		}
+
+		if (bestcpu >= 0) {
+			rcu_read_unlock();
+			return bestcpu;
+		}
+	}
+
 	for_each_domain(cpu, tmp) {
 		/*
 		 * If both 'cpu' and 'prev_cpu' are part of this domain,
