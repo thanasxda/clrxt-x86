@@ -499,6 +499,20 @@ static ssize_t reload_store(struct device *dev,
 	ret = check_online_cpus();
 	if (ret)
 		goto put;
+	/*
+	 * Check if the vendor is Intel to permit reloading
+	 * microcode even if the revision is unchanged.
+	 * This is typically used during development of microcode
+	 * and changing rev is a pain.
+	 */
+	if ((val == 2) && ((c->x86_vendor != X86_VENDOR_INTEL) ||
+	     !enable_rollback))
+		return size;
+	else if (val == 2) {
+		mutex_lock(&microcode_mutex);
+		ucode_rollback = true;
+		mutex_unlock(&microcode_mutex);
+	}
 
 	tmp_ret = microcode_ops->request_microcode_fw(bsp, &microcode_pdev->dev);
 	if (tmp_ret != UCODE_NEW)
