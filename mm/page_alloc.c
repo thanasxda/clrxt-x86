@@ -812,26 +812,6 @@ void destroy_large_folio(struct folio *folio)
 	compound_page_dtors[dtor](&folio->page);
 }
 
-enum zero_state {
-	NOT_ZEROED,
-	PRE_ZEROED
-};
-
-static enum zero_state pre_zeroed(struct page *page)
-{
-	if (page_private(page) & BUDDY_ZEROED)
-		return PRE_ZEROED;
-	return NOT_ZEROED;
-}
-
-static void set_buddy_private(struct page *page, unsigned long value)
-{
-	WARN_ON(!PageBuddy(page));
-
-
-	set_page_private(page, value);
-}
-
 #ifdef CONFIG_DEBUG_PAGEALLOC
 unsigned int _debug_guardpage_minorder;
 
@@ -1445,11 +1425,6 @@ static __always_inline bool free_pages_prepare(struct page *page,
 		if (compound)
 			ClearPageHasHWPoisoned(page);
 		for (i = 1; i < (1 << order); i++) {
-			/*
-			 * This will leave BUDDY_ZEROED in place
-			 * in tail pages.  It should get cleared
-			 * up before anyone notices in expand().
-			 */
 			if (compound)
 				bad += free_tail_pages_check(page, page + i);
 			if (unlikely(free_page_is_bad(page + i))) {
@@ -1611,7 +1586,7 @@ static void free_pcppages_bulk(struct zone *zone, int count,
 			count -= nr_pages;
 			pcp->count -= nr_pages;
 
-			if (bulkfree_pcp_prepare(page, order))
+			if (bulkfree_pcp_prepare(page))
 				continue;
 
 			/* MIGRATE_ISOLATE page should not go to pcplists */
