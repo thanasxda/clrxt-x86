@@ -15,6 +15,7 @@
  *          (lots of bits borrowed from Ingo Molnar & Andrew Morton)
  */
 
+#include <linux/debugfs.h>
 #include <linux/stddef.h>
 #include <linux/mm.h>
 #include <linux/highmem.h>
@@ -811,6 +812,26 @@ void destroy_large_folio(struct folio *folio)
 	compound_page_dtors[dtor](&folio->page);
 }
 
+enum zero_state {
+	NOT_ZEROED,
+	PRE_ZEROED
+};
+
+static enum zero_state pre_zeroed(struct page *page)
+{
+	if (page_private(page) & BUDDY_ZEROED)
+		return PRE_ZEROED;
+	return NOT_ZEROED;
+}
+
+static void set_buddy_private(struct page *page, unsigned long value)
+{
+	WARN_ON(!PageBuddy(page));
+
+
+	set_page_private(page, value);
+}
+
 #ifdef CONFIG_DEBUG_PAGEALLOC
 unsigned int _debug_guardpage_minorder;
 
@@ -869,7 +890,7 @@ static inline void clear_page_guard(struct zone *zone, struct page *page,
 
 	__ClearPageGuard(page);
 
-	set_page_private(page, 0);
+	set_buddy_private(page, 0);
 	if (!is_migrate_isolate(migratetype))
 		__mod_zone_freepage_state(zone, (1 << order), migratetype);
 }
@@ -1151,7 +1172,8 @@ static inline void __free_one_page(struct page *page,
 	}
 
 done_merging:
-	set_buddy_order(page, order);
+	list_check_buddy_is_sane(page, order);
+	mark_new_buddy(page, order, NOT_ZEROED);
 
 	if (fpi_flags & FPI_TO_TAIL)
 		to_tail = true;
@@ -1423,6 +1445,11 @@ static __always_inline bool free_pages_prepare(struct page *page,
 		if (compound)
 			ClearPageHasHWPoisoned(page);
 		for (i = 1; i < (1 << order); i++) {
+			/*
+			 * This will leave BUDDY_ZEROED in place
+			 * in tail pages.  It should get cleared
+			 * up before anyone notices in expand().
+			 */
 			if (compound)
 				bad += free_tail_pages_check(page, page + i);
 			if (unlikely(free_page_is_bad(page + i))) {
@@ -1584,7 +1611,7 @@ static void free_pcppages_bulk(struct zone *zone, int count,
 			count -= nr_pages;
 			pcp->count -= nr_pages;
 
-			if (bulkfree_pcp_prepare(page))
+			if (bulkfree_pcp_prepare(page, order))
 				continue;
 
 			/* MIGRATE_ISOLATE page should not go to pcplists */
@@ -2337,7 +2364,7 @@ void __init init_cma_reserved_pageblock(struct page *page)
  * -- nyc
  */
 static inline void expand(struct zone *zone, struct page *page,
-	int low, int high, int migratetype)
+	int low, int high, int migratetype, enum zero_state page_prezeroed)
 {
 	unsigned long size = 1 << high;
 
@@ -2355,8 +2382,8 @@ static inline void expand(struct zone *zone, struct page *page,
 		if (set_page_guard(zone, &page[size], high, migratetype))
 			continue;
 
+		mark_new_buddy(&page[size], high, page_prezeroed);
 		add_to_free_list(&page[size], zone, high, migratetype);
-		set_buddy_order(&page[size], high);
 	}
 }
 
@@ -2525,7 +2552,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
 	page_table_check_alloc(page, order);
 }
 
-static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
+static noinline void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
 							unsigned int alloc_flags)
 {
 	post_alloc_hook(page, order, gfp_flags);
@@ -9627,7 +9654,9 @@ static void break_down_buddy_pages(struct zone *zone, struct page *page,
 
 		if (current_buddy != target) {
 			add_to_free_list(current_buddy, zone, high, migratetype);
-			set_buddy_order(current_buddy, high);
+			// This is very rare.  Do not bother
+			// trying to preserve zero state:
+			mark_new_buddy(current_buddy, high, NOT_ZEROED);
 			page = next_page;
 		}
 	}
@@ -9709,3 +9738,78 @@ bool has_managed_dma(void)
 	return false;
 }
 #endif /* CONFIG_ZONE_DMA */
+
+void __list_check_buddy_low_orders(struct page *page, int order, int line)
+{
+	int nr_pages = 1 << order;
+	int i;
+
+	for (i = 1; i < nr_pages; i++) {
+		struct page *child = &page[i];
+		unsigned long child_pfn = page_to_pfn(child);
+		unsigned long pfn = page_to_pfn(page);
+		if (!PageBuddy(child))
+			continue;
+
+		printk("bad low order: %d pfns: 0x%lx 0x%lx buddy: %d/%d line=%d bo=%d\n",
+				order, pfn, child_pfn,
+				PageBuddy(page),
+				PageBuddy(child),
+				line, buddy_order(child));
+	}
+}
+
+void __list_check_buddy_high_orders(struct page *page, int order, int line)
+{
+	unsigned long pfn = page_to_pfn(page);
+
+	// Highest-order buddy pages (MAX_ORDER-1) are not
+	// merged together and can be on lists together
+	if (order >= MAX_ORDER-1)
+		return;
+
+	while (order < MAX_ORDER-1) {
+		unsigned long buddy_pfn = __find_buddy_pfn(pfn, order);
+		struct page *buddy = pfn_to_page(buddy_pfn);
+		bool bad;
+
+		// not in the buddy, don't care
+		if (!PageBuddy(buddy))
+			goto next;
+
+		// starts after me, can't possible overlap, don't care
+		if (buddy_pfn >= pfn + (1<<order))
+			goto next;
+
+		// Starts before me.  Does it cover me?
+		if (buddy_pfn + (1<<buddy_order(buddy)) <= pfn)
+			goto next;
+
+		bad = 1;
+		if (bad) {
+			printk("bad high order: %d pfns: 0x%lx 0x%lx buddy: %d/%d pib=%d line=%d bo=%d bad=%d\n",
+					order, pfn, buddy_pfn, PageBuddy(page),
+					PageBuddy(buddy),
+					page_is_buddy(page, buddy, order),
+					line,
+					buddy_order(buddy),
+					bad);
+			//WARN_ON(1);
+		}
+
+		// combine the PFNs to "move up" one order:
+		pfn = buddy_pfn & pfn;
+		page = pfn_to_page(pfn);
+	next:
+		order++;
+	}
+}
+
+
+void __list_check_buddy_is_sane(struct page *page, int order, int line)
+{
+	if (!prezero_buddy_sane_checks)
+		return;
+	__list_check_buddy_high_orders(page, order, line);
+	__list_check_buddy_low_orders(page, order, line);
+}

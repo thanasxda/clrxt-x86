@@ -313,6 +313,22 @@ __find_buddy_pfn(unsigned long page_pfn, unsigned int order)
 }
 
 /*
+ * Use the bit above the highest-possible buddy page
+ * order (MAX_ORDER-1).
+ */
+#define BUDDY_ZEROED	(1UL << (ilog2(MAX_ORDER-1)+1))
+static inline unsigned int __buddy_order(struct page *page, bool unsafe)
+{
+	unsigned int ret;
+	if (unsafe)
+		ret = READ_ONCE(page_private(page));
+	else
+		ret = page_private(page);
+
+	return ret & ~BUDDY_ZEROED;
+}
+
+/*
  * Find the buddy of @page and validate it.
  * @page: The input page
  * @pfn: The pfn of the page, it saves a call to page_to_pfn() when the
