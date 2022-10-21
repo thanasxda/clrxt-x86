@@ -122,6 +122,13 @@ $(tar-pkgs):
 	$(MAKE) -f $(srctree)/Makefile
 	+$(CONFIG_SHELL) $(srctree)/scripts/package/buildtar $@
 
+tar-dev-pkgs := dir-dev-pkg tar-dev-pkg targz-dev-pkg tarbz2-dev-pkg
+tar-dev-pkgs += tarxz-dev-pkg tarzst-dev-pkg
+PHONY += $(tar-dev-pkgs)
+$(tar-dev-pkgs):
+	$(MAKE) -f $(srctree)/Makefile
+	+$(CONFIG_SHELL) $(srctree)/scripts/package/buildtar-devel $@
+
 # perf-pkg - generate a source tarball with perf source
 # ---------------------------------------------------------------------------
 
@@ -170,6 +177,12 @@ help:
 	@echo '  tarbz2-pkg          - Build the kernel as a bzip2 compressed tarball'
 	@echo '  tarxz-pkg           - Build the kernel as a xz compressed tarball'
 	@echo '  tarzst-pkg          - Build the kernel as a zstd compressed tarball'
+	@echo '  dir-dev-pkg         - Module development as a plain directory structure'
+	@echo '  tar-dev-pkg         - Module development as an uncompressed tarball'
+	@echo '  targz-dev-pkg       - Module development as a gzip compressed tarball'
+	@echo '  tarbz2-dev-pkg      - Module development as a bzip2 compressed tarball'
+	@echo '  tarxz-dev-pkg       - Module development as a xz compressed tarball'
+	@echo '  tarzst-dev-pkg      - Module development as a zstd compressed tarball'
 	@echo '  perf-tar-src-pkg    - Build $(perf-tar).tar source tarball'
 	@echo '  perf-targz-src-pkg  - Build $(perf-tar).tar.gz source tarball'
 	@echo '  perf-tarbz2-src-pkg - Build $(perf-tar).tar.bz2 source tarball'
