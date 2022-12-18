@@ -1080,6 +1080,13 @@ static int aqc_raw_event(struct hid_device *hdev, struct hid_report *report, u8 
 		i++;
 	}
 
+	/* Flow sensor readings */
+	for (j = 0; j < priv->num_flow_sensors; j++) {
+		priv->speed_input[i] = get_unaligned_be16(data + priv->flow_sensors_start_offset +
+							  j * AQC_SENSOR_SIZE);
+		i++;
+	}
+
 	if (priv->power_cycle_count_offset != 0)
 		priv->power_cycles = get_unaligned_be32(data + priv->power_cycle_count_offset);
 
