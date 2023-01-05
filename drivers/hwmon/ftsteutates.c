@@ -447,6 +447,19 @@ static int fts_read(struct device *dev, enum hwmon_sensor_types type, u32 attr, 
 			break;
 		}
 		break;
+	case hwmon_pwm:
+		switch (attr) {
+		case hwmon_pwm_auto_channels_temp:
+			if (data->fan_source[channel] == FTS_FAN_SOURCE_INVALID)
+				*val = 0;
+			else
+				*val = BIT(data->fan_source[channel]);
+
+			return 0;
+		default:
+			break;
+		}
+		break;
 	case hwmon_in:
 		switch (attr) {
 		case hwmon_in_input:
@@ -562,6 +575,16 @@ static const struct hwmon_channel_info *fts_info[] = {
 			   HWMON_F_INPUT | HWMON_F_ALARM | HWMON_F_FAULT,
 			   HWMON_F_INPUT | HWMON_F_ALARM | HWMON_F_FAULT,
 			   HWMON_F_INPUT | HWMON_F_ALARM | HWMON_F_FAULT
+			   ),
+	HWMON_CHANNEL_INFO(pwm,
+			   HWMON_PWM_AUTO_CHANNELS_TEMP,
+			   HWMON_PWM_AUTO_CHANNELS_TEMP,
+			   HWMON_PWM_AUTO_CHANNELS_TEMP,
+			   HWMON_PWM_AUTO_CHANNELS_TEMP,
+			   HWMON_PWM_AUTO_CHANNELS_TEMP,
+			   HWMON_PWM_AUTO_CHANNELS_TEMP,
+			   HWMON_PWM_AUTO_CHANNELS_TEMP,
+			   HWMON_PWM_AUTO_CHANNELS_TEMP
 			   ),
 	HWMON_CHANNEL_INFO(pwm,
 			   HWMON_PWM_AUTO_CHANNELS_TEMP,
