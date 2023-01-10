@@ -6932,7 +6932,6 @@ static void UseMinimumDCFCLK(
 	NormalEfficiency = v->PercentOfIdealFabricAndSDPPortBWReceivedAfterUrgLatency / 100.0;
 	for (i = 0; i < v->soc.num_states; ++i) {
 		for (j = 0; j <= 1; ++j) {
-			double DynamicMetadataVMExtraLatency[DC__NUM_DPP__MAX];
 			double MinimumTWait;
 			double NonDPTEBandwidth;
 			double DPTEBandwidth;
@@ -6992,14 +6991,14 @@ static void UseMinimumDCFCLK(
 				v->UseMinimumDCFCLK_stack_reduction.PrefetchPixelLinesTime[k] = dml_max(v->PrefetchLinesY[i][j][k], v->PrefetchLinesC[i][j][k]) * v->HTotal[k] / v->PixelClock[k];
 				ExpectedPrefetchBWAcceleration = (v->VActivePixelBandwidth[i][j][k] + v->VActiveCursorBandwidth[i][j][k])
 						/ (v->ReadBandwidthLuma[k] + v->ReadBandwidthChroma[k]);
-				DynamicMetadataVMExtraLatency[k] =
+				v->UseMinimumDCFCLK_stack_reduction.DynamicMetadataVMExtraLatency[k] =
 						(v->GPUVMEnable == true && v->DynamicMetadataEnable[k] == true && v->DynamicMetadataVMEnabled == true) ?
 								v->UrgLatency[i] * v->GPUVMMaxPageTableLevels * (v->HostVMEnable == true ? v->HostVMMaxNonCachedPageTableLevels + 1 : 1) : 0;
 				PrefetchTime = (v->MaximumVStartup[i][j][k] - 1) * v->HTotal[k] / v->PixelClock[k] - MinimumTWait
 						- v->UrgLatency[i]
 								* ((v->GPUVMMaxPageTableLevels <= 2 ? v->GPUVMMaxPageTableLevels : v->GPUVMMaxPageTableLevels - 2)
 										* (v->HostVMEnable == true ? v->HostVMMaxNonCachedPageTableLevels + 1 : 1) - 1)
-						- DynamicMetadataVMExtraLatency[k];
+						- v->UseMinimumDCFCLK_stack_reduction.DynamicMetadataVMExtraLatency[k];
 
 				if (PrefetchTime > 0) {
 					double ExpectedVRatioPrefetch;
@@ -7041,7 +7040,7 @@ static void UseMinimumDCFCLK(
 							&dummy2,
 							&dummy3);
 					AllowedTimeForUrgentExtraLatency = v->MaximumVStartup[i][j][k] * v->HTotal[k] / v->PixelClock[k] - MinimumTWait - TSetupPipe - TdmbfPipe - TdmecPipe
-							- TdmsksPipe - DynamicMetadataVMExtraLatency[k];
+							- TdmsksPipe - v->UseMinimumDCFCLK_stack_reduction.DynamicMetadataVMExtraLatency[k];
 					if (AllowedTimeForUrgentExtraLatency > 0) {
 						v->UseMinimumDCFCLK_stack_reduction.DCFCLKRequiredForPeakBandwidthPerPlane[k] = dml_max(
 								v->UseMinimumDCFCLK_stack_reduction.DCFCLKRequiredForPeakBandwidthPerPlane[k],
@@ -7062,7 +7061,7 @@ static void UseMinimumDCFCLK(
 							0);
 			for (k = 0; k < v->NumberOfActivePlanes; ++k) {
 				double MaximumTvmPlus2Tr0PlusTsw;
-				MaximumTvmPlus2Tr0PlusTsw = (v->MaximumVStartup[i][j][k] - 2) * v->HTotal[k] / v->PixelClock[k] - MinimumTWait - DynamicMetadataVMExtraLatency[k];
+				MaximumTvmPlus2Tr0PlusTsw = (v->MaximumVStartup[i][j][k] - 2) * v->HTotal[k] / v->PixelClock[k] - MinimumTWait - v->UseMinimumDCFCLK_stack_reduction.DynamicMetadataVMExtraLatency[k];
 				if (MaximumTvmPlus2Tr0PlusTsw <= MinimumTvmPlus2Tr0 + v->UseMinimumDCFCLK_stack_reduction.PrefetchPixelLinesTime[k] / 4) {
 					DCFCLKRequiredForPeakBandwidth = v->DCFCLKPerState[i];
 				} else {

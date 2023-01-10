@@ -254,6 +254,7 @@ struct UseMinimumDCFCLK_vars {
 	double PixelDCFCLKCyclesRequiredInPrefetch[DC__NUM_DPP__MAX];
 	double PrefetchPixelLinesTime[DC__NUM_DPP__MAX];
 	double DCFCLKRequiredForPeakBandwidthPerPlane[DC__NUM_DPP__MAX];
+	double DynamicMetadataVMExtraLatency[DC__NUM_DPP__MAX];
 };
 
 struct dummy_vars {
