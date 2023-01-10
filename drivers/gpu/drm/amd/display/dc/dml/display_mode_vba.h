@@ -249,6 +249,10 @@ struct dml32_ModeSupportAndSystemConfigurationFull {
 	bool dummy_boolean[2];
 };
 
+struct UseMinimumDCFCLK_vars {
+	double TotalMaxPrefetchFlipDPTERowBandwidth[DC__VOLTAGE_STATES][2];
+};
+
 struct dummy_vars {
 	struct DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerformanceCalculation
 	DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerformanceCalculation;
@@ -1236,6 +1240,7 @@ struct vba_vars_st {
 	bool VActiveBandwithSupport[DC__VOLTAGE_STATES][2];
 	bool NotEnoughDETSwathFillLatencyHidingPerState[DC__VOLTAGE_STATES][2];
 	struct dummy_vars dummy_vars;
+	struct UseMinimumDCFCLK_vars UseMinimumDCFCLK_stack_reduction;
 };
 
 bool CalculateMinAndMaxPrefetchMode(
