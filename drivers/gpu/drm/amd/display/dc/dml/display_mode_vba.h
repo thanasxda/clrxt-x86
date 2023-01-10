@@ -253,6 +253,7 @@ struct UseMinimumDCFCLK_vars {
 	double TotalMaxPrefetchFlipDPTERowBandwidth[DC__VOLTAGE_STATES][2];
 	double PixelDCFCLKCyclesRequiredInPrefetch[DC__NUM_DPP__MAX];
 	double PrefetchPixelLinesTime[DC__NUM_DPP__MAX];
+	double DCFCLKRequiredForPeakBandwidthPerPlane[DC__NUM_DPP__MAX];
 };
 
 struct dummy_vars {
