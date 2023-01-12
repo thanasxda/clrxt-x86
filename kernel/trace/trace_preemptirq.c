@@ -29,6 +29,20 @@
 static DEFINE_PER_CPU(int, tracing_irq_cpu);
 
 /*
+ * Use regular trace points on architectures that implement noinstr
+ * tooling: these calls will only happen with RCU enabled, which can
+ * use a regular tracepoint.
+ *
+ * On older architectures, use the rcuidle tracing methods (which
+ * aren't NMI-safe - so exclude NMI contexts):
+ */
+#ifdef CONFIG_ARCH_WANTS_NO_INSTR
+#define trace(point)	trace_##point
+#else
+#define trace(point)	if (!in_nmi()) trace_##point##_rcuidle
+#endif
+
+/*
  * Like trace_hardirqs_on() but without the lockdep invocation. This is
  * used in the low level entry code where the ordering vs. RCU is important
  * and lockdep uses a staged approach which splits the lockdep hardirq
