@@ -19,35 +19,43 @@ Internal dependent devices are named ddcci[I2C bus number]i[hex address]
 External dependent devices are named ddcci[I2C bus number]e[hex address]
 There the following files export information about the device:
 
-capabilities
+- capabilities
+
 The full ACCESS.bus capabilities string. It contains the protocol,
 type and model of the device, a list of all supported command
 codes, etc. See the ACCESS.bus spec for more information.
 
 - idProt
+
 ACCESS.bus protocol supported by the device. Usually "monitor".
 
 - idType
+
 ACCESS.bus device subtype. Usually "LCD" or "CRT".
 
 - idModel
+
 ACCESS.bus device model identifier. Usually a shortened form of the
 device model name.
 
 - idVendor
+
 ACCESS.bus device vendor identifier. Empty if the Identification command
 is not supported.
 
 - idModule
+
 ACCESS.bus device module identifier. Empty if the Identification command
 is not supported.
 
 - idSerial
+
 32 bit device number. A fixed serial number if it's positive, a temporary
 serial number if negative and zero if the
 Identification command is not supported.
 
 - modalias
+
 A combined identifier for driver selection. It has the form:
 ddcci:<idProt>-<idType>-<idModel>-<idVendor>-<idModule>.
 All non-alphanumeric characters (including whitespace) in the model,
