@@ -14,9 +14,9 @@ see ddcci-backlight for an example.
 2. sysfs interface
 ==================
 Each detected DDC/CI device gets a directory in /sys/bus/ddcci/devices.
-The main device on a bus is named ddcci[I²C bus number].
-Internal dependent devices are named ddcci[I²C bus number]i[hex address]
-External dependent devices are named ddcci[I²C bus number]e[hex address]
+The main device on a bus is named ddcci[I2C bus number].
+Internal dependent devices are named ddcci[I2C bus number]i[hex address]
+External dependent devices are named ddcci[I2C bus number]e[hex address]
 There the following files export information about the device:
 
 capabilities
@@ -57,7 +57,7 @@ with software like systemd-udevd.
 3. Character device interface
 =============================
 For each DDC/CI device a character device in
-/dev/bus/ddcci/[I²C bus number]/ is created,
+/dev/bus/ddcci/[I2C bus number]/ is created,
 127 devices are assigned in total.
 
 The main device on the bus is named display.
@@ -100,7 +100,7 @@ There is no direct synchronization if you manually change the luminance
 with the buttons on your monitor, as this can only be realized through polling
 and some monitors close their OSD every time a DDC/CI command is received.
 
-Monitor hotplugging is not detected. You need to detach/reattach the I²C driver
+Monitor hotplugging is not detected. You need to detach/reattach the I2C driver
 or reload the module.
 
 6. Debugging

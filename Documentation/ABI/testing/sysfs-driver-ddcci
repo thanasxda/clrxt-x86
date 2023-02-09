@@ -1,24 +1,24 @@
-What:		/sys/bus/ddcci/ddcci<I²C bus number>i<hex address>
+What:		/sys/bus/ddcci/ddcci<I2C bus number>i<hex address>
 Date:		March 2022
 KernelVersion:	5.18
 Contact:	Christoph Grenz <christophg+lkml@grenz-bonn.de>
 Description:	This file is a user interface for an internal
 		dependent device on the I2C bus, it exports the same
 		information as the master device(/sys/bus/ddcci/
-		ddcci<I²C bus number>) that is referenced in this
+		ddcci<I2C bus number>) that is referenced in this
 		document.
 
-What:		/sys/bus/ddcci/ddcci<I²C bus number>e<hex address>
+What:		/sys/bus/ddcci/ddcci<I2C bus number>e<hex address>
 Date:		March 2022
 KernelVersion:	5.18
 Contact:	Christoph Grenz <christophg+lkml@grenz-bonn.de>
 Description:	This file is a user interface for an external
 		dependent device on the I2C bus, it exports the same
 		information as the master device(/sys/bus/ddcci/
-		ddcci<I²C bus number>) that is referenced in this
+		ddcci<I2C bus number>) that is referenced in this
 		document.
 
-What:		/sys/bus/ddcci/ddcci<I²C bus number>
+What:		/sys/bus/ddcci/ddcci<I2C bus number>
 Date:		March 2022
 KernelVersion:	5.18
 Contact:	Christoph Grenz <christophg+lkml@grenz-bonn.de>
