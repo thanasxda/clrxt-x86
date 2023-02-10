@@ -32,9 +32,16 @@ cclm=$(ls /usr/lib | grep 'llvm-' | tail -n 1 | rev | cut -c-3 | rev)
 
 
 
+LLVM_ENABLE_RUNTIMES=”openmp”
+LLVM_ENABLE_PROJECTS=ON
+LLVM_ENABLE_ASSERTIONS=ON
+LLVM_CCACHE_BUILD=ON
 
-
-
+OMP_TARGET_OFFLOAD=MANDATORY
+OMP_NUM_THREADS='"$(nproc)"'
+OMP_DYNAMIC=true
+OMP_DEBUG=disabled
+LIBOMPTARGET_OMPT_SUPPORT=1
 
 
 ###### SET UP CCACHE
@@ -43,6 +50,8 @@ export USE_PREBUILT_CACHE=1
 export PREBUILT_CACHE_DIR=~/.ccache
 export CCACHE_DIR=~/.ccache
 ccache -M 30G
+ccache --set-config=sloppiness=locale,time_macros
+
 
 ###### AUTO VERSIONING
 VERSION=$(cat $makefile | head -2 | tail -1 | cut -d '=' -f2)
@@ -53,7 +62,7 @@ VERSION=$(echo "$VERSION" | awk -v FPAT="[0-9]+" '{print $NF}')
 PATCHLEVEL=$(echo "$PATCHLEVEL" | awk -v FPAT="[0-9]+" '{print $NF}')
 SUBLEVEL=$(echo "$SUBLEVEL" | awk -v FPAT="[0-9]+" '{print $NF}')
 EXTRAVERSION="$(echo -e "${EXTRAVERSION}" | sed -e 's/^[[:space:]]*//')"
-KERNELVERSION="${VERSION}.${PATCHLEVEL}.${SUBLEVEL}${EXTRAVERSION}"clrxt+
+KERNELVERSION="${VERSION}.${PATCHLEVEL}.${SUBLEVEL}${EXTRAVERSION}"-clrxt+
 
 ###### DISPLAY KERNEL VERSION
 clear
@@ -104,41 +113,44 @@ export PATH=""$path2":$PATH"
 ### ensure all cpu threads are used for compilation
 THREADS=-j$(nproc --all)
 
+
+###   USE GCC EXPERIMENTAL WHEN COMPILING, NOT ALWAYS BUT PROBABLY FASTER THAN CLANG SETUP
+
 himri=$(who | head -n1 | awk '{print $1}')
 
-sudo modprobed-db & sleep 3 ; sudo modprobed-db store
+#sudo modprobed-db & sleep 3 ; sudo modprobed-db store
 
-if ! grep -q 'f2fs
-xfs
-vfat
-loop
-isofs
-efivars
-usb_storage
-usbhid
-lz4
-i915
-fb
-drm
-vfb
-drm_dma_helper
-' /home/$himri/.config/modprobed.db ; then
-echo 'f2fs
-xfs
-vfat
-loop
-isofs
-efivars
-usb_storage
-usbhid
-lz4
-i915
-fb
-drm
-vfb
-drm_dma_helper' | sudo tee -a /home/$himri/.config/modprobed.db ; fi
+#f ! grep -q 'f2fs
+#xfs
+#vfat
+#loop
+#isofs
+#efivars
+#usb_storage
+#usbhid
+#lz4
+#i915
+#fb
+#drm
+#vfb
+#drm_dma_helper
+#' /home/$himri/.config/modprobed.db ; then
+#echo 'f2fs
+#xfs
+#vfat
+#loop
+#isofs
+#efivars
+#usb_storage
+#usbhid
+#lz4
+#i915
+#fb
+#drm
+#vfb
+#drm_dma_helper' | sudo tee -a /home/$himri/.config/modprobed.db ; fi
 
-sudo modprobed-db store
+#sudo modprobed-db store
 
 #sudo cp -f /home/$himri/.config $PWD/.config
 sudo cp $PWD/config $PWD/.config
@@ -185,6 +197,8 @@ sudo cp arch/x86/boot/bzImage /boot/vmlinuz-$KERNELVERSION
 sudo dracut -f -v /boot/initramfs-$KERNELVERSION.img $KERNELVERSION
 sudo kernel-install add /boot/initramfs-$KERNELVERSION.img /boot/vmlinuz-$KERNELVERSION
 sudo dracut --regenerate-all --lz4 --uefi --early-microcode -f 
+sudo refind-install ; sudo refind-mkdefault
+sudo sed -i 's/timeout .*/timeout 1/g' /boot/EFI/refind/refind.conf
 #sudo bootctl install
 #sudo bootctl update
 ###### SETTING UP SYSTEM CONFIGURATION
