@@ -2,6 +2,8 @@
 ### THANAS x86-64 KERNEL - MODDED TORVALDS DEVELOPMENT FORK
 ### built with llvm/clang by default
 ###########################################################
+LC_ALL=C
+LANG=C
 
 ###### SET BASH COLORS AND CONFIGURE COMPILATION TIME DISPLAY
 DATE_START=$(date +"%s")
@@ -38,7 +40,7 @@ LLVM_ENABLE_ASSERTIONS=ON
 LLVM_CCACHE_BUILD=ON
 
 OMP_TARGET_OFFLOAD=MANDATORY
-OMP_NUM_THREADS='"$(nproc)"'
+OMP_NUM_THREADS=$(nproc)
 OMP_DYNAMIC=true
 OMP_DEBUG=disabled
 LIBOMPTARGET_OMPT_SUPPORT=1
@@ -61,8 +63,9 @@ EXTRAVERSION=$(cat $makefile | head -5 | tail -1 | cut -d '=' -f2)
 VERSION=$(echo "$VERSION" | awk -v FPAT="[0-9]+" '{print $NF}')
 PATCHLEVEL=$(echo "$PATCHLEVEL" | awk -v FPAT="[0-9]+" '{print $NF}')
 SUBLEVEL=$(echo "$SUBLEVEL" | awk -v FPAT="[0-9]+" '{print $NF}')
-EXTRAVERSION="$(echo -e "${EXTRAVERSION}" | sed -e 's/^[[:space:]]*//')"
-KERNELVERSION="${VERSION}.${PATCHLEVEL}.${SUBLEVEL}${EXTRAVERSION}"-clrxt+
+EXTRAVERSION="$(echo "${EXTRAVERSION}" | sed -e 's/^[[:space:]]*//')"
+LOCALVERSION=$(echo '-clrxt+')
+KERNELVERSION="${VERSION}.${PATCHLEVEL}.${SUBLEVEL}${EXTRAVERSION}${LOCALVERSION}"
 
 ###### DISPLAY KERNEL VERSION
 clear
@@ -162,13 +165,14 @@ sudo cp $PWD/config $PWD/.config
 
  x86="/lib/ld-linux-x86-64.so.2" 
 
-#if lscpu | grep -qi intel ; then sudo sed -i 's/# CONFIG_MNATIVE_INTEL.*/CONFIG_MNATIVE_INTEL=y/g' $PWD/config ; fi
-#if lscpu | grep -qi amd ; then sudo sed -i 's/# CONFIG_MNATIVE_AMD.*/CONFIG_MNATIVE_AMD=y/g' $PWD/config ; fi
+if lscpu | grep -qi intel ; then sudo sed -i 's/# CONFIG_MNATIVE_INTEL.*/CONFIG_MNATIVE_INTEL=y/g' $PWD/config ; fi
+if lscpu | grep -qi amd ; then sudo sed -i 's/# CONFIG_MNATIVE_AMD.*/CONFIG_MNATIVE_AMD=y/g' $PWD/config ; fi
 
-  if $x86 --help | grep -q "v4 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU4.*/CONFIG_GENERIC_CPU4=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config 
-elif $x86 --help | grep -q "v3 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU3.*/CONFIG_GENERIC_CPU3=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config  
-elif $x86 --help | grep -q "v2 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU2.*/CONFIG_GENERIC_CPU2=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config  
-  fi
+  #if $x86 --help | grep -q "v4 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU4.*/CONFIG_GENERIC_CPU4=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config 
+#elif $x86 --help | grep -q "v3 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU3.*/CONFIG_GENERIC_CPU3=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config  
+#elif $x86 --help | grep -q "v2 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU2.*/CONFIG_GENERIC_CPU2=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config  
+#else sudo sed -i 's/# CONFIG_MCORE2.*/CONFIG_MCORE2=y/g' $PWD/config    
+  #fi
 
 
 Keys.ENTER | sudo make $CLANG $LD localmodconfig
@@ -193,11 +197,11 @@ if [ -e $source/arch/x86/boot/vmlinux.bin ]; then
 sudo make $THREADS modules_install
 sudo make $THREADS install
 #DRACUT_KMODDIR_OVERRIDE=1
-sudo cp arch/x86/boot/bzImage /boot/vmlinuz-$KERNELVERSION
-sudo dracut -f -v /boot/initramfs-$KERNELVERSION.img $KERNELVERSION
-sudo kernel-install add /boot/initramfs-$KERNELVERSION.img /boot/vmlinuz-$KERNELVERSION
+sudo cp $PWD/arch/x86/boot/bzImage /boot/vmlinuz-"${KERNELVERSION}"
+sudo dracut -f -v /boot/initramfs-"${KERNELVERSION}".img "${KERNELVERSION}"
+#sudo kernel-install add /boot/initramfs-"${KERNELVERSION}".img /boot/vmlinuz-"${KERNELVERSION}"
 sudo dracut --regenerate-all --lz4 --uefi --early-microcode -f 
-sudo refind-install ; sudo refind-mkdefault
+#sudo refind-install ; sudo refind-mkdefault
 sudo sed -i 's/timeout .*/timeout 1/g' /boot/EFI/refind/refind.conf
 #sudo bootctl install
 #sudo bootctl update
@@ -234,9 +238,15 @@ DIFF=$(($DATE_END - $DATE_START))
 echo -e "${magenta}"
 echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 echo -e "${restore}"
-fi;
+fi
 
 
+if grep -q "CONFIG_MNATIVE_INTEL=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_INTEL.*/# CONFIG_MNATIVE_INTEL is not set/g' $PWD/config 
+if grep -q "CONFIG_MNATIVE_AMD=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_AMD.*/# CONFIG_MNATIVE_AMD is not set/g' $PWD/config 
+if grep -q "CONFIG_GENERIC_CPU4=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU4.*/# CONFIG_GENERIC_CPU4 is not set/g' $PWD/config ; fi
+if grep -q "CONFIG_GENERIC_CPU3=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU3.*/# CONFIG_GENERIC_CPU3 is not set/g' $PWD/config ; fi
+if grep -q "CONFIG_GENERIC_CPU2=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU2.*/# CONFIG_GENERIC_CPU2 is not set/g' $PWD/config ; fi
+#sudo sed -i 's/# CONFIG_MCORE2.*/CONFIG_MCORE2=y/g' $PWD/config    
 ### reopen menu
 #./0*
 

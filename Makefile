@@ -453,13 +453,13 @@ HOSTPKG_CONFIG	= pkg-config
 
 ###malaka
 
-subdir-ccflags-y := -O3 -ffast-math -fforce-addr --param=ssp-buffer-size=32 -D_FORTIFY_SOURCE=2 -D_REENTRANT -fassociative-math -fasynchronous-unwind-tables -feliminate-unused-debug-types -fexceptions -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -ldl -lhmmer -lm -lncurses -lpthread -lsquid -m64 -pthread -Wall -Wformat-security -mcpu=native -g -fno-stack-protector -fwrapv -lpgcommon -lpgport -lpq -lrt -lcrypt -mtune=native -march=native -fomit-frame-pointer -pipe -Wno-error -funroll-loops -ftree-vectorize -Wno-frame-address -fopenmp -mabi=native -mfpu=native -mfloat-abi=native -fgraphite-identity -floop-strip-mine -floop-nest-optimize -fno-semantic-interposition -fipa-pta -fdevirtualize-at-ltrans -flto -flto-partition=one
+subdir-ccflags-y := -O3 -ffast-math -fforce-addr --param=ssp-buffer-size=32 -D_FORTIFY_SOURCE=2 -D_REENTRANT -fassociative-math -fasynchronous-unwind-tables -feliminate-unused-debug-types -fexceptions -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -ldl -lhmmer -lm -lncurses -lpthread -lsquid -m64 -pthread -Wall -Wformat-security -mcpu=native -g -fno-stack-protector -fwrapv -lpgcommon -lpgport -lpq -lrt -lcrypt -mtune=native -march=native -fomit-frame-pointer -pipe -Wno-error -funroll-loops -ftree-vectorize -Wno-frame-address -fopenmp -mabi=native -mfpu=native -mfloat-abi=native -fgraphite-identity -floop-strip-mine -floop-nest-optimize -fipa-pta -fdevirtualize-at-ltrans -flto -flto-partition=one -g -O3 -feliminate-unused-debug-types -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -m64 -fasynchronous-unwind-tables -Wp,-D_REENTRANT -ftree-loop-distribute-patterns -Wl,-z -Wl,now -Wl,relro -ffat-lto-objects -fno-trapping-math -Wl,-sort-common -Wl,--enable-new-dtags -Wa,-mbranches-within-32B-boundaries
 
-export LDFLAGS_MODULE= --strip-debug
+LDFLAGS_MODULE = --strip-debug
 
-export LDFLAGS= -O3 -plugin-opt=-function-sections -plugin-opt=-data-sections -plugin-opt=new-pass-manager -plugin-opt=O3 -plugin-opt=mcpu=native -plugin LLVMPolly.so --gc-sections -ffast-math -pipe -fPIE -march=native -mtune=native --param=ssp-buffer-size=32 -D_FORTIFY_SOURCE=2 -D_REENTRANT -fassociative-math -fasynchronous-unwind-tables -feliminate-unused-debug-types -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -m64 -pthread -Wnoformat-security -fno-stack-protector -fwrapv -funroll-loops -ftree-vectorize -fforce-addr -Wl,-O3 -Wl,-z,now -Wl,--as-needed -Wl,--no-copy-dt-needed-entries -Wl,--sort-common -Wl,--hash-style=gnu
+LDFLAGS = -O3 -plugin-opt=-function-sections -plugin-opt=-data-sections -plugin-opt=new-pass-manager -plugin-opt=O3 -plugin-opt=mcpu=native -plugin LLVMPolly.so --gc-sections -ffast-math -pipe -fPIE -march=native -mtune=native --param=ssp-buffer-size=32 -D_FORTIFY_SOURCE=2 -D_REENTRANT -fassociative-math -fasynchronous-unwind-tables -feliminate-unused-debug-types -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -m64 -pthread -Wnoformat-security -fno-stack-protector -fwrapv -funroll-loops -ftree-vectorize -fforce-addr -Wl,-O3 -Wl,-z,now -Wl,--as-needed -Wl,--no-copy-dt-needed-entries -Wl,--sort-common -Wl,--hash-style=gnu
 
-#export KBUILD_CFLAGS+=  -mllvm -polly \
+#KBUILD_CFLAGS+=  -mllvm -polly \
                         -mllvm -polly-run-inliner \
                         -mllvm -polly-opt-fusion=max \
                         -mllvm -polly-omp-backend=LLVM \
@@ -474,7 +474,7 @@ export LDFLAGS= -O3 -plugin-opt=-function-sections -plugin-opt=-data-sections -p
                         
                         #export LDFLAGS+=-plugin LLVMPolly.so
 
-export KBUILD_CFLAGS+= --param=ssp-buffer-size=32 \
+KBUILD_CFLAGS = --param=ssp-buffer-size=32 \
         -D_FORTIFY_SOURCE=2 \
         -D_REENTRANT \
         -fassociative-math \
@@ -521,7 +521,14 @@ export KBUILD_CFLAGS+= --param=ssp-buffer-size=32 \
         -Wno-maybe-uninitialized \
         -Wno-trigraphs \
         -Wundef \
-        -fgraphite-identity -floop-strip-mine -floop-nest-optimize -fno-semantic-interposition -fipa-pta -fdevirtualize-at-ltrans -flto -flto-partition=one
+        -fgraphite-identity -floop-strip-mine -floop-nest-optimize -fno-semantic-interposition -fipa-pta -fdevirtualize-at-ltrans -flto -flto-partition=one \
+        -Wl,-z -Wl,now -Wl,relro -ffat-lto-objects -fno-trapping-math -Wl,-sort-common -Wl,--enable-new-dtags -Wa,-mbranches-within-32B-boundaries
+        
+         CFFLAGS = -g-O3-feliminate-unused-debug-types-pipe-Wall-Wp-D_FORTIFY_SOURCE=2-fexceptions-fstack-protector--param=ssp-buffer-size=32-Wl--copy-dt-needed-entries-m64-fasynchronous-unwind-tables-Wp-D_REENTRANT-ftree-loop-distribute-patterns-Wl-z-Wl now-Wl-z-Wl relro-malign-data=abi-fno-semantic-interposition-ftree-vectorize-ftree-loop-vectorize-Wl-sort-common-Wl--enable-new-dtags MESA_GLSL_CACHE_DISABLE=0 
+         
+         CFLAGS += -g-O3-feliminate-unused-debug-types-pipe-Wall-Wp-D_FORTIFY_SOURCE=2-fexceptions-fstack-protector--param=ssp-buffer-size=32-Wformat-Wformat-security-Wl--copy-dt-needed-entries-m64-fasynchronous-unwind-tables-Wp-D_REENTRANT-ftree-loop-distribute-patterns-Wl-z-Wl now-Wl-z-Wl relro-fno-semantic-interposition-ffat-lto-objects-fno-signed-zeros-fno-trapping-math-fassociative-math-Wl-sort-common-Wl--enable-new-dtags 
+         
+         CXXFLAGS = -g-O3-feliminate-unused-debug-types-pipe-Wall-Wp-D_FORTIFY_SOURCE=2-fexceptions-fstack-protector--param=ssp-buffer-size=32-Wformat-Wformat-security-Wl--copy-dt-needed-entries-m64-fasynchronous-unwind-tables-Wp-D_REENTRANT-ftree-loop-distribute-patterns-Wl-z-Wl now-Wl-z-Wl relro-fno-semantic-interposition-ffat-lto-objects-fno-signed-zeros-fno-trapping-math-fassociative-math-Wl-sort-common-Wl--enable-new-dtags-fvisibility-inlines-hidden-Wl--enable-new-dtags FFLAGS=-g-O3-feliminate-unused-debug-types-pipe-Wall-Wp-D_FORTIFY_SOURCE=2-fexceptions-fstack-protector--param=ssp-buffer-size=32-Wl--copy-dt-needed-entries-m64-fasynchronous-unwind-tables-Wp-D_REENTRANT-ftree-loop-distribute-patterns-Wl-z-Wl now-Wl-z-Wl relro-malign-data=abi-fno-semantic-interposition-ftree-vectorize-ftree-loop-vectorize-Wl--enable-new-dtags THEANO_FLAGS=floatX=float32 openmp=true gcc.cxxflags="-ftree-vectorize-mavx"
 
 KBUILD_USERHOSTCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
 			 -O3 -fomit-frame-pointer -std=gnu11 \
