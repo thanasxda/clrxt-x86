@@ -6,6 +6,11 @@
 # Rewritten to use lists instead of if-statements.
 #
 
+subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
+
+
+
+
 obj-y				:= devres.o socket.o core/
 
 obj-$(CONFIG_COMPAT)		+= compat.o

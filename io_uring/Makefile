@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 #
 # Makefile for io_uring
+subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
 
 obj-$(CONFIG_IO_URING)		+= io_uring.o xattr.o nop.o fs.o splice.o \
 					sync.o advise.o filetable.o \

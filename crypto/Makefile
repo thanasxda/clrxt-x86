@@ -3,6 +3,12 @@
 # Cryptographic API
 #
 
+subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
+
+
+
+
+
 obj-$(CONFIG_CRYPTO) += crypto.o
 crypto-y := api.o cipher.o compress.o
 

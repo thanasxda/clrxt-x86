@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 # Unified Makefile for i386 and x86_64
+subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
 
 # select defconfig based on actual architecture
 ifeq ($(ARCH),x86)
@@ -54,6 +55,7 @@ REALMODE_CFLAGS += -Wno-address-of-packed-member
 REALMODE_CFLAGS += $(cc_stack_align4)
 REALMODE_CFLAGS += $(CLANG_FLAGS)
 export REALMODE_CFLAGS
+
 
 # BITS is used as extension for files which are available in a 32 bit
 # and a 64 bit version to simplify shared Makefiles.
