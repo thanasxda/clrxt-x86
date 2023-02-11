@@ -100,8 +100,10 @@ export PATH=""$path2":$PATH"
 #        LD=$xpath/ld.lld"
 
 ### set to system compiler
-#CLANG="CC=/usr/lib/ccache/clang$cclm
-#        HOSTCC=/usr/lib/ccache/clang$cclm
+#CLANG="CC=/usr/lib/ccache/bin/clang  
+#make sure it points to ccache
+#clang="CC=$(which clang)
+#        HOSTCC=$(which clang)
 #        AR=llvm-ar$cclm
 #        NM=llvm-nm$cclm
 #        OBJCOPY=llvm-objcopy$cclm
@@ -111,6 +113,7 @@ export PATH=""$path2":$PATH"
 #        STRIP=llvm-strip$cclm"
 ### optionally set linker seperately
 #LD="LD=ld.lld$cclm"
+LD="LD=ld.lld$cclm"
 ### enable verbose output for debugging
 #VERBOSE="V=1"
 ### ensure all cpu threads are used for compilation
@@ -118,6 +121,7 @@ THREADS=-j$(nproc --all)
 
 
 ###   USE GCC EXPERIMENTAL WHEN COMPILING, NOT ALWAYS BUT PROBABLY FASTER THAN CLANG SETUP
+## update: actually tested. clang polly lld 15 gives 10 % slower binary over gcc 13
 
 himri=$(who | head -n1 | awk '{print $1}')
 
@@ -241,8 +245,8 @@ echo -e "${restore}"
 fi
 
 
-if grep -q "CONFIG_MNATIVE_INTEL=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_INTEL.*/# CONFIG_MNATIVE_INTEL is not set/g' $PWD/config 
-if grep -q "CONFIG_MNATIVE_AMD=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_AMD.*/# CONFIG_MNATIVE_AMD is not set/g' $PWD/config 
+if grep -q "CONFIG_MNATIVE_INTEL=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_INTEL.*/# CONFIG_MNATIVE_INTEL is not set/g' $PWD/config ; fi
+if grep -q "CONFIG_MNATIVE_AMD=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_AMD.*/# CONFIG_MNATIVE_AMD is not set/g' $PWD/config ; fi
 if grep -q "CONFIG_GENERIC_CPU4=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU4.*/# CONFIG_GENERIC_CPU4 is not set/g' $PWD/config ; fi
 if grep -q "CONFIG_GENERIC_CPU3=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU3.*/# CONFIG_GENERIC_CPU3 is not set/g' $PWD/config ; fi
 if grep -q "CONFIG_GENERIC_CPU2=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU2.*/# CONFIG_GENERIC_CPU2 is not set/g' $PWD/config ; fi
