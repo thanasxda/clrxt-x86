@@ -771,6 +771,8 @@ static void avc_audit_post_callback(struct audit_buffer *ab, void *a)
  * Note that it is non-blocking and can be called from under
  * rcu_read_lock().
  */
+#ifdef CONFIG_AUDIT
+/* This is the slow part of avc audit with big stack footprint */
 noinline int slow_avc_audit(struct selinux_state *state,
 			    u32 ssid, u32 tsid, u16 tclass,
 			    u32 requested, u32 audited, u32 denied, int result,

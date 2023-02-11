@@ -3,6 +3,10 @@
 # Makefile for the linux memory manager.
 #
 
+subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
+
+
+
 KASAN_SANITIZE_slab_common.o := n
 KASAN_SANITIZE_slab.o := n
 KASAN_SANITIZE_slub.o := n
