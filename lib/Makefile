@@ -3,6 +3,9 @@
 # Makefile for some libs needed in the kernel.
 #
 
+subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
+
+
 ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
 
 # These files are disabled because they produce lots of non-interesting and/or
