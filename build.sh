@@ -27,7 +27,7 @@ defconfig=thanas_defconfig
         sudo /usr/sbin/update-ccache-symlinks
         sudo ln -sfT $(which dash) $(which sh)
 
-
+himri=$(who | head -n1 | awk '{print $1}')
 
 cclm=$(ls /usr/lib | grep 'llvm-' | tail -n 1 | rev | cut -c-3 | rev)
 
@@ -85,7 +85,7 @@ path=/usr/bin
 path2=/usr/lib/llvm$cclm/bin
 
 ### set to prebuilt compiler
-xpath=~/TOOLCHAIN/clang/bin
+xpath=/home/$himri/TOOLCHAIN/clang/bin
 export LD_LIBRARY_PATH=""$path2"/../lib:"$path2"/../lib64:$LD_LIBRARY_PATH"
 export PATH=""$path2":$PATH"
 #CLANG="CC=$xpath/clang
@@ -113,7 +113,11 @@ export PATH=""$path2":$PATH"
 #        STRIP=llvm-strip$cclm"
 ### optionally set linker seperately
 #LD="LD=ld.lld$cclm"
+if [ -e /home/$himri/TOOLCHAIN/clang ] ; then
+LD="LD=$xpath/ld.lld$cclm"
+else
 LD="LD=ld.lld$cclm"
+fi
 ### enable verbose output for debugging
 #VERBOSE="V=1"
 ### ensure all cpu threads are used for compilation
@@ -122,6 +126,7 @@ THREADS=-j$(nproc --all)
 
 ###   USE GCC EXPERIMENTAL WHEN COMPILING, NOT ALWAYS BUT PROBABLY FASTER THAN CLANG SETUP
 ## update: actually tested. clang polly lld 15 gives 10 % slower binary over gcc 13
+# tested llvm-17.0.0 as well, gcc-13 substancially faster binary
 
 himri=$(who | head -n1 | awk '{print $1}')
 
@@ -159,24 +164,36 @@ himri=$(who | head -n1 | awk '{print $1}')
 
 #sudo modprobed-db store
 
+# quick fix to extend cmdline if so. sudo bls=yes ./build.sh
+#are_you_already_using_basic_linux_setup?
+bls=no
+if [ $bls = yes ] || grep -q thanas /etc/rc.local ; then
+sudo sed -i 's/CONFIG_CMDLINE_BOOL=.*/# CONFIG_CMDLINE_BOOL is not set/g' $PWD/config
+sudo sed -i 's/CONFIG_CMDLINE=.*/# CONFIG_CMDLINE is not set/g' $PWD/config
+fi
+
+
 #sudo cp -f /home/$himri/.config $PWD/.config
-sudo cp $PWD/config $PWD/.config
 ###### SETUP KERNEL CONFIG
 #sudo rm -rf .config
 #sudo rm -rf .config.old
 #cp $defconfig .config
 
-
+grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
  x86="/lib/ld-linux-x86-64.so.2" 
 
-if lscpu | grep -qi intel ; then sudo sed -i 's/# CONFIG_MNATIVE_INTEL.*/CONFIG_MNATIVE_INTEL=y/g' $PWD/config ; fi
-if lscpu | grep -qi amd ; then sudo sed -i 's/# CONFIG_MNATIVE_AMD.*/CONFIG_MNATIVE_AMD=y/g' $PWD/config ; fi
+#if lscpu | grep -qi intel ; then sudo sed -i 's/# CONFIG_MNATIVE_INTEL.*/CONFIG_MNATIVE_INTEL=y/g' $PWD/config ; fi
+#if lscpu | grep -qi amd ; then sudo sed -i 's/# CONFIG_MNATIVE_AMD.*/CONFIG_MNATIVE_AMD=y/g' $PWD/config ; fi
+  if grep -q "CONFIG_GENERIC_CPU=y" $PWD/.config ; then sudo sed -i 's/CONFIG_GENERIC_CPU=y/# CONFIG_GENERIC_CPU is not set/g' $PWD/.config ; fi
+  
+  if $x86 --help | grep -q "v4 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU4.*/CONFIG_GENERIC_CPU4=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config 
+elif $x86 --help | grep -q "v3 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU3.*/CONFIG_GENERIC_CPU3=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config  
+elif $x86 --help | grep -q "v2 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU2.*/CONFIG_GENERIC_CPU2=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config  
+else sudo sed -i 's/# CONFIG_MCORE2.*/CONFIG_MCORE2=y/g' $PWD/config    
+  fi
+grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
 
-  #if $x86 --help | grep -q "v4 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU4.*/CONFIG_GENERIC_CPU4=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config 
-#elif $x86 --help | grep -q "v3 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU3.*/CONFIG_GENERIC_CPU3=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config  
-#elif $x86 --help | grep -q "v2 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU2.*/CONFIG_GENERIC_CPU2=y/g' $PWD/config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config  
-#else sudo sed -i 's/# CONFIG_MCORE2.*/CONFIG_MCORE2=y/g' $PWD/config    
-  #fi
+sudo cp $PWD/config $PWD/.config
 
 
 Keys.ENTER | sudo make $CLANG $LD localmodconfig
@@ -189,7 +206,18 @@ Keys.ENTER | sudo make $CLANG $LD localmodconfig
 #make menuconfig
 ### or apply "make xconfig" instead of menuconfig to configure it graphically
 #make xconfig
+grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
+  if grep -q "CONFIG_GENERIC_CPU=y" $PWD/.config ; then sudo sed -i 's/CONFIG_GENERIC_CPU=y/# CONFIG_GENERIC_CPU is not set/g' $PWD/.config ; fi
 
+#if lscpu | grep -qi intel ; then sudo sed -i 's/# CONFIG_MNATIVE_INTEL.*/CONFIG_MNATIVE_INTEL=y/g' $PWD/config ; fi
+#if lscpu | grep -qi amd ; then sudo sed -i 's/# CONFIG_MNATIVE_AMD.*/CONFIG_MNATIVE_AMD=y/g' $PWD/config ; fi
+  
+  if $x86 --help | grep -q "v4 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU4.*/CONFIG_GENERIC_CPU4=y/g' $PWD/.config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/.config 
+elif $x86 --help | grep -q "v3 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU3.*/CONFIG_GENERIC_CPU3=y/g' $PWD/.config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/.config  
+elif $x86 --help | grep -q "v2 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU2.*/CONFIG_GENERIC_CPU2=y/g' $PWD/.config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/.config  
+else sudo sed -i 's/# CONFIG_MCORE2.*/CONFIG_MCORE2=y/g' $PWD/.config    
+  fi
+grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
 ###### START COMPILATION
 Keys.ENTER | sudo make $THREADS $VERBOSE $CLANG $LD
 Keys.ENTER | sudo make $THREADS $VERBOSE $CLANG $LD modules
@@ -243,14 +271,18 @@ echo -e "${magenta}"
 echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 echo -e "${restore}"
 fi
+grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
+if grep -q "CONFIG_GENERIC_CPU=y" $PWD/.config ; then sudo sed -i 's/CONFIG_GENERIC_CPU=y/# CONFIG_GENERIC_CPU is not set/g' $PWD/.config ; fi
+if grep -q "CONFIG_MNATIVE_INTEL=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_INTEL=y/# CONFIG_MNATIVE_INTEL is not set/g' $PWD/config ; fi
+if grep -q "CONFIG_MNATIVE_AMD=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_AMD=y/# CONFIG_MNATIVE_AMD is not set/g' $PWD/config ; fi
+if grep -q "CONFIG_GENERIC_CPU4=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU4=y/# CONFIG_GENERIC_CPU4 is not set/g' $PWD/config ; fi
+if grep -q "CONFIG_GENERIC_CPU3=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU3=y/# CONFIG_GENERIC_CPU3 is not set/g' $PWD/config ; fi
+if grep -q "CONFIG_GENERIC_CPU2=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU2=y/# CONFIG_GENERIC_CPU2 is not set/g' $PWD/config ; fi
+if grep -q "/CONFIG_MCORE2=y" $PWD/config ; then sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config ; fi
+if grep -q "# CONFIG_CMDLINE_BOOL is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE_BOOL is not set/CONFIG_CMDLINE_BOOL=y/g' $PWD/config ; fi
+if grep -q "# CONFIG_CMDLINE is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE is not set/CONFIG_CMDLINE="cgroup_disable=io,perf_event,rdma,cpu,cpuacct,cpuset,net_prio,hugetlb,blkio,memory,devices,freezer,net_cls,pids,misc noautogroup numa=off rcu_nocbs=0 slub_merge align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all cryptomgr.notests irqaffinity=0 forcepae iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 highres=on hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null"/g' $PWD/config ; fi
 
-
-if grep -q "CONFIG_MNATIVE_INTEL=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_INTEL.*/# CONFIG_MNATIVE_INTEL is not set/g' $PWD/config ; fi
-if grep -q "CONFIG_MNATIVE_AMD=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_AMD.*/# CONFIG_MNATIVE_AMD is not set/g' $PWD/config ; fi
-if grep -q "CONFIG_GENERIC_CPU4=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU4.*/# CONFIG_GENERIC_CPU4 is not set/g' $PWD/config ; fi
-if grep -q "CONFIG_GENERIC_CPU3=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU3.*/# CONFIG_GENERIC_CPU3 is not set/g' $PWD/config ; fi
-if grep -q "CONFIG_GENERIC_CPU2=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU2.*/# CONFIG_GENERIC_CPU2 is not set/g' $PWD/config ; fi
-#sudo sed -i 's/# CONFIG_MCORE2.*/CONFIG_MCORE2=y/g' $PWD/config    
+grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
 ### reopen menu
 #./0*
 
