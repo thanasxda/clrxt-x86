@@ -1102,8 +1102,8 @@ static void flush_plug_callbacks(struct blk_plug *plug, bool from_schedule)
 			cb->callback(cb, from_schedule);
 		}
 
-		if (bio->bi_opf & REQ_PREFLUSH)
-			current->fsync_count++;
+	/*	if (bio->bi_opf & REQ_PREFLUSH)
+			current->fsync_count++; */
 	}
 }
 
