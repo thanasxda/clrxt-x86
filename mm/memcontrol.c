@@ -817,7 +817,7 @@ void __mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
 	__mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
 
 	/* Update memcg and lruvec */
-	if (!mem_cgroup_disabled())
+	if (likely(!mem_cgroup_disabled()))
 		__mod_memcg_lruvec_state(lruvec, idx, val);
 }
 
@@ -2136,7 +2136,7 @@ void lock_page_memcg(struct page *page)
 
 static void __folio_memcg_unlock(struct mem_cgroup *memcg)
 {
-	if (memcg && memcg->move_lock_task == current) {
+	if (likely(memcg && memcg->move_lock_task == current)) {
 		unsigned long flags = memcg->move_lock_flags;
 
 		memcg->move_lock_task = NULL;
