@@ -72,8 +72,8 @@
  *
  * (default: 6ms * (1 + ilog(ncpus)), units: nanoseconds)
  */
-unsigned int sysctl_sched_latency			= 6000000ULL;
-static unsigned int normalized_sysctl_sched_latency	= 6000000ULL;
+unsigned int sysctl_sched_latency			= 40000ULL;
+static unsigned int normalized_sysctl_sched_latency	= 40000ULL;
 
 /*
  * The initial- and re-scaling of tunables is configurable
