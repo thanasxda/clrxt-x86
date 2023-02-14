@@ -10,7 +10,8 @@ NAME = Hurr durr I'ma ninja sloth
 # More info can be located in ./README
 # Comments in this file are targeted only to the developer, do not
 # expect to learn how to build the kernel reading this file.
-
+###malaka
+         
 $(if $(filter __%, $(MAKECMDGOALS)), \
 	$(error targets prefixed with '__' are only for internal use))
 
@@ -451,85 +452,7 @@ endif
 HOSTRUSTC = rustc
 HOSTPKG_CONFIG	= pkg-config
 
-###malaka
 
-subdir-ccflags-y := -O3 -ffast-math -fforce-addr --param=ssp-buffer-size=32 -D_FORTIFY_SOURCE=2 -D_REENTRANT -fassociative-math -fasynchronous-unwind-tables -feliminate-unused-debug-types -fexceptions -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -ldl -lhmmer -lm -lncurses -lpthread -lsquid -m64 -pthread -Wall -Wformat-security -mcpu=native -g -fno-stack-protector -fwrapv -lpgcommon -lpgport -lpq -lrt -lcrypt -mtune=native -march=native -fomit-frame-pointer -pipe -Wno-error -funroll-loops -ftree-vectorize -Wno-frame-address -fopenmp -mabi=native -mfpu=native -mfloat-abi=native -fgraphite-identity -floop-strip-mine -floop-nest-optimize -fipa-pta -fdevirtualize-at-ltrans -flto -flto-partition=one -g -O3 -feliminate-unused-debug-types -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=32 -Wformat -Wformat-security -m64 -fasynchronous-unwind-tables -Wp,-D_REENTRANT -ftree-loop-distribute-patterns -Wl,-z -Wl,now -Wl,relro -ffat-lto-objects -fno-trapping-math -Wl,-sort-common -Wl,--enable-new-dtags -Wa,-mbranches-within-32B-boundaries -fdata-sections -ffunction-sections
-
-LDFLAGS_MODULE = --strip-debug
-
-LDFLAGS = -O3 -plugin-opt=-function-sections -plugin-opt=-data-sections -plugin-opt=new-pass-manager -plugin-opt=O3 -plugin-opt=mcpu=native -plugin LLVMPolly.so --gc-sections -ffast-math -pipe -fPIE -march=native -mtune=native --param=ssp-buffer-size=32 -D_FORTIFY_SOURCE=2 -D_REENTRANT -fassociative-math -fasynchronous-unwind-tables -feliminate-unused-debug-types -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -m64 -pthread -Wnoformat-security -fno-stack-protector -fwrapv -funroll-loops -ftree-vectorize -fforce-addr -Wl,-O3 -Wl,-z,now -Wl,--as-needed -Wl,--no-copy-dt-needed-entries -Wl,--sort-common -Wl,--hash-style=gnu -Wl,--gc-sections
-
-#KBUILD_CFLAGS+=  -mllvm -polly \
-                        -mllvm -polly-run-inliner \
-                        -mllvm -polly-opt-fusion=max \
-                        -mllvm -polly-omp-backend=LLVM \
-                        -mllvm -polly-scheduling=dynamic \
-                        -mllvm -polly-scheduling-chunksize=1 \
-                        -mllvm -polly-opt-maximize-bands=yes \
-                        -mllvm -polly-ast-detect-parallel \
-                        -mllvm -polly-ast-use-context \
-                        -mllvm -polly-opt-simplify-deps=no \
-                        -mllvm -polly-rtc-max-arrays-per-group=40 \
-                        -mllvm -polly-parallel 
-                        
-#                        LDFLAGS+=-plugin LLVMPolly.so
-
-KBUILD_CFLAGS = --param=ssp-buffer-size=32 \
-        -D_FORTIFY_SOURCE=2 \
-        -D_REENTRANT \
-        -fassociative-math \
-        -fasynchronous-unwind-tables \
-        -feliminate-unused-debug-types \
-        -fexceptions \
-        -ffast-math \
-        -fforce-addr \
-        -fno-semantic-interposition \
-        -fno-signed-zeros \
-        -fno-stack-protector \
-        -fno-strict-aliasing \
-        -fno-trapping-math \
-        -fomit-frame-pointer \
-        -fopenmp \
-        -ftree-vectorize \
-        -funroll-loops \
-        -fwrapv \
-        -g \
-        -lcrypt \
-        -ldl \
-        -lhmmer \
-        -lm \
-        -lncurses \
-        -lpgcommon \
-        -lpgport \
-        -lpq \
-        -lpthread \
-        -lrt \
-        -lsquid \
-        -m64 \
-        -mabi=native \
-        -mcpu=native \
-        -mfloat-abi=native \
-        -mfpu=native \
-        -mtune=native \
-        -O3 \
-        -pipe \
-        -pthread \
-        -Wall \
-        -Wno-error \
-        -Wno-format-security \
-        -Wno-frame-address \
-        -Wno-maybe-uninitialized \
-        -Wno-trigraphs \
-        -Wundef \
-        -fgraphite-identity -floop-strip-mine -floop-nest-optimize -fno-semantic-interposition -fipa-pta -fdevirtualize-at-ltrans -flto -flto-partition=one \
-        -Wl,-z -Wl,now -Wl,relro -ffat-lto-objects -fno-trapping-math -Wl,-sort-common -Wl,--enable-new-dtags -Wa,-mbranches-within-32B-boundaries \
-        -g-O3-feliminate-unused-debug-types-pipe-Wall-Wp-D_FORTIFY_SOURCE=2-fexceptions-fstack-protector--param=ssp-buffer-size=32-Wformat-Wformat-security-Wl--copy-dt-needed-entries-m64-fasynchronous-unwind-tables-Wp-D_REENTRANT-ftree-loop-distribute-patterns-Wl-z-Wl now-Wl-z-Wl relro-fno-semantic-interposition-ffat-lto-objects-fno-signed-zeros-fno-trapping-math-fassociative-math-Wl-sort-common-Wl--enable-new-dtags  \
-        -fdata-sections -ffunction-sections
-        
-         KBUILD_CFFLAGS = -g-O3-feliminate-unused-debug-types-pipe-Wall-Wp-D_FORTIFY_SOURCE=2-fexceptions-fstack-protector--param=ssp-buffer-size=32-Wl--copy-dt-needed-entries-m64-fasynchronous-unwind-tables-Wp-D_REENTRANT-ftree-loop-distribute-patterns-Wl-z-Wl now-Wl-z-Wl relro-malign-data=abi-fno-semantic-interposition-ftree-vectorize-ftree-loop-vectorize-Wl-sort-common-Wl--enable-new-dtags MESA_GLSL_CACHE_DISABLE=0 
-         
-        
-         KBUILD_CXXFLAGS = -g-O3-feliminate-unused-debug-types-pipe-Wall-Wp-D_FORTIFY_SOURCE=2-fexceptions-fstack-protector--param=ssp-buffer-size=32-Wformat-Wformat-security-Wl--copy-dt-needed-entries-m64-fasynchronous-unwind-tables-Wp-D_REENTRANT-ftree-loop-distribute-patterns-Wl-z-Wl now-Wl-z-Wl relro-fno-semantic-interposition-ffat-lto-objects-fno-signed-zeros-fno-trapping-math-fassociative-math-Wl-sort-common-Wl--enable-new-dtags-fvisibility-inlines-hidden-Wl--enable-new-dtags FFLAGS=-g-O3-feliminate-unused-debug-types-pipe-Wall-Wp-D_FORTIFY_SOURCE=2-fexceptions-fstack-protector--param=ssp-buffer-size=32-Wl--copy-dt-needed-entries-m64-fasynchronous-unwind-tables-Wp-D_REENTRANT-ftree-loop-distribute-patterns-Wl-z-Wl now-Wl-z-Wl relro-malign-data=abi-fno-semantic-interposition-ftree-vectorize-ftree-loop-vectorize-Wl--enable-new-dtags THEANO_FLAGS=floatX=float32 openmp=true gcc.cxxflags="-ftree-vectorize-mavx"
 
 KBUILD_USERHOSTCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
 			 -O3 -fomit-frame-pointer -std=gnu11 \
@@ -553,7 +476,7 @@ export rust_common_flags := --edition=2021 \
 			    -Dclippy::needless_continue \
 			    -Wclippy::dbg_macro
 
-KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
+KBUILD_HOSTCFLAGS   := -O3 $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
 KBUILD_HOSTCXXFLAGS := -Wall -O3 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
 KBUILD_HOSTRUSTFLAGS := $(rust_common_flags) -O -Cstrip=debuginfo \
 			-Zallow-features= $(HOSTRUSTFLAGS)
@@ -1027,25 +950,61 @@ cflags64-$(CONFIG_MROCKETLAKE) 	+= -march=rocketlake
 cflags64-$(CONFIG_MALDERLAKE) 	+= -march=alderlake
 cflags64-$(CONFIG_MRAPTORLAKE) 	+= -march=raptorlake
 cflags64-$(CONFIG_MMETEORLAKE) 	+= -march=meteorlake
-cflags64-$(CONFIG_GENERIC_CPU2) 	+= -march=x86-64-v2
-cflags64-$(CONFIG_GENERIC_CPU3) 	+= -march=x86-64-v3
-cflags64-$(CONFIG_GENERIC_CPU4) 	+= -march=x86-64-v4
-cflags64-$(CONFIG_GENERIC_CPU)	+= -mtune=generic
+cflags64-$(CONFIG_GENERIC_CPU2) 	+= -march=native
+cflags64-$(CONFIG_GENERIC_CPU3) 	+= -march=native
+cflags64-$(CONFIG_GENERIC_CPU4) 	+= -march=native
+cflags64-$(CONFIG_GENERIC_CPU)	+= -mtune=native
 KBUILD_CFLAGS += $(cflags64-y)
 
 rustflags64-$(CONFIG_MK8)		+= -Ctarget-cpu=k8
 rustflags64-$(CONFIG_MPSC)	+= -Ctarget-cpu=nocona
 rustflags64-$(CONFIG_MCORE2)	+= -Ctarget-cpu=core2
 rustflags64-$(CONFIG_MATOM)	+= -Ctarget-cpu=atom
-rustflags64-$(CONFIG_GENERIC_CPU)	+= -Ztune-cpu=generic
+rustflags64-$(CONFIG_GENERIC_CPU)	+= -Ztune-cpu=native
 KBUILD_RUSTFLAGS += $(rustflags64-y)
 
+### MLX
+# THIS SETUP USES GCC + LLD FOR PERFORMANCE. CLANG NOT USED BUT INCLUDED.
+
+# flags for gcc/clang
+mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -O3 -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,-z -Wl,norelro  
+
+# extra flags
+#mlxextra	= 
+
+#mlxextra2 	= -flto=auto -flto-partition=none -ffat-lto-objects -ftree-vectorize -fomit-frame-pointer
+KBUILD_CFLAGS	+= -fuse-ld=lld
+#KBUILD_LDFLAGS	+= -O2
+
+
 ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
-KBUILD_CFLAGS += -O3
-KBUILD_RUSTFLAGS += -Copt-level=3
+# GCC
+
+# graphite and more
+mlxgraphite 	= -fgraphite-identity -floop-block -floop-interchange -floop-nest-optimize -floop-optimize -floop-parallelize-all -floop-strip-mine -ftree-loop-vectorize -ftree-loop-distribution -fprefetch-loop-arrays
+
+CFLAGS 			+= $(mlxcflags) $(mlxgraphite) $(mlxextra)
+KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxgraphite) $(mlxextra)
+KBUILD_CFLAGS_MODULE 	+= $(mlxcflags) $(mlxgraphite) 
+subdir-ccflags-y 	+= $(mlxcflags) $(mlxgraphite) 
+
+KBUILD_RUSTFLAGS += -Copt-level=3 -Ztune-cpu=native -C target-cpu=native 
+
+LDFLAGS += --gc-sections --hash-style=gnu -O3 -plugin-opt=-mcpu=native -plugin-opt=O3 
+LDFLAGS_MODULE += --strip-debug
+#KBUILD_LDFLAGS += 
+#LDFLAGS_MODULE += 
+#KBUILD_LDFLAGS_MODULE += 
+
+# flto needs to be passed to vmlinux and experimental with gcc, not working as is
+
 else ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
-KBUILD_CFLAGS += -O3
-KBUILD_RUSTFLAGS += -Copt-level=3
+# CLANG
+# IN CASE OF CLANG, POLLY AUTOMATICALLY ACTIVATED WHEN CC=clang, AS FOR LTO, DONE BY USER THROUGH CONFIG SELECTION.
+
+KBUILD_CFLAGS += $(mlxcflags)
+KBUILD_CFLAGS += -O3 -pipe -mcpu=native -mtune=native -march=native
+KBUILD_RUSTFLAGS += -Copt-level=3 -Ztune-cpu=native -C target-cpu=native 
 endif
 
 # Always set `debug-assertions` and `overflow-checks` because their default
@@ -1087,6 +1046,18 @@ KBUILD_RUSTFLAGS += $(KBUILD_RUSTFLAGS-y)
 
 ifdef CONFIG_CC_IS_CLANG
 KBUILD_CPPFLAGS += -Qunused-arguments
+KBUILD_CFLAGS+=  -mllvm -polly \
+                        -mllvm -polly-run-inliner \
+                        -mllvm -polly-omp-backend=LLVM \
+                        -mllvm -polly-scheduling=dynamic \
+                        -mllvm -polly-scheduling-chunksize=1 \
+                        -mllvm -polly-opt-maximize-bands=yes \
+                        -mllvm -polly-ast-detect-parallel \
+                        -mllvm -polly-ast-use-context \
+                        -mllvm -polly-opt-simplify-deps=no \
+                        -mllvm -polly-rtc-max-arrays-per-group=40 \
+                        -mllvm -polly-parallel                     
+LDFLAGS+=-plugin LLVMPolly.so
 # The kernel builds with '-std=gnu11' so use of GNU extensions is acceptable.
 KBUILD_CFLAGS += -Wno-gnu
 else
@@ -1190,6 +1161,8 @@ CC_FLAGS_SCS	:= -fsanitize=shadow-call-stack
 KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
 export CC_FLAGS_SCS
 endif
+
+
 
 ifdef CONFIG_LTO_CLANG
 ifdef CONFIG_LTO_CLANG_THIN
