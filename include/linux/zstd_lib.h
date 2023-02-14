@@ -2558,16 +2558,6 @@ ZSTDLIB_STATIC_API size_t ZSTD_initDStream_usingDict(ZSTD_DStream* zds, const vo
 ZSTD_DEPRECATED("use ZSTD_DCtx_reset + ZSTD_DCtx_refDDict, see zstd.h for detailed instructions")
 ZSTDLIB_STATIC_API size_t ZSTD_initDStream_usingDDict(ZSTD_DStream* zds, const ZSTD_DDict* ddict);
 
-/*!
- * This function is deprecated, and is equivalent to:
- *
- *     ZSTD_DCtx_reset(zds, ZSTD_reset_session_only);
- *
- * re-use decompression parameters from previous init; saves dictionary loading
- */
-ZSTD_DEPRECATED("use ZSTD_DCtx_reset, see zstd.h for detailed instructions")
-ZSTDLIB_STATIC_API size_t ZSTD_resetDStream(ZSTD_DStream* zds);
-
 
 /* *******************************************************************
 *  Buffer-less and synchronous inner streaming functions

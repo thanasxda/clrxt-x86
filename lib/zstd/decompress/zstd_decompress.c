@@ -1667,16 +1667,6 @@ size_t ZSTD_initDStream_usingDDict(ZSTD_DStream* dctx, const ZSTD_DDict* ddict)
     return ZSTD_startingInputLength(dctx->format);
 }
 
-/* ZSTD_resetDStream() :
- * return : expected size, aka ZSTD_startingInputLength().
- * this function cannot fail */
-size_t ZSTD_resetDStream(ZSTD_DStream* dctx)
-{
-    DEBUGLOG(4, "ZSTD_resetDStream");
-    FORWARD_IF_ERROR(ZSTD_DCtx_reset(dctx, ZSTD_reset_session_only), "");
-    return ZSTD_startingInputLength(dctx->format);
-}
-
 
 size_t ZSTD_DCtx_refDDict(ZSTD_DCtx* dctx, const ZSTD_DDict* ddict)
 {
