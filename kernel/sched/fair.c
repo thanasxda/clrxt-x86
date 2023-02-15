@@ -181,6 +181,11 @@ int __weak arch_asym_cpu_priority(int cpu)
 static unsigned int sysctl_sched_cfs_bandwidth_slice		= 5000UL;
 #endif
 
+#ifdef CONFIG_NUMA_BALANCING
+/* Restrict the NUMA promotion throughput (MB/s) for each target node. */
+static unsigned int sysctl_numa_balancing_promote_rate_limit = 65536;
+#endif
+
 #ifdef CONFIG_SYSCTL
 static struct ctl_table sched_fair_sysctls[] = {
 	{
@@ -200,6 +205,16 @@ static struct ctl_table sched_fair_sysctls[] = {
 		.extra1         = SYSCTL_ONE,
 	},
 #endif
+#ifdef CONFIG_NUMA_BALANCING
+	{
+		.procname	= "numa_balancing_promote_rate_limit_MBps",
+		.data		= &sysctl_numa_balancing_promote_rate_limit,
+		.maxlen		= sizeof(unsigned int),
+		.mode		= 0644,
+		.proc_handler	= proc_dointvec_minmax,
+		.extra1		= SYSCTL_ZERO,
+	},
+#endif /* CONFIG_NUMA_BALANCING */
 	{}
 };
 
@@ -1096,9 +1111,6 @@ unsigned int sysctl_numa_balancing_scan_delay = 1000;
 
 /* The page with hint page fault latency < threshold in ms is considered hot */
 unsigned int sysctl_numa_balancing_hot_threshold = MSEC_PER_SEC;
-
-/* Restrict the NUMA promotion throughput (MB/s) for each target node. */
-unsigned int sysctl_numa_balancing_promote_rate_limit = 65536;
 
 struct numa_group {
 	refcount_t refcount;
@@ -2967,7 +2979,7 @@ static void task_numa_work(struct callback_head *work)
 	}
 
 	next_scan = now + msecs_to_jiffies(p->numa_scan_period);
-	if (cmpxchg(&mm->numa_next_scan, migrate, next_scan) != migrate)
+	if (!try_cmpxchg(&mm->numa_next_scan, &migrate, next_scan))
 		return;
 
 	/*
@@ -4468,12 +4480,16 @@ static inline int util_fits_cpu(unsigned long util,
 	 * For uclamp_max, we can tolerate a drop in performance level as the
 	 * goal is to cap the task. So it's okay if it's getting less.
 	 *
-	 * In case of capacity inversion, which is not handled yet, we should
-	 * honour the inverted capacity for both uclamp_min and uclamp_max all
-	 * the time.
+	 * In case of capacity inversion we should honour the inverted capacity
+	 * for both uclamp_min and uclamp_max all the time.
 	 */
-	capacity_orig = capacity_orig_of(cpu);
-	capacity_orig_thermal = capacity_orig - arch_scale_thermal_pressure(cpu);
+	capacity_orig = cpu_in_capacity_inversion(cpu);
+	if (capacity_orig) {
+		capacity_orig_thermal = capacity_orig;
+	} else {
+		capacity_orig = capacity_orig_of(cpu);
+		capacity_orig_thermal = capacity_orig - arch_scale_thermal_pressure(cpu);
+	}
 
 	/*
 	 * We want to force a task to fit a cpu as implied by uclamp_max.
@@ -7123,6 +7139,218 @@ eenv_pd_max_util(struct energy_env *eenv, struct cpumask *pd_cpus,
 	return min(max_util, eenv->cpu_cap);
 }
 
+/*
+ * compute_energy(): Use the Energy Model to estimate the energy that @pd would
+ * consume for a given utilization landscape @eenv. When @dst_cpu < 0, the task
+ * contribution is ignored.
+ */
+static inline unsigned long
+compute_energy(struct energy_env *eenv, struct perf_domain *pd,
+	       struct cpumask *pd_cpus, struct task_struct *p, int dst_cpu)
+{
+	unsigned long max_util = eenv_pd_max_util(eenv, pd_cpus, p, dst_cpu);
+	unsigned long busy_time = eenv->pd_busy_time;
+
+	if (dst_cpu >= 0)
+		busy_time = min(eenv->pd_cap, busy_time + eenv->task_busy_time);
+
+	return em_cpu_energy(pd->em_pd, max_util, busy_time, eenv->cpu_cap);
+}
+
+/*
+ * find_energy_efficient_cpu(): Find most energy-efficient target CPU for the
+ * waking task. find_energy_efficient_cpu() looks for the CPU with maximum
+ * spare capacity in each performance domain and uses it as a potential
+ * candidate to execute the task. Then, it uses the Energy Model to figure
+ * out which of the CPU candidates is the most energy-efficient.
+ *
+ * The rationale for this heuristic is as follows. In a performance domain,
+ * all the most energy efficient CPU candidates (according to the Energy
+ * Model) are those for which we'll request a low frequency. When there are
+ * several CPUs for which the frequency request will be the same, we don't
+ * have enough data to break the tie between them, because the Energy Model
+ * only includes active power costs. With this model, if we assume that
+ * frequency requests follow utilization (e.g. using schedutil), the CPU with
+ * the maximum spare capacity in a performance domain is guaranteed to be among
+ * the best candidates of the performance domain.
+ *
+ * In practice, it could be preferable from an energy standpoint to pack
+ * small tasks on a CPU in order to let other CPUs go in deeper idle states,
+ * but that could also hurt our chances to go cluster idle, and we have no
+ * ways to tell with the current Energy Model if this is actually a good
+ * idea or not. So, find_energy_efficient_cpu() basically favors
+ * cluster-packing, and spreading inside a cluster. That should at least be
+ * a good thing for latency, and this is consistent with the idea that most
+ * of the energy savings of EAS come from the asymmetry of the system, and
+ * not so much from breaking the tie between identical CPUs. That's also the
+ * reason why EAS is enabled in the topology code only for systems where
+ * SD_ASYM_CPUCAPACITY is set.
+ *
+ * NOTE: Forkees are not accepted in the energy-aware wake-up path because
+ * they don't have any useful utilization data yet and it's not possible to
+ * forecast their impact on energy consumption. Consequently, they will be
+ * placed by find_idlest_cpu() on the least loaded CPU, which might turn out
+ * to be energy-inefficient in some use-cases. The alternative would be to
+ * bias new tasks towards specific types of CPUs first, or to try to infer
+ * their util_avg from the parent task, but those heuristics could hurt
+ * other use-cases too. So, until someone finds a better way to solve this,
+ * let's keep things simple by re-using the existing slow path.
+ */
+static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
+{
+	struct cpumask *cpus = this_cpu_cpumask_var_ptr(select_rq_mask);
+	unsigned long prev_delta = ULONG_MAX, best_delta = ULONG_MAX;
+	unsigned long p_util_min = uclamp_is_used() ? uclamp_eff_value(p, UCLAMP_MIN) : 0;
+	unsigned long p_util_max = uclamp_is_used() ? uclamp_eff_value(p, UCLAMP_MAX) : 1024;
+	struct root_domain *rd = this_rq()->rd;
+	int cpu, best_energy_cpu, target = -1;
+	struct sched_domain *sd;
+	struct perf_domain *pd;
+	struct energy_env eenv;
+
+	rcu_read_lock();
+	pd = rcu_dereference(rd->pd);
+	if (!pd || READ_ONCE(rd->overutilized))
+		goto unlock;
+
+	/*
+	 * Energy-aware wake-up happens on the lowest sched_domain starting
+	 * from sd_asym_cpucapacity spanning over this_cpu and prev_cpu.
+	 */
+	sd = rcu_dereference(*this_cpu_ptr(&sd_asym_cpucapacity));
+	while (sd && !cpumask_test_cpu(prev_cpu, sched_domain_span(sd)))
+		sd = sd->parent;
+	if (!sd)
+		goto unlock;
+
+	target = prev_cpu;
+
+	sync_entity_load_avg(&p->se);
+	if (!uclamp_task_util(p, p_util_min, p_util_max))
+		goto unlock;
+
+	eenv_task_busy_time(&eenv, p, prev_cpu);
+
+	for (; pd; pd = pd->next) {
+		unsigned long util_min = p_util_min, util_max = p_util_max;
+		unsigned long cpu_cap, cpu_thermal_cap, util;
+		unsigned long cur_delta, max_spare_cap = 0;
+		unsigned long rq_util_min, rq_util_max;
+		unsigned long prev_spare_cap = 0;
+		int max_spare_cap_cpu = -1;
+		unsigned long base_energy;
+
+		cpumask_and(cpus, perf_domain_span(pd), cpu_online_mask);
+
+		if (cpumask_empty(cpus))
+			continue;
+
+		/* Account thermal pressure for the energy estimation */
+		cpu = cpumask_first(cpus);
+		cpu_thermal_cap = arch_scale_cpu_capacity(cpu);
+		cpu_thermal_cap -= arch_scale_thermal_pressure(cpu);
+
+		eenv.cpu_cap = cpu_thermal_cap;
+		eenv.pd_cap = 0;
+
+		for_each_cpu(cpu, cpus) {
+			struct rq *rq = cpu_rq(cpu);
+
+			eenv.pd_cap += cpu_thermal_cap;
+
+			if (!cpumask_test_cpu(cpu, sched_domain_span(sd)))
+				continue;
+
+			if (!cpumask_test_cpu(cpu, p->cpus_ptr))
+				continue;
+
+			util = cpu_util_next(cpu, p, cpu);
+			cpu_cap = capacity_of(cpu);
+
+			/*
+			 * Skip CPUs that cannot satisfy the capacity request.
+			 * IOW, placing the task there would make the CPU
+			 * overutilized. Take uclamp into account to see how
+			 * much capacity we can get out of the CPU; this is
+			 * aligned with sched_cpu_util().
+			 */
+			if (uclamp_is_used() && !uclamp_rq_is_idle(rq)) {
+				/*
+				 * Open code uclamp_rq_util_with() except for
+				 * the clamp() part. Ie: apply max aggregation
+				 * only. util_fits_cpu() logic requires to
+				 * operate on non clamped util but must use the
+				 * max-aggregated uclamp_{min, max}.
+				 */
+				rq_util_min = uclamp_rq_get(rq, UCLAMP_MIN);
+				rq_util_max = uclamp_rq_get(rq, UCLAMP_MAX);
+
+				util_min = max(rq_util_min, p_util_min);
+				util_max = max(rq_util_max, p_util_max);
+			}
+			if (!util_fits_cpu(util, util_min, util_max, cpu))
+				continue;
+
+			lsub_positive(&cpu_cap, util);
+
+			if (cpu == prev_cpu) {
+				/* Always use prev_cpu as a candidate. */
+				prev_spare_cap = cpu_cap;
+			} else if (cpu_cap > max_spare_cap) {
+				/*
+				 * Find the CPU with the maximum spare capacity
+				 * among the remaining CPUs in the performance
+				 * domain.
+				 */
+				max_spare_cap = cpu_cap;
+				max_spare_cap_cpu = cpu;
+			}
+		}
+
+		if (max_spare_cap_cpu < 0 && prev_spare_cap == 0)
+			continue;
+
+		eenv_pd_busy_time(&eenv, cpus, p);
+		/* Compute the 'base' energy of the pd, without @p */
+		base_energy = compute_energy(&eenv, pd, cpus, p, -1);
+
+		/* Evaluate the energy impact of using prev_cpu. */
+		if (prev_spare_cap > 0) {
+			prev_delta = compute_energy(&eenv, pd, cpus, p,
+						    prev_cpu);
+			/* CPU utilization has changed */
+			if (prev_delta < base_energy)
+				goto unlock;
+			prev_delta -= base_energy;
+			best_delta = min(best_delta, prev_delta);
+		}
+
+		/* Evaluate the energy impact of using max_spare_cap_cpu. */
+		if (max_spare_cap_cpu >= 0 && max_spare_cap > prev_spare_cap) {
+			cur_delta = compute_energy(&eenv, pd, cpus, p,
+						   max_spare_cap_cpu);
+			/* CPU utilization has changed */
+			if (cur_delta < base_energy)
+				goto unlock;
+			cur_delta -= base_energy;
+			if (cur_delta < best_delta) {
+				best_delta = cur_delta;
+				best_energy_cpu = max_spare_cap_cpu;
+			}
+		}
+	}
+	rcu_read_unlock();
+
+	if (best_delta < prev_delta)
+		target = best_energy_cpu;
+
+	return target;
+
+unlock:
+	rcu_read_unlock();
+
+	return target;
+}
 
 static unsigned int once_in_a_while;
 /*
@@ -8651,16 +8879,82 @@ static unsigned long scale_rt_capacity(int cpu)
 
 static void update_cpu_capacity(struct sched_domain *sd, int cpu)
 {
+	unsigned long capacity_orig = arch_scale_cpu_capacity(cpu);
 	unsigned long capacity = scale_rt_capacity(cpu);
 	struct sched_group *sdg = sd->groups;
+	struct rq *rq = cpu_rq(cpu);
 
-	cpu_rq(cpu)->cpu_capacity_orig = arch_scale_cpu_capacity(cpu);
+	rq->cpu_capacity_orig = capacity_orig;
 
 	if (!capacity)
 		capacity = 1;
 
-	cpu_rq(cpu)->cpu_capacity = capacity;
-	trace_sched_cpu_capacity_tp(cpu_rq(cpu));
+	rq->cpu_capacity = capacity;
+
+	/*
+	 * Detect if the performance domain is in capacity inversion state.
+	 *
+	 * Capacity inversion happens when another perf domain with equal or
+	 * lower capacity_orig_of() ends up having higher capacity than this
+	 * domain after subtracting thermal pressure.
+	 *
+	 * We only take into account thermal pressure in this detection as it's
+	 * the only metric that actually results in *real* reduction of
+	 * capacity due to performance points (OPPs) being dropped/become
+	 * unreachable due to thermal throttling.
+	 *
+	 * We assume:
+	 *   * That all cpus in a perf domain have the same capacity_orig
+	 *     (same uArch).
+	 *   * Thermal pressure will impact all cpus in this perf domain
+	 *     equally.
+	 */
+	if (sched_energy_enabled()) {
+		unsigned long inv_cap = capacity_orig - thermal_load_avg(rq);
+		struct perf_domain *pd;
+
+		rcu_read_lock();
+
+		pd = rcu_dereference(rq->rd->pd);
+		rq->cpu_capacity_inverted = 0;
+
+		for (; pd; pd = pd->next) {
+			struct cpumask *pd_span = perf_domain_span(pd);
+			unsigned long pd_cap_orig, pd_cap;
+
+			/* We can't be inverted against our own pd */
+			if (cpumask_test_cpu(cpu_of(rq), pd_span))
+				continue;
+
+			cpu = cpumask_any(pd_span);
+			pd_cap_orig = arch_scale_cpu_capacity(cpu);
+
+			if (capacity_orig < pd_cap_orig)
+				continue;
+
+			/*
+			 * handle the case of multiple perf domains have the
+			 * same capacity_orig but one of them is under higher
+			 * thermal pressure. We record it as capacity
+			 * inversion.
+			 */
+			if (capacity_orig == pd_cap_orig) {
+				pd_cap = pd_cap_orig - thermal_load_avg(cpu_rq(cpu));
+
+				if (pd_cap > inv_cap) {
+					rq->cpu_capacity_inverted = inv_cap;
+					break;
+				}
+			} else if (pd_cap_orig > inv_cap) {
+				rq->cpu_capacity_inverted = inv_cap;
+				break;
+			}
+		}
+
+		rcu_read_unlock();
+	}
+
+	trace_sched_cpu_capacity_tp(rq);
 
 	sdg->sgc->capacity = capacity;
 	sdg->sgc->min_capacity = capacity;

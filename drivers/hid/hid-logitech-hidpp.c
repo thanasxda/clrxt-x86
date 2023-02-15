@@ -895,7 +895,7 @@ static int hidpp_root_get_protocol_version(struct hidpp_device *hidpp)
 	ret = hidpp_send_rap_command_sync(hidpp,
 			REPORT_ID_HIDPP_SHORT,
 			HIDPP_PAGE_ROOT_IDX,
-			CMD_ROOT_GET_PROTOCOL_VERSION,
+			CMD_ROOT_GET_PROTOCOL_VERSION | LINUX_KERNEL_SW_ID,
 			ping_data, sizeof(ping_data), &response);
 
 	if (ret == HIDPP_ERROR_INVALID_SUBID) {
@@ -3978,7 +3978,8 @@ static void hidpp_connect_event(struct hidpp_device *hidpp)
 	}
 
 	hidpp_initialize_battery(hidpp);
-	hidpp_initialize_hires_scroll(hidpp);
+	if (!hid_is_usb(hidpp->hid_dev))
+		hidpp_initialize_hires_scroll(hidpp);
 
 	/* forward current battery state */
 	if (hidpp->capabilities & HIDPP_CAPABILITY_HIDPP10_BATTERY) {
