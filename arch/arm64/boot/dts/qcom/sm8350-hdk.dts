@@ -33,7 +33,7 @@
 
 &adsp {
 	status = "okay";
-	firmware-name = "qcom/sm8350/adsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &apps_rsc {
@@ -222,7 +222,7 @@
 
 &cdsp {
 	status = "okay";
-	firmware-name = "qcom/sm8350/cdsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &gpi_dma1 {
@@ -231,7 +231,7 @@
 
 &mpss {
 	status = "okay";
-	firmware-name = "qcom/sm8350/modem.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &qupv3_id_0 {
@@ -240,7 +240,7 @@
 
 &slpi {
 	status = "okay";
-	firmware-name = "qcom/sm8350/slpi.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &tlmm {

@@ -183,17 +183,11 @@ struct netns_ipv4 {
 	unsigned long tfo_active_disable_stamp;
 	u32 tcp_challenge_timestamp;
 	u32 tcp_challenge_count;
-	u8 sysctl_tcp_plb_enabled;
-	int sysctl_tcp_plb_cong_thresh;
-	u8 sysctl_tcp_plb_idle_rehash_rounds;
-	u8 sysctl_tcp_plb_rehash_rounds;
-	u8 sysctl_tcp_plb_suspend_rto_sec;
 
 	int sysctl_udp_wmem_min;
 	int sysctl_udp_rmem_min;
 
 	u8 sysctl_fib_notify_on_flag_change;
-	unsigned int sysctl_tcp_collapse_max_bytes;
 
 #ifdef CONFIG_NET_L3_MASTER_DEV
 	u8 sysctl_udp_l3mdev_accept;

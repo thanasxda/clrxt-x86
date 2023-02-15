@@ -106,7 +106,7 @@ static int vnt_download_firmware(struct vnt_private *priv)
 
 	dev_dbg(dev, "---->Download firmware\n");
 
-	ret = request_firmware(&fw, FIRMWARE_NAME, dev);
+	ret = reject_firmware(&fw, FIRMWARE_NAME, dev);
 	if (ret) {
 		dev_err(dev, "firmware file %s request failed (%d)\n",
 			FIRMWARE_NAME, ret);
@@ -1113,4 +1113,4 @@ static struct usb_driver vt6656_driver = {
 
 module_usb_driver(vt6656_driver);
 
-MODULE_FIRMWARE(FIRMWARE_NAME);
+/*(DEBLOBBED)*/

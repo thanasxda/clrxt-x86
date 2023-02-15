@@ -2872,7 +2872,7 @@ int mt76_connac2_load_ram(struct mt76_dev *dev, const char *fw_wm,
 	const struct firmware *fw;
 	int ret;
 
-	ret = request_firmware(&fw, fw_wm, dev->dev);
+	ret = reject_firmware(&fw, fw_wm, dev->dev);
 	if (ret)
 		return ret;
 
@@ -2901,7 +2901,7 @@ int mt76_connac2_load_ram(struct mt76_dev *dev, const char *fw_wm,
 	if (!fw_wa)
 		return 0;
 
-	ret = request_firmware(&fw, fw_wa, dev->dev);
+	ret = reject_firmware(&fw, fw_wa, dev->dev);
 	if (ret)
 		return ret;
 
@@ -2977,7 +2977,7 @@ int mt76_connac2_load_patch(struct mt76_dev *dev, const char *fw_name)
 		return -EAGAIN;
 	}
 
-	ret = request_firmware(&fw, fw_name, dev->dev);
+	ret = reject_firmware(&fw, fw_name, dev->dev);
 	if (ret)
 		goto out;
 

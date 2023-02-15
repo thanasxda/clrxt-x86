@@ -240,44 +240,7 @@ gm200_gr_load(struct gf100_gr *gr, int ver, const struct gf100_gr_fwif *fwif)
 	return gk20a_gr_load_sw(gr, "gr/", ver);
 }
 
-MODULE_FIRMWARE("nvidia/gm200/gr/fecs_bl.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/fecs_inst.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/fecs_data.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/fecs_sig.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/gpccs_bl.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/gpccs_inst.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/gpccs_data.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/gpccs_sig.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/sw_ctx.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/sw_nonctx.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/sw_bundle_init.bin");
-MODULE_FIRMWARE("nvidia/gm200/gr/sw_method_init.bin");
-
-MODULE_FIRMWARE("nvidia/gm204/gr/fecs_bl.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/fecs_inst.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/fecs_data.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/fecs_sig.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/gpccs_bl.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/gpccs_inst.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/gpccs_data.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/gpccs_sig.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/sw_ctx.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/sw_nonctx.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/sw_bundle_init.bin");
-MODULE_FIRMWARE("nvidia/gm204/gr/sw_method_init.bin");
-
-MODULE_FIRMWARE("nvidia/gm206/gr/fecs_bl.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/fecs_inst.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/fecs_data.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/fecs_sig.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/gpccs_bl.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/gpccs_inst.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/gpccs_data.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/gpccs_sig.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/sw_ctx.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/sw_nonctx.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/sw_bundle_init.bin");
-MODULE_FIRMWARE("nvidia/gm206/gr/sw_method_init.bin");
+/*(DEBLOBBED)*/
 
 static const struct gf100_gr_fwif
 gm200_gr_fwif[] = {

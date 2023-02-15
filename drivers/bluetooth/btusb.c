@@ -63,7 +63,6 @@ static struct usb_driver btusb_driver;
 #define BTUSB_INTEL_BROKEN_SHUTDOWN_LED	BIT(24)
 #define BTUSB_INTEL_BROKEN_INITIAL_NCMD BIT(25)
 #define BTUSB_INTEL_NO_WBS_SUPPORT	BIT(26)
-#define BTUSB_ACTIONS_SEMI		BIT(27)
 
 static const struct usb_device_id btusb_table[] = {
 	/* Generic Bluetooth USB device */
@@ -579,9 +578,6 @@ static const struct usb_device_id blacklist_table[] = {
 						     BTUSB_WIDEBAND_SPEECH },
 	{ USB_DEVICE(0x0cb5, 0xc547), .driver_info = BTUSB_REALTEK |
 						     BTUSB_WIDEBAND_SPEECH },
-
-	/* Actions Semiconductor ATS2851 based devices */
-	{ USB_DEVICE(0x10d7, 0xb012), .driver_info = BTUSB_ACTIONS_SEMI },
 
 	/* Silicon Wave based devices */
 	{ USB_DEVICE(0x0c10, 0x0000), .driver_info = BTUSB_SWAVE },
@@ -2752,7 +2748,7 @@ static int btusb_mtk_setup(struct hci_dev *hdev)
 	case 0x7922:
 	case 0x7961:
 		snprintf(fw_bin_name, sizeof(fw_bin_name),
-			"mediatek/BT_RAM_CODE_MT%04x_1_%x_hdr.bin",
+			"/*(DEBLOBBED)*/",
 			 dev_id & 0xffff, (fw_version & 0xff) + 1);
 		err = btmtk_setup_firmware_79xx(hdev, fw_bin_name,
 						btusb_mtk_hci_wmt_sync);
@@ -3243,9 +3239,9 @@ static int btusb_setup_qca_load_rampatch(struct hci_dev *hdev,
 	ver_rom = le32_to_cpu(ver->rom_version);
 	ver_patch = le32_to_cpu(ver->patch_version);
 
-	snprintf(fwname, sizeof(fwname), "qca/rampatch_usb_%08x.bin", ver_rom);
+	snprintf(fwname, sizeof(fwname), "/*(DEBLOBBED)*/", ver_rom);
 
-	err = request_firmware(&fw, fwname, &hdev->dev);
+	err = reject_firmware(&fw, fwname, &hdev->dev);
 	if (err) {
 		bt_dev_err(hdev, "failed to request rampatch file: %s (%d)",
 			   fwname, err);
@@ -3314,14 +3310,14 @@ static void btusb_generate_qca_nvm_name(char *fwname, size_t max_size,
 		}
 
 		if (board_id == 0) {
-			snprintf(fwname, max_size, "qca/nvm_usb_%08x%s.bin",
+			snprintf(fwname, max_size, "/*(DEBLOBBED)*/",
 				rom_version, variant);
 		} else {
-			snprintf(fwname, max_size, "qca/nvm_usb_%08x%s_%04x.bin",
+			snprintf(fwname, max_size, "/*(DEBLOBBED)*/",
 				rom_version, variant, board_id);
 		}
 	} else {
-		snprintf(fwname, max_size, "qca/nvm_usb_%08x.bin",
+		snprintf(fwname, max_size, "/*(DEBLOBBED)*/",
 			rom_version);
 	}
 
@@ -3337,7 +3333,7 @@ static int btusb_setup_qca_load_nvm(struct hci_dev *hdev,
 
 	btusb_generate_qca_nvm_name(fwname, sizeof(fwname), ver);
 
-	err = request_firmware(&fw, fwname, &hdev->dev);
+	err = reject_firmware(&fw, fwname, &hdev->dev);
 	if (err) {
 		bt_dev_err(hdev, "failed to request NVM file: %s (%d)",
 			   fwname, err);
@@ -3930,11 +3926,6 @@ static int btusb_probe(struct usb_interface *intf,
 		/* Realtek devices need to set remote wakeup on auto-suspend */
 		set_bit(BTUSB_WAKEUP_AUTOSUSPEND, &data->flags);
 		set_bit(BTUSB_USE_ALT3_FOR_WBS, &data->flags);
-	}
-
-	if (id->driver_info & BTUSB_ACTIONS_SEMI) {
-		/* Support is advertised, but not implemented */
-		set_bit(HCI_QUIRK_BROKEN_ERR_DATA_REPORTING, &hdev->quirks);
 	}
 
 	if (!reset)

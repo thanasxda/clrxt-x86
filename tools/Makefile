@@ -1,15 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 # Some of the tools (perf) use same make variables
 # as in kernel build.
-subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
-
-
-
-
-
-
-
-
 export srctree=
 export objtree=
 

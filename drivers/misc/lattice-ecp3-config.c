@@ -13,7 +13,7 @@
 #include <linux/delay.h>
 #include <asm/unaligned.h>
 
-#define FIRMWARE_NAME	"lattice-ecp3.bit"
+#define FIRMWARE_NAME	"/*(DEBLOBBED)*/"
 
 /*
  * The JTAG ID's of the supported FPGA's. The ID is 32bit wide
@@ -198,7 +198,7 @@ static int lattice_ecp3_probe(struct spi_device *spi)
 	spi_set_drvdata(spi, data);
 
 	init_completion(&data->fw_loaded);
-	err = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+	err = reject_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
 				      FIRMWARE_NAME, &spi->dev,
 				      GFP_KERNEL, spi, firmware_load);
 	if (err) {
@@ -239,4 +239,4 @@ module_spi_driver(lattice_ecp3_driver);
 MODULE_AUTHOR("Stefan Roese <sr@denx.de>");
 MODULE_DESCRIPTION("Lattice ECP3 FPGA configuration via SPI");
 MODULE_LICENSE("GPL");
-MODULE_FIRMWARE(FIRMWARE_NAME);
+/*(DEBLOBBED)*/

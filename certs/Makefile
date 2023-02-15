@@ -2,7 +2,6 @@
 #
 # Makefile for the linux kernel signature checking certificates.
 #
-subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
 
 obj-$(CONFIG_SYSTEM_TRUSTED_KEYRING) += system_keyring.o system_certificates.o
 obj-$(CONFIG_SYSTEM_BLACKLIST_KEYRING) += blacklist.o blacklist_hashes.o
@@ -10,10 +9,6 @@ obj-$(CONFIG_SYSTEM_REVOCATION_LIST) += revocation_certificates.o
 
 $(obj)/blacklist_hashes.o: $(obj)/blacklist_hash_list
 CFLAGS_blacklist_hashes.o := -I $(obj)
-
-
-
-
 
 quiet_cmd_check_and_copy_blacklist_hash_list = GEN     $@
       cmd_check_and_copy_blacklist_hash_list = \

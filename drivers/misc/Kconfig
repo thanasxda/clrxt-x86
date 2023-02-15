@@ -483,17 +483,6 @@ config OPEN_DICE
 
 	  If unsure, say N.
 
-config WINESYNC
-	tristate "Synchronization primitives for Wine"
-	help
-	  This module provides kernel support for synchronization primitives
-	  used by Wine. It is not a hardware driver.
-
-	  To compile this driver as a module, choose M here: the
-	  module will be called winesync.
-
-	  If unsure, say N.
-
 config VCPU_STALL_DETECTOR
 	tristate "Guest vCPU stall detector"
 	depends on OF && HAS_IOMEM
@@ -506,37 +495,6 @@ config VCPU_STALL_DETECTOR
 	  will be called vcpu_stall_detector.
 
 	  If you do not intend to run this kernel as a guest, say N.
-
-config ORACLE_VBOXGUEST
-	tristate "VirtualBox Guest Addition driver"
-	depends on X86
-	default m
-	help
-	  This is the main driver from VirtualBox Guest Additions.
-
-	  To compile this driver as a module, choose M here: the
-	  module will be called vboxguest.
-
-config ORACLE_VBOXSF
-	tristate "VirtualBox Share Folder driver"
-	depends on X86 && ORACLE_VBOXGUEST
-	default m
-	help
-	  This is the driver to share folders between guest and
-	  host.
-
-	  To compile this driver as a module, choose M here: the
-	  module will be called vboxsf.
-
-config ORACLE_VBOXVIDEO
-	tristate "VirtualBox Video driver"
-	depends on X86 && ORACLE_VBOXGUEST
-	default m
-	help
-	  This is the video driver for VirtualBox VM.
-
-	  To compile this driver as a module, choose M here: the
-	  module will be called vboxvideo.
 
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"

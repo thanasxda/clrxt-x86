@@ -4962,7 +4962,7 @@ static void intel_snb_check_microcode(void)
 		pr_info("PEBS enabled due to microcode update\n");
 		x86_pmu.pebs_broken = 0;
 	} else {
-		pr_info("PEBS disabled due to CPU errata, please upgrade microcode\n");
+		pr_info("PEBS disabled due to CPU errata/*(DEBLOBBED)*/\n");
 		x86_pmu.pebs_broken = 1;
 	}
 }

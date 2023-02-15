@@ -87,9 +87,7 @@ gp10b_pmu = {
 };
 
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC)
-MODULE_FIRMWARE("nvidia/gp10b/pmu/desc.bin");
-MODULE_FIRMWARE("nvidia/gp10b/pmu/image.bin");
-MODULE_FIRMWARE("nvidia/gp10b/pmu/sig.bin");
+/*(DEBLOBBED)*/
 #endif
 
 static const struct nvkm_pmu_fwif

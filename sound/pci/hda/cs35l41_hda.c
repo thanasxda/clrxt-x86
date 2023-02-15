@@ -124,15 +124,15 @@ static int cs35l41_request_firmware_file(struct cs35l41_hda *cs35l41,
 				      dsp_name, hda_cs_dsp_fw_ids[cs35l41->firmware_type],
 				      ssid, spkid, filetype);
 	else if (ssid && amp_name)
-		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s-%s.%s", dir, CS35L41_PART,
+		*filename = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", dir, CS35L41_PART,
 				      dsp_name, hda_cs_dsp_fw_ids[cs35l41->firmware_type],
 				      ssid, amp_name, filetype);
 	else if (ssid)
-		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s.%s", dir, CS35L41_PART,
+		*filename = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", dir, CS35L41_PART,
 				      dsp_name, hda_cs_dsp_fw_ids[cs35l41->firmware_type],
 				      ssid, filetype);
 	else
-		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s.%s", dir, CS35L41_PART,
+		*filename = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", dir, CS35L41_PART,
 				      dsp_name, hda_cs_dsp_fw_ids[cs35l41->firmware_type],
 				      filetype);
 
@@ -153,7 +153,7 @@ static int cs35l41_request_firmware_file(struct cs35l41_hda *cs35l41,
 		s++;
 	}
 
-	ret = firmware_request_nowarn(firmware, *filename, cs35l41->dev);
+	ret = firmware_reject_nowarn(firmware, *filename, cs35l41->dev);
 	if (ret != 0) {
 		dev_dbg(cs35l41->dev, "Failed to request '%s'\n", *filename);
 		kfree(*filename);
@@ -1240,7 +1240,7 @@ static int cs35l41_no_acpi_dsd(struct cs35l41_hda *cs35l41, struct device *physd
 
 	if (strncmp(hid, "CLSA0100", 8) == 0) {
 		hw_cfg->bst_type = CS35L41_EXT_BOOST_NO_VSPK_SWITCH;
-	} else if (strncmp(hid, "CLSA0101", 8) == 0 || strncmp(hid, "CSC3551", 7) == 0) {
+	} else if (strncmp(hid, "CLSA0101", 8) == 0) {
 		hw_cfg->bst_type = CS35L41_EXT_BOOST;
 		hw_cfg->gpio1.func = CS35l41_VSPK_SWITCH;
 		hw_cfg->gpio1.valid = true;

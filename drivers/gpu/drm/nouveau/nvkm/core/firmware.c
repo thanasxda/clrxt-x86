@@ -85,11 +85,11 @@ nvkm_firmware_get(const struct nvkm_subdev *subdev, const char *fwname, int ver,
 	}
 
 	if (ver != 0)
-		snprintf(f, sizeof(f), "nvidia/%s/%s-%d.bin", cname, fwname, ver);
+		snprintf(f, sizeof(f), "/*(DEBLOBBED)*/", cname, fwname, ver);
 	else
-		snprintf(f, sizeof(f), "nvidia/%s/%s.bin", cname, fwname);
+		snprintf(f, sizeof(f), "/*(DEBLOBBED)*/", cname, fwname);
 
-	if (!firmware_request_nowarn(fw, f, device->dev)) {
+	if (!firmware_reject_nowarn(fw, f, device->dev)) {
 		nvkm_debug(subdev, "firmware \"%s\" loaded - %zu byte(s)\n",
 			   f, (*fw)->size);
 		return 0;

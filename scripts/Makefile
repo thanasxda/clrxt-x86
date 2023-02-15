@@ -3,12 +3,6 @@
 # scripts contains sources for various helper programs used throughout
 # the kernel for the build process.
 
-subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
-
-
-
-
-
 hostprogs-always-$(CONFIG_BUILD_BIN2C)			+= bin2c
 hostprogs-always-$(CONFIG_KALLSYMS)			+= kallsyms
 hostprogs-always-$(BUILD_C_RECORDMCOUNT)		+= recordmcount

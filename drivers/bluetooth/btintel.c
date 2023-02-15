@@ -344,7 +344,7 @@ int btintel_load_ddc_config(struct hci_dev *hdev, const char *ddc_name)
 	const u8 *fw_ptr;
 	int err;
 
-	err = request_firmware_direct(&fw, ddc_name, &hdev->dev);
+	err = reject_firmware_direct(&fw, ddc_name, &hdev->dev);
 	if (err < 0) {
 		bt_dev_err(hdev, "Failed to load Intel DDC file %s (%d)",
 			   ddc_name, err);
@@ -1400,12 +1400,12 @@ static const struct firmware *btintel_legacy_rom_get_fw(struct hci_dev *hdev,
 	int ret;
 
 	snprintf(fwname, sizeof(fwname),
-		 "intel/ibt-hw-%x.%x.%x-fw-%x.%x.%x.%x.%x.bseq",
+		 "/*(DEBLOBBED)*/",
 		 ver->hw_platform, ver->hw_variant, ver->hw_revision,
 		 ver->fw_variant,  ver->fw_revision, ver->fw_build_num,
 		 ver->fw_build_ww, ver->fw_build_yy);
 
-	ret = request_firmware(&fw, fwname, &hdev->dev);
+	ret = reject_firmware(&fw, fwname, &hdev->dev);
 	if (ret < 0) {
 		if (ret == -EINVAL) {
 			bt_dev_err(hdev, "Intel firmware file request failed (%d)",
@@ -1419,9 +1419,9 @@ static const struct firmware *btintel_legacy_rom_get_fw(struct hci_dev *hdev,
 		/* If the correct firmware patch file is not found, use the
 		 * default firmware patch file instead
 		 */
-		snprintf(fwname, sizeof(fwname), "intel/ibt-hw-%x.%x.bseq",
+		snprintf(fwname, sizeof(fwname), "/*(DEBLOBBED)*/",
 			 ver->hw_platform, ver->hw_variant);
-		if (request_firmware(&fw, fwname, &hdev->dev) < 0) {
+		if (reject_firmware(&fw, fwname, &hdev->dev) < 0) {
 			bt_dev_err(hdev, "failed to open default fw file: %s",
 				   fwname);
 			return NULL;
@@ -1906,7 +1906,7 @@ download:
 		return -EINVAL;
 	}
 
-	err = firmware_request_nowarn(&fw, fwname, &hdev->dev);
+	err = firmware_reject_nowarn(&fw, fwname, &hdev->dev);
 	if (err < 0) {
 		if (!btintel_test_flag(hdev, INTEL_BOOTLOADER)) {
 			/* Firmware has already been loaded */
@@ -2095,7 +2095,7 @@ static int btintel_prepare_fw_download_tlv(struct hci_dev *hdev,
 	}
 
 	btintel_get_fw_name_tlv(ver, fwname, sizeof(fwname), "sfi");
-	err = firmware_request_nowarn(&fw, fwname, &hdev->dev);
+	err = firmware_reject_nowarn(&fw, fwname, &hdev->dev);
 	if (err < 0) {
 		if (!btintel_test_flag(hdev, INTEL_BOOTLOADER)) {
 			/* Firmware has already been loaded */
@@ -2657,7 +2657,4 @@ MODULE_AUTHOR("Marcel Holtmann <marcel@holtmann.org>");
 MODULE_DESCRIPTION("Bluetooth support for Intel devices ver " VERSION);
 MODULE_VERSION(VERSION);
 MODULE_LICENSE("GPL");
-MODULE_FIRMWARE("intel/ibt-11-5.sfi");
-MODULE_FIRMWARE("intel/ibt-11-5.ddc");
-MODULE_FIRMWARE("intel/ibt-12-16.sfi");
-MODULE_FIRMWARE("intel/ibt-12-16.ddc");
+/*(DEBLOBBED)*/

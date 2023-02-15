@@ -1,12 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 # Makefile for the Linux sound card driver
 #
-subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
-
-
-
-
-
 
 obj-$(CONFIG_SOUND) += soundcore.o
 obj-$(CONFIG_DMASOUND) += oss/dmasound/

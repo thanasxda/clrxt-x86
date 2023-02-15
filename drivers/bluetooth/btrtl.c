@@ -82,42 +82,42 @@ static const struct id_table ic_id_table[] = {
 	{ IC_INFO(RTL_ROM_LMP_8723A, 0xb, 0x6, HCI_USB),
 	  .config_needed = false,
 	  .has_rom_version = false,
-	  .fw_name = "rtl_bt/rtl8723a_fw.bin",
+	  .fw_name = "/*(DEBLOBBED)*/",
 	  .cfg_name = NULL },
 
 	/* 8723BS */
 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xb, 0x6, HCI_UART),
 	  .config_needed = true,
 	  .has_rom_version = true,
-	  .fw_name  = "rtl_bt/rtl8723bs_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8723bs_config" },
 
 	/* 8723B */
 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xb, 0x6, HCI_USB),
 	  .config_needed = false,
 	  .has_rom_version = true,
-	  .fw_name  = "rtl_bt/rtl8723b_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8723b_config" },
 
 	/* 8723D */
 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xd, 0x8, HCI_USB),
 	  .config_needed = true,
 	  .has_rom_version = true,
-	  .fw_name  = "rtl_bt/rtl8723d_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8723d_config" },
 
 	/* 8723DS */
 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xd, 0x8, HCI_UART),
 	  .config_needed = true,
 	  .has_rom_version = true,
-	  .fw_name  = "rtl_bt/rtl8723ds_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8723ds_config" },
 
 	/* 8821A */
 	{ IC_INFO(RTL_ROM_LMP_8821A, 0xa, 0x6, HCI_USB),
 	  .config_needed = false,
 	  .has_rom_version = true,
-	  .fw_name  = "rtl_bt/rtl8821a_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8821a_config" },
 
 	/* 8821C */
@@ -125,14 +125,14 @@ static const struct id_table ic_id_table[] = {
 	  .config_needed = false,
 	  .has_rom_version = true,
 	  .has_msft_ext = true,
-	  .fw_name  = "rtl_bt/rtl8821c_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8821c_config" },
 
 	/* 8761A */
 	{ IC_INFO(RTL_ROM_LMP_8761A, 0xa, 0x6, HCI_USB),
 	  .config_needed = false,
 	  .has_rom_version = true,
-	  .fw_name  = "rtl_bt/rtl8761a_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8761a_config" },
 
 	/* 8761B */
@@ -140,14 +140,14 @@ static const struct id_table ic_id_table[] = {
 	  .config_needed = false,
 	  .has_rom_version = true,
 	  .has_msft_ext = true,
-	  .fw_name  = "rtl_bt/rtl8761b_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8761b_config" },
 
 	/* 8761BU */
 	{ IC_INFO(RTL_ROM_LMP_8761A, 0xb, 0xa, HCI_USB),
 	  .config_needed = false,
 	  .has_rom_version = true,
-	  .fw_name  = "rtl_bt/rtl8761bu_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8761bu_config" },
 
 	/* 8822C with UART interface */
@@ -155,7 +155,7 @@ static const struct id_table ic_id_table[] = {
 	  .config_needed = true,
 	  .has_rom_version = true,
 	  .has_msft_ext = true,
-	  .fw_name  = "rtl_bt/rtl8822cs_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8822cs_config" },
 
 	/* 8822C with UART interface */
@@ -163,7 +163,7 @@ static const struct id_table ic_id_table[] = {
 	  .config_needed = true,
 	  .has_rom_version = true,
 	  .has_msft_ext = true,
-	  .fw_name  = "rtl_bt/rtl8822cs_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8822cs_config" },
 
 	/* 8822C with USB interface */
@@ -171,7 +171,7 @@ static const struct id_table ic_id_table[] = {
 	  .config_needed = false,
 	  .has_rom_version = true,
 	  .has_msft_ext = true,
-	  .fw_name  = "rtl_bt/rtl8822cu_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8822cu_config" },
 
 	/* 8822B */
@@ -179,7 +179,7 @@ static const struct id_table ic_id_table[] = {
 	  .config_needed = true,
 	  .has_rom_version = true,
 	  .has_msft_ext = true,
-	  .fw_name  = "rtl_bt/rtl8822b_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8822b_config" },
 
 	/* 8852A */
@@ -187,7 +187,7 @@ static const struct id_table ic_id_table[] = {
 	  .config_needed = false,
 	  .has_rom_version = true,
 	  .has_msft_ext = true,
-	  .fw_name  = "rtl_bt/rtl8852au_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8852au_config" },
 
 	/* 8852B */
@@ -195,7 +195,7 @@ static const struct id_table ic_id_table[] = {
 	  .config_needed = false,
 	  .has_rom_version = true,
 	  .has_msft_ext = true,
-	  .fw_name  = "rtl_bt/rtl8852bu_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8852bu_config" },
 
 	/* 8852C */
@@ -203,7 +203,7 @@ static const struct id_table ic_id_table[] = {
 	  .config_needed = false,
 	  .has_rom_version = true,
 	  .has_msft_ext = true,
-	  .fw_name  = "rtl_bt/rtl8852cu_fw.bin",
+	  .fw_name  = "/*(DEBLOBBED)*/",
 	  .cfg_name = "rtl_bt/rtl8852cu_config" },
 	};
 
@@ -518,7 +518,7 @@ static int rtl_load_file(struct hci_dev *hdev, const char *name, u8 **buff)
 	int ret;
 
 	rtl_dev_info(hdev, "loading %s", name);
-	ret = request_firmware(&fw, name, &hdev->dev);
+	ret = reject_firmware(&fw, name, &hdev->dev);
 	if (ret < 0)
 		return ret;
 	ret = fw->size;
@@ -701,10 +701,10 @@ out_free:
 
 	if (btrtl_dev->ic_info->cfg_name) {
 		if (postfix) {
-			snprintf(cfg_name, sizeof(cfg_name), "%s-%s.bin",
+			snprintf(cfg_name, sizeof(cfg_name), "/*(DEBLOBBED)*/",
 				 btrtl_dev->ic_info->cfg_name, postfix);
 		} else {
-			snprintf(cfg_name, sizeof(cfg_name), "%s.bin",
+			snprintf(cfg_name, sizeof(cfg_name), "/*(DEBLOBBED)*/",
 				 btrtl_dev->ic_info->cfg_name);
 		}
 		btrtl_dev->cfg_len = rtl_load_file(hdev, cfg_name,
@@ -941,22 +941,4 @@ MODULE_AUTHOR("Daniel Drake <drake@endlessm.com>");
 MODULE_DESCRIPTION("Bluetooth support for Realtek devices ver " VERSION);
 MODULE_VERSION(VERSION);
 MODULE_LICENSE("GPL");
-MODULE_FIRMWARE("rtl_bt/rtl8723a_fw.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8723b_fw.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8723b_config.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8723bs_fw.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8723bs_config.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8723ds_fw.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8723ds_config.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8761a_fw.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8761a_config.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8821a_fw.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8821a_config.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8822b_fw.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8822b_config.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8852au_fw.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8852au_config.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8852bu_fw.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8852bu_config.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw.bin");
-MODULE_FIRMWARE("rtl_bt/rtl8852cu_config.bin");
+/*(DEBLOBBED)*/

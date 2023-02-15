@@ -26,12 +26,12 @@
 #define IWL9000_SMEM_OFFSET		0x400000
 #define IWL9000_SMEM_LEN		0x68000
 
-#define  IWL9000_FW_PRE "iwlwifi-9000-pu-b0-jf-b0-"
-#define  IWL9260_FW_PRE "iwlwifi-9260-th-b0-jf-b0-"
+#define  IWL9000_FW_PRE "/*(DEBLOBBED)*/"
+#define  IWL9260_FW_PRE "/*(DEBLOBBED)*/"
 #define IWL9000_MODULE_FIRMWARE(api) \
-	IWL9000_FW_PRE __stringify(api) ".ucode"
+	IWL9000_FW_PRE /*(DEBLOBBED)*/
 #define IWL9260_MODULE_FIRMWARE(api) \
-	IWL9260_FW_PRE __stringify(api) ".ucode"
+	IWL9260_FW_PRE /*(DEBLOBBED)*/
 
 static const struct iwl_base_params iwl9000_base_params = {
 	.eeprom_size = OTP_LOW_IMAGE_SIZE_32K,
@@ -188,5 +188,4 @@ const struct iwl_cfg iwl9560_2ac_cfg_soc = {
 	IWL_DEVICE_9000,
 };
 
-MODULE_FIRMWARE(IWL9000_MODULE_FIRMWARE(IWL9000_UCODE_API_MAX));
-MODULE_FIRMWARE(IWL9260_MODULE_FIRMWARE(IWL9000_UCODE_API_MAX));
+/*(DEBLOBBED)*/

@@ -92,13 +92,13 @@ struct brcmf_feat_fwfeat {
 };
 
 static const struct brcmf_feat_fwfeat brcmf_feat_fwfeat_map[] = {
-	/* brcmfmac43602-pcie.ap.bin from linux-firmware.git commit ea1178515b88 */
+	/*(DEBLOBBED)*/
 	{ "01-6cb8e269", BIT(BRCMF_FEAT_MONITOR) },
-	/* brcmfmac4366b-pcie.bin from linux-firmware.git commit 52442afee990 */
+	/*(DEBLOBBED)*/
 	{ "01-c47a91a4", BIT(BRCMF_FEAT_MONITOR) },
-	/* brcmfmac4366b-pcie.bin from linux-firmware.git commit 211de1679a68 */
+	/*(DEBLOBBED)*/
 	{ "01-801fb449", BIT(BRCMF_FEAT_MONITOR_FMT_HW_RX_HDR) },
-	/* brcmfmac4366c-pcie.bin from linux-firmware.git commit 211de1679a68 */
+	/*(DEBLOBBED)*/
 	{ "01-d2cbb8fd", BIT(BRCMF_FEAT_MONITOR_FMT_HW_RX_HDR) },
 };
 

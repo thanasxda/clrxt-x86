@@ -3,14 +3,6 @@
 # Makefile for the kernel security code
 #
 
-subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
-
-
-
- 
-
-
-
 obj-$(CONFIG_KEYS)			+= keys/
 
 # always enable default capabilities

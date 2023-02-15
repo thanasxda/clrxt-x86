@@ -32,14 +32,7 @@
 #include "v11_structs.h"
 #include "mes_v11_api_def.h"
 
-MODULE_FIRMWARE("amdgpu/gc_11_0_0_mes.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_0_mes1.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_1_mes.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_1_mes1.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_2_mes.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_2_mes1.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_3_mes.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_3_mes1.bin");
+/*(DEBLOBBED)*/
 
 static int mes_v11_0_hw_fini(void *handle);
 static int mes_v11_0_kiq_hw_init(struct amdgpu_device *adev);
@@ -465,13 +458,13 @@ static int mes_v11_0_init_microcode(struct amdgpu_device *adev,
 	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
 
 	if (pipe == AMDGPU_MES_SCHED_PIPE)
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes.bin",
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/",
 			 ucode_prefix);
 	else
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes1.bin",
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/",
 			 ucode_prefix);
 
-	err = request_firmware(&adev->mes.fw[pipe], fw_name, adev->dev);
+	err = reject_firmware(&adev->mes.fw[pipe], fw_name, adev->dev);
 	if (err)
 		return err;
 
