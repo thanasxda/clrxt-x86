@@ -99,7 +99,7 @@
 
 #define ADAU1707_CLKDIV_UNSET		(-1U)
 
-#define ADAU1701_FIRMWARE "/*(DEBLOBBED)*/"
+#define ADAU1701_FIRMWARE "adau1701.bin"
 
 static const char * const supply_names[] = {
 	"dvdd", "avdd"

@@ -885,7 +885,7 @@ MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("USB driver for pureLiFi devices");
 MODULE_AUTHOR("pureLiFi");
 MODULE_VERSION("1.0");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("plfxlc/lifi-x.bin");
 MODULE_DEVICE_TABLE(usb, usb_ids);
 
 module_init(usb_init);

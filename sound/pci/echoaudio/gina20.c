@@ -47,12 +47,12 @@
 #include <linux/atomic.h>
 #include "echoaudio.h"
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("ea/gina20_dsp.fw");
 
 #define FW_GINA20_DSP	0
 
 static const struct firmware card_fw[] = {
-	{0, "/*(DEBLOBBED)*/"}
+	{0, "gina20_dsp.fw"}
 };
 
 static const struct pci_device_id snd_echo_ids[] = {

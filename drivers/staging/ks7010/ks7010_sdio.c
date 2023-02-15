@@ -17,7 +17,7 @@
 #include "ks_wlan.h"
 #include "ks_hostif.h"
 
-#define ROM_FILE "/*(DEBLOBBED)*/"
+#define ROM_FILE "ks7010sd.rom"
 
 /*  SDIO KeyStream vendor and device */
 #define SDIO_VENDOR_ID_KS_CODE_A	0x005b
@@ -769,7 +769,7 @@ static int ks7010_upload_firmware(struct ks_sdio_card *card)
 		goto release_host;
 	}
 
-	ret = reject_firmware(&fw_entry, ROM_FILE,
+	ret = request_firmware(&fw_entry, ROM_FILE,
 			       &func->dev);
 	if (ret)
 		goto release_host;
@@ -1140,4 +1140,4 @@ module_driver(ks7010_sdio_driver, sdio_register_driver, sdio_unregister_driver);
 MODULE_AUTHOR("Sang Engineering, Qi-Hardware, KeyStream");
 MODULE_DESCRIPTION("Driver for KeyStream KS7010 based SDIO cards");
 MODULE_LICENSE("GPL v2");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(ROM_FILE);

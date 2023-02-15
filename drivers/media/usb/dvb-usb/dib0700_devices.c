@@ -441,7 +441,7 @@ static int stk7700ph_xc3028_callback(void *ptr, int component,
 }
 
 static struct xc2028_ctrl stk7700ph_xc3028_ctrl = {
-	.fname = "/*(DEBLOBBED)*/",
+	.fname = XC2028_DEFAULT_FIRMWARE,
 	.max_len = 64,
 	.demod = XC3028_FE_DIBCOM52,
 };
@@ -2408,7 +2408,7 @@ static int stk9090m_frontend_attach(struct dvb_usb_adapter *adap)
 
 	dib9000_i2c_enumeration(&adap->dev->i2c_adap, 1, 0x10, 0x80);
 
-	if (reject_firmware(&state->frontend_firmware, "/*(DEBLOBBED)*/", &adap->dev->udev->dev)) {
+	if (request_firmware(&state->frontend_firmware, "dib9090.fw", &adap->dev->udev->dev)) {
 		deb_info("%s: Upload failed. (file not found?)\n", __func__);
 		return -ENODEV;
 	} else {
@@ -2478,7 +2478,7 @@ static int nim9090md_frontend_attach(struct dvb_usb_adapter *adap)
 	msleep(20);
 	dib0700_set_gpio(adap->dev, GPIO0, GPIO_OUT, 1);
 
-	if (reject_firmware(&state->frontend_firmware, "/*(DEBLOBBED)*/", &adap->dev->udev->dev)) {
+	if (request_firmware(&state->frontend_firmware, "dib9090.fw", &adap->dev->udev->dev)) {
 		deb_info("%s: Upload failed. (file not found?)\n", __func__);
 		return -EIO;
 	} else {
@@ -4002,7 +4002,7 @@ MODULE_DEVICE_TABLE(usb, dib0700_usb_id_table);
 #define DIB0700_DEFAULT_DEVICE_PROPERTIES \
 	.caps              = DVB_USB_IS_AN_I2C_ADAPTER, \
 	.usb_ctrl          = DEVICE_SPECIFIC, \
-	.firmware          = "/*(DEBLOBBED)*/", \
+	.firmware          = "dvb-usb-dib0700-1.20.fw", \
 	.download_firmware = dib0700_download_firmware, \
 	.no_reconnect      = 1, \
 	.size_of_priv      = sizeof(struct dib0700_state), \

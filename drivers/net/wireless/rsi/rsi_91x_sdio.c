@@ -1569,6 +1569,6 @@ module_exit(rsi_module_exit);
 MODULE_AUTHOR("Redpine Signals Inc");
 MODULE_DESCRIPTION("Common SDIO layer for RSI drivers");
 MODULE_DEVICE_TABLE(sdio, rsi_dev_table);
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(FIRMWARE_RSI9113);
 MODULE_VERSION("0.1");
 MODULE_LICENSE("Dual BSD/GPL");

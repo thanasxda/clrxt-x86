@@ -321,16 +321,16 @@ static void update_edgeport_E2PROM(struct edgeport_serial *edge_serial)
 
 	switch (edge_serial->product_info.iDownloadFile) {
 	case EDGE_DOWNLOAD_FILE_I930:
-		fw_name	= "/*(DEBLOBBED)*/";
+		fw_name	= "edgeport/boot.fw";
 		break;
 	case EDGE_DOWNLOAD_FILE_80251:
-		fw_name	= "/*(DEBLOBBED)*/";
+		fw_name	= "edgeport/boot2.fw";
 		break;
 	default:
 		return;
 	}
 
-	response = reject_firmware(&fw, fw_name,
+	response = request_ihex_firmware(&fw, fw_name,
 					 &edge_serial->serial->dev->dev);
 	if (response) {
 		dev_err(dev, "Failed to load image \"%s\" err %d\n",
@@ -2632,12 +2632,12 @@ static void load_application_firmware(struct edgeport_serial *edge_serial)
 	switch (edge_serial->product_info.iDownloadFile) {
 		case EDGE_DOWNLOAD_FILE_I930:
 			fw_info = "downloading firmware version (930)";
-			fw_name	= "/*(DEBLOBBED)*/";
+			fw_name	= "edgeport/down.fw";
 			break;
 
 		case EDGE_DOWNLOAD_FILE_80251:
 			fw_info = "downloading firmware version (80251)";
-			fw_name	= "/*(DEBLOBBED)*/";
+			fw_name	= "edgeport/down2.fw";
 			break;
 
 		case EDGE_DOWNLOAD_FILE_NONE:
@@ -2648,7 +2648,7 @@ static void load_application_firmware(struct edgeport_serial *edge_serial)
 			return;
 	}
 
-	response = reject_firmware(&fw, fw_name,
+	response = request_ihex_firmware(&fw, fw_name,
 				    &edge_serial->serial->dev->dev);
 	if (response) {
 		dev_err(dev, "Failed to load image \"%s\" err %d\n",
@@ -3124,4 +3124,7 @@ module_usb_serial_driver(serial_drivers, id_table_combined);
 MODULE_AUTHOR(DRIVER_AUTHOR);
 MODULE_DESCRIPTION(DRIVER_DESC);
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("edgeport/boot.fw");
+MODULE_FIRMWARE("edgeport/boot2.fw");
+MODULE_FIRMWARE("edgeport/down.fw");
+MODULE_FIRMWARE("edgeport/down2.fw");

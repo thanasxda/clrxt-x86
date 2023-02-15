@@ -1163,7 +1163,7 @@ static int vsc8574_config_pre_init(struct phy_device *phydev)
 	reg &= ~SMI_BROADCAST_WR_EN;
 	phy_base_write(phydev, MSCC_PHY_EXT_CNTL_STATUS, reg);
 
-	ret = reject_firmware(&fw, MSCC_VSC8574_REVB_INT8051_FW, dev);
+	ret = request_firmware(&fw, MSCC_VSC8574_REVB_INT8051_FW, dev);
 	if (ret) {
 		dev_err(dev, "failed to load firmware %s, ret: %d\n",
 			MSCC_VSC8574_REVB_INT8051_FW, ret);
@@ -1434,7 +1434,7 @@ static int vsc8584_config_pre_init(struct phy_device *phydev)
 	reg &= ~SMI_BROADCAST_WR_EN;
 	phy_base_write(phydev, MSCC_PHY_EXT_CNTL_STATUS, reg);
 
-	ret = reject_firmware(&fw, MSCC_VSC8584_REVB_INT8051_FW, dev);
+	ret = request_firmware(&fw, MSCC_VSC8584_REVB_INT8051_FW, dev);
 	if (ret) {
 		dev_err(dev, "failed to load firmware %s, ret: %d\n",
 			MSCC_VSC8584_REVB_INT8051_FW, ret);
@@ -2686,4 +2686,5 @@ MODULE_DESCRIPTION("Microsemi VSC85xx PHY driver");
 MODULE_AUTHOR("Nagaraju Lakkaraju");
 MODULE_LICENSE("Dual MIT/GPL");
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(MSCC_VSC8584_REVB_INT8051_FW);
+MODULE_FIRMWARE(MSCC_VSC8574_REVB_INT8051_FW);

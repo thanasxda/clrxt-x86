@@ -24,7 +24,9 @@ To Do:
 	- Streaming video PC->DEC
 	- Conax support for 2450-t
 
-/*(DEBLOBBED)*/
+Getting the Firmware
+--------------------
+To download the firmware, use the following commands:
 
 .. code-block:: none
 

@@ -42,7 +42,7 @@ MODULE_PARM_DESC(debug, "Activates frontend debugging (default:0)");
 			printk(KERN_INFO "cx24116: " args); \
 	} while (0)
 
-/*(DEBLOBBED)*/
+#define CX24116_DEFAULT_FIRMWARE "dvb-fe-cx24116.fw"
 #define CX24116_SEARCH_RANGE_KHZ 5000
 
 /* known registers */
@@ -476,8 +476,8 @@ static int cx24116_firmware_ondemand(struct dvb_frontend *fe)
 		/* Load firmware */
 		/* request the firmware, this will block until loaded */
 		printk(KERN_INFO "%s: Waiting for firmware upload (%s)...\n",
-			__func__, "/*(DEBLOBBED)*/");
-		ret = reject_firmware(&fw, "/*(DEBLOBBED)*/",
+			__func__, CX24116_DEFAULT_FIRMWARE);
+		ret = request_firmware(&fw, CX24116_DEFAULT_FIRMWARE,
 			state->i2c->dev.parent);
 		printk(KERN_INFO "%s: Waiting for firmware upload(2)...\n",
 			__func__);

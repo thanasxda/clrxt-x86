@@ -73,12 +73,12 @@
 #define ATH11K_FW_DIR			"ath11k"
 
 #define ATH11K_BOARD_MAGIC		"QCA-ATH11K-BOARD"
-#define ATH11K_BOARD_API2_FILE		"/*(DEBLOBBED)*/"
-#define ATH11K_DEFAULT_BOARD_FILE	"/*(DEBLOBBED)*/"
-#define ATH11K_DEFAULT_CAL_FILE		"/*(DEBLOBBED)*/"
-#define ATH11K_AMSS_FILE		"/*(DEBLOBBED)*/"
-#define ATH11K_M3_FILE			"/*(DEBLOBBED)*/"
-#define ATH11K_REGDB_FILE_NAME		"/*(DEBLOBBED)*/"
+#define ATH11K_BOARD_API2_FILE		"board-2.bin"
+#define ATH11K_DEFAULT_BOARD_FILE	"board.bin"
+#define ATH11K_DEFAULT_CAL_FILE		"caldata.bin"
+#define ATH11K_AMSS_FILE		"amss.bin"
+#define ATH11K_M3_FILE			"m3.bin"
+#define ATH11K_REGDB_FILE_NAME		"regdb.bin"
 
 enum ath11k_hw_rate_cck {
 	ATH11K_HW_RATE_CCK_LP_11M = 0,

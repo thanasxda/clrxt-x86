@@ -68,7 +68,7 @@
 /*
  * 8051 firmware image.
  */
-#define FIRMWARE_RT2571			"/*(DEBLOBBED)*/"
+#define FIRMWARE_RT2571			"rt73.bin"
 #define FIRMWARE_IMAGE_BASE		0x0800
 
 /*

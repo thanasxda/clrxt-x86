@@ -58,7 +58,19 @@
 #include "amdgpu_ras.h"
 #include "sdma_v4_4.h"
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("amdgpu/vega10_sdma.bin");
+MODULE_FIRMWARE("amdgpu/vega10_sdma1.bin");
+MODULE_FIRMWARE("amdgpu/vega12_sdma.bin");
+MODULE_FIRMWARE("amdgpu/vega12_sdma1.bin");
+MODULE_FIRMWARE("amdgpu/vega20_sdma.bin");
+MODULE_FIRMWARE("amdgpu/vega20_sdma1.bin");
+MODULE_FIRMWARE("amdgpu/raven_sdma.bin");
+MODULE_FIRMWARE("amdgpu/picasso_sdma.bin");
+MODULE_FIRMWARE("amdgpu/raven2_sdma.bin");
+MODULE_FIRMWARE("amdgpu/arcturus_sdma.bin");
+MODULE_FIRMWARE("amdgpu/renoir_sdma.bin");
+MODULE_FIRMWARE("amdgpu/green_sardine_sdma.bin");
+MODULE_FIRMWARE("amdgpu/aldebaran_sdma.bin");
 
 #define SDMA0_POWER_CNTL__ON_OFF_CONDITION_HOLD_TIME_MASK  0x000000F8L
 #define SDMA0_POWER_CNTL__ON_OFF_STATUS_DURATION_TIME_MASK 0xFC000000L
@@ -606,9 +618,9 @@ static int sdma_v4_0_init_microcode(struct amdgpu_device *adev)
 
 	for (i = 0; i < adev->sdma.num_instances; i++) {
 		if (i == 0)
-			snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+			snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_sdma.bin", chip_name);
 		else
-			snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name, i);
+			snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_sdma%d.bin", chip_name, i);
 		if (adev->ip_versions[SDMA0_HWIP][0] == IP_VERSION(4, 2, 2) ||
                     adev->ip_versions[SDMA0_HWIP][0] == IP_VERSION(4, 4, 0)) {
 			/* Acturus & Aldebaran will leverage the same FW memory

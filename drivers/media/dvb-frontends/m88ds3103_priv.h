@@ -16,9 +16,9 @@
 #include <linux/regmap.h>
 #include <linux/math64.h>
 
-#define M88DS3103B_FIRMWARE "/*(DEBLOBBED)*/"
-#define M88DS3103_FIRMWARE  "/*(DEBLOBBED)*/"
-#define M88RS6000_FIRMWARE  "/*(DEBLOBBED)*/"
+#define M88DS3103B_FIRMWARE "dvb-demod-m88ds3103b.fw"
+#define M88DS3103_FIRMWARE  "dvb-demod-m88ds3103.fw"
+#define M88RS6000_FIRMWARE  "dvb-demod-m88rs6000.fw"
 
 #define M88RS6000_CHIP_ID 0x74
 #define M88DS3103_CHIP_ID 0x70

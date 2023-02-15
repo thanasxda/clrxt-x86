@@ -523,17 +523,17 @@
 };
 
 &remoteproc_adsp {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/adsp.mbn";
 	status = "okay";
 };
 
 &remoteproc_cdsp {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/cdsp.mbn";
 	status = "okay";
 };
 
 &remoteproc_slpi {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/slpi.mbn";
 	status = "okay";
 };
 

@@ -1369,12 +1369,12 @@ reset:
 						    &cfg_name);
 		if (!error)
 			snprintf(ts->cfg_name, sizeof(ts->cfg_name),
-				 "/*(DEBLOBBED)*/", cfg_name);
+				 "goodix/%s", cfg_name);
 		else
 			snprintf(ts->cfg_name, sizeof(ts->cfg_name),
-				 "/*(DEBLOBBED)*/", ts->id);
+				 "goodix_%s_cfg.bin", ts->id);
 
-		error = reject_firmware_nowait(THIS_MODULE, true, ts->cfg_name,
+		error = request_firmware_nowait(THIS_MODULE, true, ts->cfg_name,
 						&client->dev, GFP_KERNEL, ts,
 						goodix_config_cb);
 		if (error) {

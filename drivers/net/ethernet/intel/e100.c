@@ -156,14 +156,16 @@
 #define E100_WATCHDOG_PERIOD	(2 * HZ)
 #define E100_NAPI_WEIGHT	16
 
-#define FIRMWARE_D101M		"/*(DEBLOBBED)*/"
-#define FIRMWARE_D101S		"/*(DEBLOBBED)*/"
-#define FIRMWARE_D102E		"/*(DEBLOBBED)*/"
+#define FIRMWARE_D101M		"e100/d101m_ucode.bin"
+#define FIRMWARE_D101S		"e100/d101s_ucode.bin"
+#define FIRMWARE_D102E		"e100/d102e_ucode.bin"
 
 MODULE_DESCRIPTION(DRV_DESCRIPTION);
 MODULE_AUTHOR(DRV_COPYRIGHT);
 MODULE_LICENSE("GPL v2");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(FIRMWARE_D101M);
+MODULE_FIRMWARE(FIRMWARE_D101S);
+MODULE_FIRMWARE(FIRMWARE_D102E);
 
 static int debug = 3;
 static int eeprom_bad_csum_allow = 0;
@@ -1253,18 +1255,17 @@ static const struct firmware *e100_request_firmware(struct nic *nic)
 	/* If the firmware has not previously been loaded, request a pointer
 	 * to it. If it was previously loaded, we are reinitializing the
 	 * adapter, possibly in a resume from hibernate, in which case
-	 * reject_firmware() cannot be used.
+	 * request_firmware() cannot be used.
 	 */
 	if (!fw)
-		err = reject_firmware(&fw, fw_name, &nic->pdev->dev);
+		err = request_firmware(&fw, fw_name, &nic->pdev->dev);
 
 	if (err) {
 		if (required) {
 			netif_err(nic, probe, nic->netdev,
 				  "Failed to load firmware \"%s\": %d\n",
 				  fw_name, err);
-			netif_err(nic, probe, nic->netdev, "Proceeding without firmware\n");
-			return NULL;
+			return ERR_PTR(err);
 		} else {
 			netif_info(nic, probe, nic->netdev,
 				   "CPUSaver disabled. Needs \"%s\": %d\n",

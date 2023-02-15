@@ -237,7 +237,7 @@ static long read_local_version(struct kim_data_s *kim_gdata, char *bts_scr_name)
 	if (version & 0x8000)
 		maj_ver |= 0x0008;
 
-	sprintf(bts_scr_name, "/*(DEBLOBBED)*/",
+	sprintf(bts_scr_name, "ti-connectivity/TIInit_%d.%d.%d.bts",
 		chip, maj_ver, min_ver);
 
 	/* to be accessed later via sysfs entry */
@@ -292,7 +292,7 @@ static long download_firmware(struct kim_data_s *kim_gdata)
 		return err;
 	}
 	err =
-	    reject_firmware(&kim_gdata->fw_entry, bts_scr_name,
+	    request_firmware(&kim_gdata->fw_entry, bts_scr_name,
 			     &kim_gdata->kim_pdev->dev);
 	if (unlikely((err != 0) || (kim_gdata->fw_entry->data == NULL) ||
 		     (kim_gdata->fw_entry->size == 0))) {

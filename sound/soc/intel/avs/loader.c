@@ -33,7 +33,7 @@
 #define AVS_CLDMA_START_DELAY_MS	100
 
 #define AVS_ROOT_DIR			"intel/avs"
-#define AVS_BASEFW_FILENAME		"/*(DEBLOBBED)*/"
+#define AVS_BASEFW_FILENAME		"dsp_basefw.bin"
 #define AVS_EXT_MANIFEST_MAGIC		0x31454124
 #define SKL_MANIFEST_MAGIC		0x00000006
 #define SKL_ADSPFW_OFFSET		0x284
@@ -214,7 +214,7 @@ static int avs_cldma_load_module(struct avs_dev *adev, struct avs_module_entry *
 	char *mod_name;
 	int ret;
 
-	mod_name = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", AVS_ROOT_DIR,
+	mod_name = kasprintf(GFP_KERNEL, "%s/%s/dsp_mod_%pUL.bin", AVS_ROOT_DIR,
 			     adev->spec->name, mentry->uuid.b);
 	if (!mod_name)
 		return -ENOMEM;

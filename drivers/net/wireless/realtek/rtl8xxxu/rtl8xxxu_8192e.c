@@ -675,7 +675,7 @@ static int rtl8192eu_load_firmware(struct rtl8xxxu_priv *priv)
 	char *fw_name;
 	int ret;
 
-	fw_name = "/*(DEBLOBBED)*/";
+	fw_name = "rtlwifi/rtl8192eu_nic.bin";
 
 	ret = rtl8xxxu_load_firmware(priv, fw_name);
 

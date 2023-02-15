@@ -236,7 +236,7 @@ static int iwl_pnvm_get_from_fs(struct iwl_trans *trans, u8 **data, size_t *len)
 
 	iwl_pnvm_get_fs_name(trans, pnvm_name, sizeof(pnvm_name));
 
-	ret = firmware_reject_nowarn(&pnvm, pnvm_name, trans->dev);
+	ret = firmware_request_nowarn(&pnvm, pnvm_name, trans->dev);
 	if (ret) {
 		IWL_DEBUG_FW(trans, "PNVM file %s not found %d\n",
 			     pnvm_name, ret);

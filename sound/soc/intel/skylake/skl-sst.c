@@ -74,7 +74,7 @@ static int skl_load_base_firmware(struct sst_dsp *ctx)
 	init_waitqueue_head(&skl->boot_wait);
 
 	if (ctx->fw == NULL) {
-		ret = reject_firmware(&ctx->fw, ctx->fw_name, ctx->dev);
+		ret = request_firmware(&ctx->fw, ctx->fw_name, ctx->dev);
 		if (ret < 0) {
 			dev_err(ctx->dev, "Request firmware failed %d\n", ret);
 			return -EIO;
@@ -282,7 +282,7 @@ static struct skl_module_table *skl_fill_module_table(struct sst_dsp *ctx,
 	unsigned int size;
 	int ret;
 
-	ret = reject_firmware(&fw, mod_name, ctx->dev);
+	ret = request_firmware(&fw, mod_name, ctx->dev);
 	if (ret < 0) {
 		dev_err(ctx->dev, "Request Module %s failed :%d\n",
 							mod_name, ret);
@@ -413,7 +413,7 @@ static int skl_load_module(struct sst_dsp *ctx, u16 mod_id, u8 *guid)
 	int ret = 0;
 	char mod_name[64]; /* guid str = 32 chars + 4 hyphens */
 
-	snprintf(mod_name, sizeof(mod_name), "/*(DEBLOBBED)*/", guid);
+	snprintf(mod_name, sizeof(mod_name), "intel/dsp_fw_%pUL.bin", guid);
 
 	module_entry = skl_module_get_from_id(ctx, mod_id);
 	if (module_entry == NULL) {

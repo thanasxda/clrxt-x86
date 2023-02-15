@@ -331,9 +331,9 @@ efct_request_firmware_update(struct efct *efct)
 	const struct firmware *fw;
 	struct efct_hw_grp_hdr *fw_image;
 
-	snprintf(file_name, 256, "/*(DEBLOBBED)*/", efct->model);
+	snprintf(file_name, 256, "%s.grp", efct->model);
 
-	rc = reject_firmware(&fw, file_name, &efct->pci->dev);
+	rc = request_firmware(&fw, file_name, &efct->pci->dev);
 	if (rc) {
 		efc_log_debug(efct, "Firmware file(%s) not found.\n", file_name);
 		return rc;

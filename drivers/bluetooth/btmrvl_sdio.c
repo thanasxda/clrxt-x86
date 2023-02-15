@@ -226,8 +226,8 @@ static const struct btmrvl_sdio_card_reg btmrvl_reg_89xx = {
 };
 
 static const struct btmrvl_sdio_device btmrvl_sdio_sd8688 = {
-	.helper		= "/*(DEBLOBBED)*/",
-	.firmware	= "/*(DEBLOBBED)*/",
+	.helper		= "mrvl/sd8688_helper.bin",
+	.firmware	= "mrvl/sd8688.bin",
 	.reg		= &btmrvl_reg_8688,
 	.support_pscan_win_report = false,
 	.sd_blksz_fw_dl	= 64,
@@ -236,7 +236,7 @@ static const struct btmrvl_sdio_device btmrvl_sdio_sd8688 = {
 
 static const struct btmrvl_sdio_device btmrvl_sdio_sd8787 = {
 	.helper		= NULL,
-	.firmware	= "/*(DEBLOBBED)*/",
+	.firmware	= "mrvl/sd8787_uapsta.bin",
 	.reg		= &btmrvl_reg_87xx,
 	.support_pscan_win_report = false,
 	.sd_blksz_fw_dl	= 256,
@@ -245,7 +245,7 @@ static const struct btmrvl_sdio_device btmrvl_sdio_sd8787 = {
 
 static const struct btmrvl_sdio_device btmrvl_sdio_sd8797 = {
 	.helper		= NULL,
-	.firmware	= "/*(DEBLOBBED)*/",
+	.firmware	= "mrvl/sd8797_uapsta.bin",
 	.reg		= &btmrvl_reg_87xx,
 	.support_pscan_win_report = false,
 	.sd_blksz_fw_dl	= 256,
@@ -254,7 +254,7 @@ static const struct btmrvl_sdio_device btmrvl_sdio_sd8797 = {
 
 static const struct btmrvl_sdio_device btmrvl_sdio_sd8887 = {
 	.helper		= NULL,
-	.firmware	= "/*(DEBLOBBED)*/",
+	.firmware	= "mrvl/sd8887_uapsta.bin",
 	.reg		= &btmrvl_reg_8887,
 	.support_pscan_win_report = true,
 	.sd_blksz_fw_dl	= 256,
@@ -263,7 +263,7 @@ static const struct btmrvl_sdio_device btmrvl_sdio_sd8887 = {
 
 static const struct btmrvl_sdio_device btmrvl_sdio_sd8897 = {
 	.helper		= NULL,
-	.firmware	= "/*(DEBLOBBED)*/",
+	.firmware	= "mrvl/sd8897_uapsta.bin",
 	.reg		= &btmrvl_reg_8897,
 	.support_pscan_win_report = true,
 	.sd_blksz_fw_dl	= 256,
@@ -272,7 +272,7 @@ static const struct btmrvl_sdio_device btmrvl_sdio_sd8897 = {
 
 static const struct btmrvl_sdio_device btmrvl_sdio_sd8977 = {
 	.helper         = NULL,
-	.firmware       = "/*(DEBLOBBED)*/",
+	.firmware       = "mrvl/sdsd8977_combo_v2.bin",
 	.reg            = &btmrvl_reg_89xx,
 	.support_pscan_win_report = true,
 	.sd_blksz_fw_dl = 256,
@@ -281,7 +281,7 @@ static const struct btmrvl_sdio_device btmrvl_sdio_sd8977 = {
 
 static const struct btmrvl_sdio_device btmrvl_sdio_sd8987 = {
 	.helper		= NULL,
-	.firmware	= "/*(DEBLOBBED)*/",
+	.firmware	= "mrvl/sd8987_uapsta.bin",
 	.reg		= &btmrvl_reg_89xx,
 	.support_pscan_win_report = true,
 	.sd_blksz_fw_dl	= 256,
@@ -290,7 +290,7 @@ static const struct btmrvl_sdio_device btmrvl_sdio_sd8987 = {
 
 static const struct btmrvl_sdio_device btmrvl_sdio_sd8997 = {
 	.helper         = NULL,
-	.firmware       = "/*(DEBLOBBED)*/",
+	.firmware       = "mrvl/sdsd8997_combo_v4.bin",
 	.reg            = &btmrvl_reg_89xx,
 	.support_pscan_win_report = true,
 	.sd_blksz_fw_dl = 256,
@@ -467,10 +467,10 @@ static int btmrvl_sdio_download_helper(struct btmrvl_sdio_card *card)
 	u8 *helperbuf;
 	u32 tx_len;
 
-	ret = reject_firmware(&fw_helper, card->helper,
+	ret = request_firmware(&fw_helper, card->helper,
 						&card->func->dev);
 	if ((ret < 0) || !fw_helper) {
-		BT_ERR("reject_firmware(helper) failed, error code = %d",
+		BT_ERR("request_firmware(helper) failed, error code = %d",
 									ret);
 		ret = -ENOENT;
 		goto done;
@@ -567,10 +567,10 @@ static int btmrvl_sdio_download_fw_w_helper(struct btmrvl_sdio_card *card)
 	u16 len, blksz_dl = card->sd_blksz_fw_dl;
 	int txlen = 0, tx_blocks = 0, count = 0;
 
-	ret = reject_firmware(&fw_firmware, card->firmware,
+	ret = request_firmware(&fw_firmware, card->firmware,
 							&card->func->dev);
 	if ((ret < 0) || !fw_firmware) {
-		BT_ERR("reject_firmware(firmware) failed, error code = %d",
+		BT_ERR("request_firmware(firmware) failed, error code = %d",
 									ret);
 		ret = -ENOENT;
 		goto done;
@@ -1770,4 +1770,12 @@ MODULE_AUTHOR("Marvell International Ltd.");
 MODULE_DESCRIPTION("Marvell BT-over-SDIO driver ver " VERSION);
 MODULE_VERSION(VERSION);
 MODULE_LICENSE("GPL v2");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("mrvl/sd8688_helper.bin");
+MODULE_FIRMWARE("mrvl/sd8688.bin");
+MODULE_FIRMWARE("mrvl/sd8787_uapsta.bin");
+MODULE_FIRMWARE("mrvl/sd8797_uapsta.bin");
+MODULE_FIRMWARE("mrvl/sd8887_uapsta.bin");
+MODULE_FIRMWARE("mrvl/sd8897_uapsta.bin");
+MODULE_FIRMWARE("mrvl/sdsd8977_combo_v2.bin");
+MODULE_FIRMWARE("mrvl/sd8987_uapsta.bin");
+MODULE_FIRMWARE("mrvl/sdsd8997_combo_v4.bin");

@@ -32,7 +32,7 @@
 #define ZIIRAVE_STATE_OFF	0x1
 #define ZIIRAVE_STATE_ON	0x2
 
-#define ZIIRAVE_FW_NAME		"/*(DEBLOBBED)*/"
+#define ZIIRAVE_FW_NAME		"ziirave_wdt.fw"
 
 static char *ziirave_reasons[] = {"power cycle", "hw watchdog", NULL, NULL,
 				  "host request", NULL, "illegal configuration",
@@ -509,7 +509,7 @@ static ssize_t ziirave_wdt_sysfs_store_firm(struct device *dev,
 	const struct firmware *fw;
 	int err;
 
-	err = reject_firmware(&fw, ZIIRAVE_FW_NAME, dev);
+	err = request_ihex_firmware(&fw, ZIIRAVE_FW_NAME, dev);
 	if (err) {
 		dev_err(&client->dev, "Failed to request ihex firmware\n");
 		return err;

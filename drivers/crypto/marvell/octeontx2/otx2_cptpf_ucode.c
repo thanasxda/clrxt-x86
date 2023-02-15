@@ -370,7 +370,7 @@ static int load_fw(struct device *dev, struct fw_info_t *fw_info,
 	if (!uc_info)
 		return -ENOMEM;
 
-	ret = reject_firmware(&uc_info->fw, filename, dev);
+	ret = request_firmware(&uc_info->fw, filename, dev);
 	if (ret)
 		goto free_uc_info;
 
@@ -461,7 +461,7 @@ static int cpt_ucode_load_fw(struct pci_dev *pdev, struct fw_info_t *fw_info)
 		for (i = 0; i < strlen(eng_type); i++)
 			eng_type[i] = tolower(eng_type[i]);
 
-		snprintf(filename, sizeof(filename), "/*(DEBLOBBED)*/",
+		snprintf(filename, sizeof(filename), "mrvl/cpt%02d/%s.out",
 			 pdev->revision, eng_type);
 		/* Request firmware for each engine type */
 		ret = load_fw(&pdev->dev, fw_info, filename);

@@ -53,14 +53,15 @@
 #include <linux/atomic.h>
 #include "echoaudio.h"
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("ea/layla20_dsp.fw");
+MODULE_FIRMWARE("ea/layla20_asic.fw");
 
 #define FW_LAYLA20_DSP	0
 #define FW_LAYLA20_ASIC	1
 
 static const struct firmware card_fw[] = {
-	{0, "/*(DEBLOBBED)*/"},
-	{0, "/*(DEBLOBBED)*/"}
+	{0, "layla20_dsp.fw"},
+	{0, "layla20_asic.fw"}
 };
 
 static const struct pci_device_id snd_echo_ids[] = {

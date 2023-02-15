@@ -26,28 +26,28 @@
 #define MT7915_RX_RING_SIZE		1536
 #define MT7915_RX_MCU_RING_SIZE		512
 
-#define MT7915_FIRMWARE_WA		"/*(DEBLOBBED)*/"
-#define MT7915_FIRMWARE_WM		"/*(DEBLOBBED)*/"
-#define MT7915_ROM_PATCH		"/*(DEBLOBBED)*/"
+#define MT7915_FIRMWARE_WA		"mediatek/mt7915_wa.bin"
+#define MT7915_FIRMWARE_WM		"mediatek/mt7915_wm.bin"
+#define MT7915_ROM_PATCH		"mediatek/mt7915_rom_patch.bin"
 
-#define MT7916_FIRMWARE_WA		"/*(DEBLOBBED)*/"
-#define MT7916_FIRMWARE_WM		"/*(DEBLOBBED)*/"
-#define MT7916_ROM_PATCH		"/*(DEBLOBBED)*/"
+#define MT7916_FIRMWARE_WA		"mediatek/mt7916_wa.bin"
+#define MT7916_FIRMWARE_WM		"mediatek/mt7916_wm.bin"
+#define MT7916_ROM_PATCH		"mediatek/mt7916_rom_patch.bin"
 
-#define MT7986_FIRMWARE_WA		"/*(DEBLOBBED)*/"
-#define MT7986_FIRMWARE_WM		"/*(DEBLOBBED)*/"
-#define MT7986_FIRMWARE_WM_MT7975	"/*(DEBLOBBED)*/"
-#define MT7986_ROM_PATCH		"/*(DEBLOBBED)*/"
-#define MT7986_ROM_PATCH_MT7975		"/*(DEBLOBBED)*/"
+#define MT7986_FIRMWARE_WA		"mediatek/mt7986_wa.bin"
+#define MT7986_FIRMWARE_WM		"mediatek/mt7986_wm.bin"
+#define MT7986_FIRMWARE_WM_MT7975	"mediatek/mt7986_wm_mt7975.bin"
+#define MT7986_ROM_PATCH		"mediatek/mt7986_rom_patch.bin"
+#define MT7986_ROM_PATCH_MT7975		"mediatek/mt7986_rom_patch_mt7975.bin"
 
-#define MT7915_EEPROM_DEFAULT		"/*(DEBLOBBED)*/"
-#define MT7915_EEPROM_DEFAULT_DBDC	"/*(DEBLOBBED)*/"
-#define MT7916_EEPROM_DEFAULT		"/*(DEBLOBBED)*/"
-#define MT7986_EEPROM_MT7975_DEFAULT		"/*(DEBLOBBED)*/"
-#define MT7986_EEPROM_MT7975_DUAL_DEFAULT	"/*(DEBLOBBED)*/"
-#define MT7986_EEPROM_MT7976_DEFAULT		"/*(DEBLOBBED)*/"
-#define MT7986_EEPROM_MT7976_DEFAULT_DBDC	"/*(DEBLOBBED)*/"
-#define MT7986_EEPROM_MT7976_DUAL_DEFAULT	"/*(DEBLOBBED)*/"
+#define MT7915_EEPROM_DEFAULT		"mediatek/mt7915_eeprom.bin"
+#define MT7915_EEPROM_DEFAULT_DBDC	"mediatek/mt7915_eeprom_dbdc.bin"
+#define MT7916_EEPROM_DEFAULT		"mediatek/mt7916_eeprom.bin"
+#define MT7986_EEPROM_MT7975_DEFAULT		"mediatek/mt7986_eeprom_mt7975.bin"
+#define MT7986_EEPROM_MT7975_DUAL_DEFAULT	"mediatek/mt7986_eeprom_mt7975_dual.bin"
+#define MT7986_EEPROM_MT7976_DEFAULT		"mediatek/mt7986_eeprom_mt7976.bin"
+#define MT7986_EEPROM_MT7976_DEFAULT_DBDC	"mediatek/mt7986_eeprom_mt7976_dbdc.bin"
+#define MT7986_EEPROM_MT7976_DUAL_DEFAULT	"mediatek/mt7986_eeprom_mt7976_dual.bin"
 
 #define MT7915_EEPROM_SIZE		3584
 #define MT7916_EEPROM_SIZE		4096

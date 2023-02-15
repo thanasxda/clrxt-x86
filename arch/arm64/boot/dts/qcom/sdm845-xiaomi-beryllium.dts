@@ -121,7 +121,7 @@
 
 &adsp_pas {
 	status = "okay";
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/sdm845/beryllium/adsp.mbn";
 };
 
 &apps_rsc {
@@ -214,7 +214,7 @@
 
 &cdsp_pas {
 	status = "okay";
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/sdm845/beryllium/cdsp.mbn";
 };
 
 &dsi0 {
@@ -269,7 +269,7 @@
 
 	zap-shader {
 		memory-region = <&gpu_mem>;
-		firmware-name = "/*(DEBLOBBED)*/";
+		firmware-name = "qcom/sdm845/beryllium/a630_zap.mbn";
 	};
 };
 
@@ -296,13 +296,13 @@
 
 &mss_pil {
 	status = "okay";
-	firmware-name = "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/sdm845/beryllium/mba.mbn", "qcom/sdm845/beryllium/modem.mbn";
 };
 
 &ipa {
 	status = "okay";
 	memory-region = <&ipa_fw_mem>;
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/sdm845/beryllium/ipa_fws.mbn";
 };
 
 &pm8998_gpio {
@@ -538,7 +538,7 @@
 
 &venus {
 	status = "okay";
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/sdm845/beryllium/venus.mbn";
 };
 
 &wcd9340{

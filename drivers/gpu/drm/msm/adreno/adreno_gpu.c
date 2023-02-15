@@ -82,7 +82,7 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname,
 	of_property_read_string_index(np, "firmware-name", 0, &signed_fwname);
 	if (signed_fwname) {
 		fwname = signed_fwname;
-		ret = reject_firmware_direct(&fw, fwname, gpu->dev->dev);
+		ret = request_firmware_direct(&fw, fwname, gpu->dev->dev);
 		if (ret)
 			fw = ERR_PTR(ret);
 	} else if (fwname) {
@@ -395,7 +395,7 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
 	if ((adreno_gpu->fwloc == FW_LOCATION_UNKNOWN) ||
 	    (adreno_gpu->fwloc == FW_LOCATION_NEW)) {
 
-		ret = reject_firmware_direct(&fw, newname, drm->dev);
+		ret = request_firmware_direct(&fw, newname, drm->dev);
 		if (!ret) {
 			DRM_DEV_INFO(drm->dev, "loaded %s from new location\n",
 				newname);
@@ -415,7 +415,7 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
 	if ((adreno_gpu->fwloc == FW_LOCATION_UNKNOWN) ||
 	    (adreno_gpu->fwloc == FW_LOCATION_LEGACY)) {
 
-		ret = reject_firmware_direct(&fw, fwname, drm->dev);
+		ret = request_firmware_direct(&fw, fwname, drm->dev);
 		if (!ret) {
 			DRM_DEV_INFO(drm->dev, "loaded %s from legacy location\n",
 				newname);
@@ -430,13 +430,13 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
 	}
 
 	/*
-	 * Finally fall back to reject_firmware() for cases where the
+	 * Finally fall back to request_firmware() for cases where the
 	 * usermode helper is needed (I think mainly android)
 	 */
 	if ((adreno_gpu->fwloc == FW_LOCATION_UNKNOWN) ||
 	    (adreno_gpu->fwloc == FW_LOCATION_HELPER)) {
 
-		ret = reject_firmware(&fw, newname, drm->dev);
+		ret = request_firmware(&fw, newname, drm->dev);
 		if (!ret) {
 			DRM_DEV_INFO(drm->dev, "loaded %s with helper\n",
 				newname);

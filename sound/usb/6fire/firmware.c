@@ -17,7 +17,9 @@
 #include "firmware.h"
 #include "chip.h"
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("6fire/dmx6firel2.ihx");
+MODULE_FIRMWARE("6fire/dmx6fireap.ihx");
+MODULE_FIRMWARE("6fire/dmx6firecf.bin");
 
 enum {
 	FPGA_BUFSIZE = 512, FPGA_EP = 2
@@ -198,7 +200,7 @@ static int usb6fire_fw_ezusb_upload(
 	if (!rec)
 		return -ENOMEM;
 
-	ret = reject_firmware(&fw, fwname, &device->dev);
+	ret = request_firmware(&fw, fwname, &device->dev);
 	if (ret < 0) {
 		kfree(rec);
 		dev_err(&intf->dev,
@@ -276,7 +278,7 @@ static int usb6fire_fw_fpga_upload(
 	if (!buffer)
 		return -ENOMEM;
 
-	ret = reject_firmware(&fw, fwname, &device->dev);
+	ret = request_firmware(&fw, fwname, &device->dev);
 	if (ret < 0) {
 		dev_err(&intf->dev, "unable to get fpga firmware %s.\n",
 				fwname);
@@ -365,7 +367,7 @@ int usb6fire_fw_init(struct usb_interface *intf)
 	/* do we need fpga loader ezusb firmware? */
 	if (buffer[3] == 0x01) {
 		ret = usb6fire_fw_ezusb_upload(intf,
-				"/*(DEBLOBBED)*/", 0, NULL, 0);
+				"6fire/dmx6firel2.ihx", 0, NULL, 0);
 		if (ret < 0)
 			return ret;
 		return FW_NOT_READY;
@@ -375,12 +377,12 @@ int usb6fire_fw_init(struct usb_interface *intf)
 		ret = usb6fire_fw_check(intf, buffer + 4);
 		if (ret < 0)
 			return ret;
-		ret = usb6fire_fw_fpga_upload(intf, "/*(DEBLOBBED)*/");
+		ret = usb6fire_fw_fpga_upload(intf, "6fire/dmx6firecf.bin");
 		if (ret < 0)
 			return ret;
 		memcpy(buffer, ep_w_max_packet_size,
 				sizeof(ep_w_max_packet_size));
-		ret = usb6fire_fw_ezusb_upload(intf, "/*(DEBLOBBED)*/",
+		ret = usb6fire_fw_ezusb_upload(intf, "6fire/dmx6fireap.ihx",
 				0x0003,	buffer, sizeof(ep_w_max_packet_size));
 		if (ret < 0)
 			return ret;

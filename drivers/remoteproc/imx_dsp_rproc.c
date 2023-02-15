@@ -1080,7 +1080,7 @@ static __maybe_unused int imx_dsp_resume(struct device *dev)
 	 * is reset, the image segments are lost. So need to reload
 	 * firmware and restart the DSP if it is in running state.
 	 */
-	ret = reject_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+	ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
 				      rproc->firmware, dev, GFP_KERNEL,
 				      rproc, imx_dsp_load_firmware);
 	if (ret < 0) {

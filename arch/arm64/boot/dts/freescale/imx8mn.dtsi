@@ -421,7 +421,7 @@
 						    "ctx1_rx", "ctx1_tx",
 						    "ctx2_rx", "ctx2_tx",
 						    "ctx3_rx", "ctx3_tx";
-					firmware-name = "/*(DEBLOBBED)*/";
+					firmware-name = "imx/easrc/easrc-imx8mn.bin";
 					fsl,asrc-rate = <8000>;
 					fsl,asrc-format = <2>;
 					status = "disabled";
@@ -532,7 +532,7 @@
 				 <&clk IMX8MN_CLK_SDMA3_ROOT>;
 				clock-names = "ipg", "ahb";
 				#dma-cells = <3>;
-				fsl,sdma-ram-script-name = "/*(DEBLOBBED)*/";
+				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
 			};
 
 			sdma2: dma-controller@302c0000 {
@@ -543,7 +543,7 @@
 					 <&clk IMX8MN_CLK_SDMA2_ROOT>;
 				clock-names = "ipg", "ahb";
 				#dma-cells = <3>;
-				fsl,sdma-ram-script-name = "/*(DEBLOBBED)*/";
+				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
 			};
 
 			iomuxc: pinctrl@30330000 {
@@ -994,7 +994,7 @@
 					 <&clk IMX8MN_CLK_AHB>;
 				clock-names = "ipg", "ahb";
 				#dma-cells = <3>;
-				fsl,sdma-ram-script-name = "/*(DEBLOBBED)*/";
+				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
 			};
 
 			fec1: ethernet@30be0000 {

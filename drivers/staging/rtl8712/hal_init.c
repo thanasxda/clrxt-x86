@@ -61,7 +61,7 @@ static void rtl871x_load_fw_cb(const struct firmware *firmware, void *context)
 	complete(&adapter->rtl8712_fw_ready);
 }
 
-static const char firmware_file[] = "/*(DEBLOBBED)*/";
+static const char firmware_file[] = "rtlwifi/rtl8712u.bin";
 
 int rtl871x_load_fw(struct _adapter *padapter)
 {
@@ -70,13 +70,13 @@ int rtl871x_load_fw(struct _adapter *padapter)
 
 	init_completion(&padapter->rtl8712_fw_ready);
 	dev_info(dev, "r8712u: Loading firmware from \"%s\"\n", firmware_file);
-	rc = reject_firmware_nowait(THIS_MODULE, 1, firmware_file, dev,
+	rc = request_firmware_nowait(THIS_MODULE, 1, firmware_file, dev,
 				     GFP_KERNEL, padapter, rtl871x_load_fw_cb);
 	if (rc)
 		dev_err(dev, "r8712u: Firmware request error %d\n", rc);
 	return rc;
 }
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("rtlwifi/rtl8712u.bin");
 
 static u32 rtl871x_open_fw(struct _adapter *adapter, const u8 **mappedfw)
 {

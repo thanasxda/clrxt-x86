@@ -42,7 +42,11 @@
 #include "oss/osssys_4_0_offset.h"
 #include "oss/osssys_4_0_sh_mask.h"
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("amdgpu/vega10_sos.bin");
+MODULE_FIRMWARE("amdgpu/vega10_asd.bin");
+MODULE_FIRMWARE("amdgpu/vega10_cap.bin");
+MODULE_FIRMWARE("amdgpu/vega12_sos.bin");
+MODULE_FIRMWARE("amdgpu/vega12_asd.bin");
 
 
 #define smnMP1_FIRMWARE_FLAGS 0x3010028

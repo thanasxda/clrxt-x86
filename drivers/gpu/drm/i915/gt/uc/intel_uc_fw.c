@@ -116,13 +116,20 @@ void intel_uc_fw_change_status(struct intel_uc_fw *uc_fw,
  * Set of macros for producing a list of filenames from the above table.
  */
 #define __MAKE_UC_FW_PATH_BLANK(prefix_, name_) \
-	"/*(DEBLOBBED)*/"
+	"i915/" \
+	__stringify(prefix_) name_ ".bin"
 
 #define __MAKE_UC_FW_PATH_MAJOR(prefix_, name_, major_) \
-	"/*(DEBLOBBED)*/"
+	"i915/" \
+	__stringify(prefix_) name_ \
+	__stringify(major_) ".bin"
 
 #define __MAKE_UC_FW_PATH_MMP(prefix_, name_, major_, minor_, patch_) \
-	"/*(DEBLOBBED)*/"
+	"i915/" \
+	__stringify(prefix_) name_ \
+	__stringify(major_) "." \
+	__stringify(minor_) "." \
+	__stringify(patch_) ".bin"
 
 /* Minor for internal driver use, not part of file name */
 #define MAKE_GUC_FW_PATH_MAJOR(prefix_, major_, minor_) \
@@ -143,7 +150,7 @@ void intel_uc_fw_change_status(struct intel_uc_fw *uc_fw,
  * that declaration.
  */
 #define INTEL_UC_MODULE_FW(platform_, revid_, uc_) \
-	/*(DEBLOBBED)*/
+	MODULE_FIRMWARE(uc_);
 
 INTEL_GUC_FIRMWARE_DEFS(INTEL_UC_MODULE_FW, MAKE_GUC_FW_PATH_MAJOR, MAKE_GUC_FW_PATH_MMP)
 INTEL_HUC_FIRMWARE_DEFS(INTEL_UC_MODULE_FW, MAKE_HUC_FW_PATH_BLANK, MAKE_HUC_FW_PATH_MMP)
@@ -556,7 +563,7 @@ int intel_uc_fw_fetch(struct intel_uc_fw *uc_fw)
 	__force_fw_fetch_failures(uc_fw, -EINVAL);
 	__force_fw_fetch_failures(uc_fw, -ESTALE);
 
-	err = firmware_reject_nowarn(&fw, uc_fw->file_selected.path, dev);
+	err = firmware_request_nowarn(&fw, uc_fw->file_selected.path, dev);
 	memcpy(&file_ideal, &uc_fw->file_wanted, sizeof(file_ideal));
 
 	/* Any error is terminal if overriding. Don't bother searching for older versions */
@@ -579,7 +586,7 @@ int intel_uc_fw_fetch(struct intel_uc_fw *uc_fw)
 			break;
 		}
 
-		err = firmware_reject_nowarn(&fw, uc_fw->file_selected.path, dev);
+		err = firmware_request_nowarn(&fw, uc_fw->file_selected.path, dev);
 	}
 
 	if (err)
@@ -614,14 +621,14 @@ int intel_uc_fw_fetch(struct intel_uc_fw *uc_fw)
 		memcpy(&uc_fw->file_wanted, &file_ideal, sizeof(uc_fw->file_wanted));
 
 		drm_notice(&i915->drm,
-			   "/*(DEBLOBBED)*/\n",
+			   "%s firmware %s (%d.%d) is recommended, but only %s (%d.%d) was found\n",
 			   intel_uc_fw_type_repr(uc_fw->type),
 			   uc_fw->file_wanted.path,
 			   uc_fw->file_wanted.major_ver, uc_fw->file_wanted.minor_ver,
 			   uc_fw->file_selected.path,
 			   uc_fw->file_selected.major_ver, uc_fw->file_selected.minor_ver);
 		drm_info(&i915->drm,
-			 "/*(DEBLOBBED)*/\n",
+			 "Consider updating your linux-firmware pkg or downloading from %s\n",
 			 INTEL_UC_FIRMWARE_URL);
 	}
 

@@ -1193,7 +1193,7 @@ static int mlxsw_core_fw_rev_validate(struct mlxsw_core *mlxsw_core,
 		req_rev->minor, req_rev->subminor);
 	dev_info(mlxsw_bus_info->dev, "Flashing firmware using file %s\n", filename);
 
-	err = reject_firmware_direct(&firmware, filename, mlxsw_bus_info->dev);
+	err = request_firmware_direct(&firmware, filename, mlxsw_bus_info->dev);
 	if (err) {
 		dev_err(mlxsw_bus_info->dev, "Could not request firmware file %s\n", filename);
 		return err;

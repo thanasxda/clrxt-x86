@@ -65,7 +65,7 @@
 #define ADAU1761_PLAY_LINE_RIGHT_VOL_MODE_HP	BIT(0)
 
 
-#define ADAU1761_FIRMWARE "/*(DEBLOBBED)*/"
+#define ADAU1761_FIRMWARE "adau1761.bin"
 
 static const struct reg_default adau1761_reg_defaults[] = {
 	{ ADAU1761_DEJITTER,			0x03 },

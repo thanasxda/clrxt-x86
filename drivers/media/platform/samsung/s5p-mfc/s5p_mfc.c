@@ -1521,7 +1521,7 @@ static struct s5p_mfc_variant mfc_drvdata_v5 = {
 	.version_bit	= MFC_V5_BIT,
 	.port_num	= MFC_NUM_PORTS,
 	.buf_size	= &buf_size_v5,
-	.fw_name[0]	= "/*(DEBLOBBED)*/",
+	.fw_name[0]	= "s5p-mfc.fw",
 	.clk_names	= {"mfc", "sclk_mfc"},
 	.num_clocks	= 2,
 	.use_clock_gating = true,
@@ -1546,12 +1546,12 @@ static struct s5p_mfc_variant mfc_drvdata_v6 = {
 	.version_bit	= MFC_V6_BIT,
 	.port_num	= MFC_NUM_PORTS_V6,
 	.buf_size	= &buf_size_v6,
-	.fw_name[0]     = "/*(DEBLOBBED)*/",
+	.fw_name[0]     = "s5p-mfc-v6.fw",
 	/*
 	 * v6-v2 firmware contains bug fixes and interface change
 	 * for init buffer command
 	 */
-	.fw_name[1]     = "/*(DEBLOBBED)*/",
+	.fw_name[1]     = "s5p-mfc-v6-v2.fw",
 	.clk_names	= {"mfc"},
 	.num_clocks	= 1,
 };
@@ -1575,7 +1575,7 @@ static struct s5p_mfc_variant mfc_drvdata_v7 = {
 	.version_bit	= MFC_V7_BIT,
 	.port_num	= MFC_NUM_PORTS_V7,
 	.buf_size	= &buf_size_v7,
-	.fw_name[0]     = "/*(DEBLOBBED)*/",
+	.fw_name[0]     = "s5p-mfc-v7.fw",
 	.clk_names	= {"mfc"},
 	.num_clocks	= 1,
 };
@@ -1585,7 +1585,7 @@ static struct s5p_mfc_variant mfc_drvdata_v7_3250 = {
 	.version_bit    = MFC_V7_BIT,
 	.port_num       = MFC_NUM_PORTS_V7,
 	.buf_size       = &buf_size_v7,
-	.fw_name[0]     = "/*(DEBLOBBED)*/",
+	.fw_name[0]     = "s5p-mfc-v7.fw",
 	.clk_names      = {"mfc", "sclk_mfc"},
 	.num_clocks     = 2,
 };
@@ -1609,7 +1609,7 @@ static struct s5p_mfc_variant mfc_drvdata_v8 = {
 	.version_bit	= MFC_V8_BIT,
 	.port_num	= MFC_NUM_PORTS_V8,
 	.buf_size	= &buf_size_v8,
-	.fw_name[0]     = "/*(DEBLOBBED)*/",
+	.fw_name[0]     = "s5p-mfc-v8.fw",
 	.clk_names	= {"mfc"},
 	.num_clocks	= 1,
 };
@@ -1619,7 +1619,7 @@ static struct s5p_mfc_variant mfc_drvdata_v8_5433 = {
 	.version_bit	= MFC_V8_BIT,
 	.port_num	= MFC_NUM_PORTS_V8,
 	.buf_size	= &buf_size_v8,
-	.fw_name[0]     = "/*(DEBLOBBED)*/",
+	.fw_name[0]     = "s5p-mfc-v8.fw",
 	.clk_names	= {"pclk", "aclk", "aclk_xiu"},
 	.num_clocks	= 3,
 };
@@ -1644,7 +1644,7 @@ static struct s5p_mfc_variant mfc_drvdata_v10 = {
 	.version_bit    = MFC_V10_BIT,
 	.port_num       = MFC_NUM_PORTS_V10,
 	.buf_size       = &buf_size_v10,
-	.fw_name[0]     = "/*(DEBLOBBED)*/",
+	.fw_name[0]     = "s5p-mfc-v10.fw",
 };
 
 static const struct of_device_id exynos_mfc_match[] = {

@@ -37,7 +37,10 @@
 #include "oss/osssys_4_0_offset.h"
 #include "oss/osssys_4_0_sh_mask.h"
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("amdgpu/renoir_asd.bin");
+MODULE_FIRMWARE("amdgpu/renoir_ta.bin");
+MODULE_FIRMWARE("amdgpu/green_sardine_asd.bin");
+MODULE_FIRMWARE("amdgpu/green_sardine_ta.bin");
 
 /* address block */
 #define smnMP1_FIRMWARE_FLAGS		0x3010024
@@ -66,8 +69,8 @@ static int psp_v12_0_init_microcode(struct psp_context *psp)
 	if (err)
 		return err;
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
-	err = reject_firmware(&adev->psp.ta_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_ta.bin", chip_name);
+	err = request_firmware(&adev->psp.ta_fw, fw_name, adev->dev);
 	if (err) {
 		release_firmware(adev->psp.ta_fw);
 		adev->psp.ta_fw = NULL;

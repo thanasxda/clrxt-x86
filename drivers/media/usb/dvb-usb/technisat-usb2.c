@@ -707,7 +707,7 @@ static struct dvb_usb_device_properties technisat_usb2_devices = {
 	.usb_ctrl          = CYPRESS_FX2,
 
 	.identify_state    = technisat_usb2_identify_state,
-	.firmware          = "/*(DEBLOBBED)*/",
+	.firmware          = "dvb-usb-SkyStar_USB_HD_FW_v17_63.HEX.fw",
 
 	.size_of_priv      = sizeof(struct technisat_usb2_state),
 

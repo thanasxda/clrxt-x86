@@ -237,7 +237,7 @@ snd_wavefront_fx_start (snd_wavefront_t *dev)
 	if (dev->fx_initialized)
 		return 0;
 
-	err = reject_firmware(&firmware, "/*(DEBLOBBED)*/",
+	err = request_firmware(&firmware, "yamaha/yss225_registers.bin",
 			       dev->card->dev);
 	if (err < 0) {
 		err = -1;
@@ -269,4 +269,4 @@ out:
 	return err;
 }
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("yamaha/yss225_registers.bin");

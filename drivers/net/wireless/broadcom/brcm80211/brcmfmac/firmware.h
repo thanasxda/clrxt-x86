@@ -9,7 +9,7 @@
 
 #define	BRCMF_FW_NAME_LEN		320
 
-#define BRCMF_FW_DEFAULT_PATH		/*(DEBLOBBED)*/
+#define BRCMF_FW_DEFAULT_PATH		"brcm/"
 
 #define BRCMF_FW_MAX_BOARD_TYPES	8
 
@@ -31,12 +31,15 @@ struct brcmf_firmware_mapping {
 
 #define BRCMF_FW_DEF(fw_name, fw_base) \
 static const char BRCM_ ## fw_name ## _FIRMWARE_BASENAME[] = \
-	BRCMF_FW_DEFAULT_PATH fw_base/*(DEBLOBBED)*/
+	BRCMF_FW_DEFAULT_PATH fw_base; \
+MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH fw_base ".bin")
 
 /* Firmware and Country Local Matrix files */
 #define BRCMF_FW_CLM_DEF(fw_name, fw_base) \
 static const char BRCM_ ## fw_name ## _FIRMWARE_BASENAME[] = \
-	BRCMF_FW_DEFAULT_PATH fw_base/*(DEBLOBBED)*/
+	BRCMF_FW_DEFAULT_PATH fw_base; \
+MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH fw_base ".bin"); \
+MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH fw_base ".clm_blob")
 
 #define BRCMF_FW_ENTRY(chipid, mask, name) \
 	{ chipid, mask, BRCM_ ## name ## _FIRMWARE_BASENAME }

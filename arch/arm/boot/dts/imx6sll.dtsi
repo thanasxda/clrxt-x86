@@ -634,7 +634,7 @@
 				clock-names = "ipg", "ahb";
 				#dma-cells = <3>;
 				iram = <&ocram>;
-				fsl,sdma-ram-script-name = "/*(DEBLOBBED)*/";
+				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx6q.bin";
 			};
 
 			pxp: pxp@20f0000 {

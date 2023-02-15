@@ -44,7 +44,11 @@ MODULE_PARM_DESC(enable, "Enable/disable specific Hammerfall DSP soundcards.");
 MODULE_AUTHOR("Paul Davis <paul@linuxaudiosystems.com>, Marcus Andersson, Thomas Charbonnel <thomas@undata.org>");
 MODULE_DESCRIPTION("RME Hammerfall DSP");
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("rpm_firmware.bin");
+MODULE_FIRMWARE("multiface_firmware.bin");
+MODULE_FIRMWARE("multiface_firmware_rev11.bin");
+MODULE_FIRMWARE("digiface_firmware.bin");
+MODULE_FIRMWARE("digiface_firmware_rev11.bin");
 
 #define HDSP_MAX_CHANNELS        26
 #define HDSP_MAX_DS_CHANNELS     14
@@ -5177,19 +5181,19 @@ static int hdsp_request_fw_loader(struct hdsp *hdsp)
 	/* caution: max length of firmware filename is 30! */
 	switch (hdsp->io_type) {
 	case RPM:
-		fwfile = "/*(DEBLOBBED)*/";
+		fwfile = "rpm_firmware.bin";
 		break;
 	case Multiface:
 		if (hdsp->firmware_rev == 0xa)
-			fwfile = "/*(DEBLOBBED)*/";
+			fwfile = "multiface_firmware.bin";
 		else
-			fwfile = "/*(DEBLOBBED)*/";
+			fwfile = "multiface_firmware_rev11.bin";
 		break;
 	case Digiface:
 		if (hdsp->firmware_rev == 0xa)
-			fwfile = "/*(DEBLOBBED)*/";
+			fwfile = "digiface_firmware.bin";
 		else
-			fwfile = "/*(DEBLOBBED)*/";
+			fwfile = "digiface_firmware_rev11.bin";
 		break;
 	default:
 		dev_err(hdsp->card->dev,
@@ -5197,7 +5201,7 @@ static int hdsp_request_fw_loader(struct hdsp *hdsp)
 		return -EINVAL;
 	}
 
-	if (reject_firmware(&fw, fwfile, &hdsp->pci->dev)) {
+	if (request_firmware(&fw, fwfile, &hdsp->pci->dev)) {
 		dev_err(hdsp->card->dev,
 			"cannot load firmware %s\n", fwfile);
 		return -ENOENT;

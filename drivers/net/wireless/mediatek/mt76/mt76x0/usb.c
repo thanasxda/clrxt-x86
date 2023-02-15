@@ -334,7 +334,8 @@ err:
 }
 
 MODULE_DEVICE_TABLE(usb, mt76x0_device_table);
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(MT7610E_FIRMWARE);
+MODULE_FIRMWARE(MT7610U_FIRMWARE);
 MODULE_LICENSE("GPL");
 
 static struct usb_driver mt76x0_driver = {

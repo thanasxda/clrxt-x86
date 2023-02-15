@@ -89,7 +89,7 @@ static struct dvb_usb_device_properties a800_properties = {
 	.caps = DVB_USB_IS_AN_I2C_ADAPTER,
 
 	.usb_ctrl = CYPRESS_FX2,
-	.firmware = "/*(DEBLOBBED)*/",
+	.firmware = "dvb-usb-avertv-a800-02.fw",
 
 	.num_adapters = 1,
 	.adapter = {

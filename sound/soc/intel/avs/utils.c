@@ -256,7 +256,7 @@ int avs_request_firmware(struct avs_dev *adev, const struct firmware **fw_p, con
 		return -ENOMEM;
 	}
 
-	ret = reject_firmware(&entry->fw, name, adev->dev);
+	ret = request_firmware(&entry->fw, name, adev->dev);
 	if (ret < 0) {
 		kfree(entry->name);
 		kfree(entry);

@@ -257,7 +257,7 @@ static int cpt_ucode_load_fw(struct cpt_device *cpt, const u8 *fw, bool is_ae)
 	struct microcode *mcode;
 	int j, ret = 0;
 
-	ret = reject_firmware(&fw_entry, fw, dev);
+	ret = request_firmware(&fw_entry, fw, dev);
 	if (ret)
 		return ret;
 
@@ -321,12 +321,12 @@ static int cpt_ucode_load(struct cpt_device *cpt)
 	int ret = 0;
 	struct device *dev = &cpt->pdev->dev;
 
-	ret = cpt_ucode_load_fw(cpt, "/*(DEBLOBBED)*/", true);
+	ret = cpt_ucode_load_fw(cpt, "cpt8x-mc-ae.out", true);
 	if (ret) {
 		dev_err(dev, "ae:cpt_ucode_load failed with ret: %d\n", ret);
 		return ret;
 	}
-	ret = cpt_ucode_load_fw(cpt, "/*(DEBLOBBED)*/", false);
+	ret = cpt_ucode_load_fw(cpt, "cpt8x-mc-se.out", false);
 	if (ret) {
 		dev_err(dev, "se:cpt_ucode_load failed with ret: %d\n", ret);
 		return ret;

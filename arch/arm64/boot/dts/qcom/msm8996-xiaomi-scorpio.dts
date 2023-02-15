@@ -57,7 +57,7 @@
 };
 
 &adsp_pil {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/msm8996/scorpio/adsp.mbn";
 };
 
 &blsp2_i2c6 {
@@ -92,7 +92,7 @@
 
 &gpu {
 	zap-shader {
-		firmware-name = "/*(DEBLOBBED)*/";
+		firmware-name = "qcom/msm8996/scorpio/a530_zap.mbn";
 	};
 };
 
@@ -113,8 +113,8 @@
 };
 
 &mss_pil {
-	firmware-name = "/*(DEBLOBBED)*/",
-			"/*(DEBLOBBED)*/";
+	firmware-name = "qcom/msm8996/scorpio/mba.mbn",
+			"qcom/msm8996/scorpio/modem.mbn";
 };
 
 &pm8994_lpg {
@@ -151,7 +151,7 @@
 };
 
 &slpi_pil {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/msm8996/scorpio/slpi.mbn";
 };
 
 &sound {
@@ -212,7 +212,7 @@
 };
 
 &venus {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/msm8996/scorpio/venus.mbn";
 };
 
 &rpm_requests {

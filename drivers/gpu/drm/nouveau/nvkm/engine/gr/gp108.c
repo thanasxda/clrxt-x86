@@ -71,7 +71,18 @@ gp108_gr_fecs_acr = {
 	.bld_patch = gp108_gr_acr_bld_patch,
 };
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("nvidia/gp108/gr/fecs_bl.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/fecs_inst.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/fecs_data.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/fecs_sig.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/gpccs_bl.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/gpccs_inst.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/gpccs_data.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/gpccs_sig.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/sw_ctx.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/sw_nonctx.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/sw_bundle_init.bin");
+MODULE_FIRMWARE("nvidia/gp108/gr/sw_method_init.bin");
 
 static const struct gf100_gr_fwif
 gp108_gr_fwif[] = {

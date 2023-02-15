@@ -454,8 +454,8 @@ static int opera1_xilinx_load_firmware(struct usb_device *dev,
 	u8 testval;
 	info("start downloading fpga firmware %s",filename);
 
-	if ((ret = reject_firmware(&fw, filename, &dev->dev)) != 0) {
-		err("did not find the firmware file '%s'. /*(DEBLOBBED)*/",
+	if ((ret = request_firmware(&fw, filename, &dev->dev)) != 0) {
+		err("did not find the firmware file '%s'. You can use <kernel_dir>/scripts/get_dvb_firmware to get the firmware",
 			filename);
 		return ret;
 	} else {
@@ -500,7 +500,7 @@ static int opera1_xilinx_load_firmware(struct usb_device *dev,
 static struct dvb_usb_device_properties opera1_properties = {
 	.caps = DVB_USB_IS_AN_I2C_ADAPTER,
 	.usb_ctrl = CYPRESS_FX2,
-	.firmware = "/*(DEBLOBBED)*/",
+	.firmware = "dvb-usb-opera-01.fw",
 	.size_of_priv = sizeof(struct opera1_state),
 
 	.power_ctrl = opera1_power_ctrl,
@@ -558,7 +558,7 @@ static int opera1_probe(struct usb_interface *intf,
 
 	if (le16_to_cpu(udev->descriptor.idProduct) == USB_PID_OPERA1_WARM &&
 	    le16_to_cpu(udev->descriptor.idVendor) == USB_VID_OPERA1 &&
-		opera1_xilinx_load_firmware(udev, "/*(DEBLOBBED)*/") != 0
+		opera1_xilinx_load_firmware(udev, "dvb-usb-opera1-fpga-01.fw") != 0
 	    ) {
 		return -EINVAL;
 	}

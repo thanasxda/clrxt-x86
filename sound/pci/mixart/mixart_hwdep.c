@@ -557,7 +557,7 @@ static int mixart_dsp_load(struct mixart_mgr* mgr, int index, const struct firmw
 int snd_mixart_setup_firmware(struct mixart_mgr *mgr)
 {
 	static const char * const fw_files[3] = {
-		"/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/"
+		"miXart8.xlx", "miXart8.elf", "miXart8AES.xlx"
 	};
 	char path[32];
 
@@ -566,7 +566,7 @@ int snd_mixart_setup_firmware(struct mixart_mgr *mgr)
 
 	for (i = 0; i < 3; i++) {
 		sprintf(path, "mixart/%s", fw_files[i]);
-		if (reject_firmware(&fw_entry, path, &mgr->pci->dev)) {
+		if (request_firmware(&fw_entry, path, &mgr->pci->dev)) {
 			dev_err(&mgr->pci->dev,
 				"miXart: can't load firmware %s\n", path);
 			return -ENOENT;
@@ -581,4 +581,6 @@ int snd_mixart_setup_firmware(struct mixart_mgr *mgr)
 	return 0;
 }
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("mixart/miXart8.xlx");
+MODULE_FIRMWARE("mixart/miXart8.elf");
+MODULE_FIRMWARE("mixart/miXart8AES.xlx");

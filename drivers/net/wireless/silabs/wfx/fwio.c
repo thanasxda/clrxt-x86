@@ -69,7 +69,7 @@ static const char * const fwio_errors[] = {
 	[ERR_MAC_KEY]          = "MAC key not initialized",
 };
 
-/* reject_firmware() allocate data using vmalloc(). It is not compatible with underlying hardware
+/* request_firmware() allocate data using vmalloc(). It is not compatible with underlying hardware
  * that use DMA. Function below detect this case and allocate a bounce buffer if necessary.
  *
  * Notice that, in doubt, you can enable CONFIG_DEBUG_SG to ask kernel to detect this problem at
@@ -105,12 +105,12 @@ static int get_firmware(struct wfx_dev *wdev, u32 keyset_chip,
 
 	snprintf(filename, sizeof(filename), "%s_%02X.sec",
 		 wdev->pdata.file_fw, keyset_chip);
-	ret = firmware_reject_nowarn(fw, filename, wdev->dev);
+	ret = firmware_request_nowarn(fw, filename, wdev->dev);
 	if (ret) {
-		dev_info(wdev->dev, "can't load %s, falling back to /*(DEBLOBBED)*/\n",
+		dev_info(wdev->dev, "can't load %s, falling back to %s.sec\n",
 			 filename, wdev->pdata.file_fw);
-		snprintf(filename, sizeof(filename), "/*(DEBLOBBED)*/", wdev->pdata.file_fw);
-		ret = reject_firmware(fw, filename, wdev->dev);
+		snprintf(filename, sizeof(filename), "%s.sec", wdev->pdata.file_fw);
+		ret = request_firmware(fw, filename, wdev->dev);
 		if (ret) {
 			dev_err(wdev->dev, "can't load %s\n", filename);
 			*fw = NULL;

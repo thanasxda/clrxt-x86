@@ -929,13 +929,13 @@ static void tm6000_config_tuner(struct tm6000_core *dev)
 		case TM6010_BOARD_TERRATEC_CINERGY_HYBRID_XE:
 		case TM6010_BOARD_TWINHAN_TU501:
 			ctl.max_len = 80;
-			ctl.fname = "/*(DEBLOBBED)*/";
+			ctl.fname = "xc3028L-v36.fw";
 			break;
 		default:
 			if (dev->dev_type == TM6010)
-				ctl.fname = "/*(DEBLOBBED)*/";
+				ctl.fname = "xc3028-v27.fw";
 			else
-				ctl.fname = "/*(DEBLOBBED)*/";
+				ctl.fname = "xc3028-v24.fw";
 		}
 
 		printk(KERN_INFO "Setting firmware parameters for xc2028\n");

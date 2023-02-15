@@ -32,9 +32,9 @@ loader parses the combined initrd image during boot.
 The microcode files in cpio name space are:
 
 on Intel:
-  /*(DEBLOBBED)*/
+  kernel/x86/microcode/GenuineIntel.bin
 on AMD  :
-  /*(DEBLOBBED)*/
+  kernel/x86/microcode/AuthenticAMD.bin
 
 During BSP (BootStrapping Processor) boot (pre-SMP), the kernel
 scans the microcode file in the initrd. If microcode matching the
@@ -70,11 +70,11 @@ here for future reference only).
   mkdir -p $DSTDIR
 
   if [ -d /lib/firmware/amd-ucode ]; then
-          /*(DEBLOBBED)*/
+          cat /lib/firmware/amd-ucode/microcode_amd*.bin > $DSTDIR/AuthenticAMD.bin
   fi
 
   if [ -d /lib/firmware/intel-ucode ]; then
-          /*(DEBLOBBED)*/
+          cat /lib/firmware/intel-ucode/* > $DSTDIR/GenuineIntel.bin
   fi
 
   find . | cpio -o -H newc >../ucode.cpio
@@ -101,7 +101,7 @@ run::
 as root.
 
 The loading mechanism looks for microcode blobs in
-/*(DEBLOBBED)*/. The default distro installation
+/lib/firmware/{intel-ucode,amd-ucode}. The default distro installation
 packages already put them there.
 
 Since kernel 5.19, late loading is not enabled by default.
@@ -217,12 +217,20 @@ currently supported.
 
 Here's an example::
 
-  CONFIG_EXTRA_FIRMWARE="/*(DEBLOBBED)*/ /*(DEBLOBBED)*/"
+  CONFIG_EXTRA_FIRMWARE="intel-ucode/06-3a-09 amd-ucode/microcode_amd_fam15h.bin"
   CONFIG_EXTRA_FIRMWARE_DIR="/lib/firmware"
 
 This basically means, you have the following tree structure locally::
 
-  /*(DEBLOBBED)*/
+  /lib/firmware/
+  |-- amd-ucode
+  ...
+  |   |-- microcode_amd_fam15h.bin
+  ...
+  |-- intel-ucode
+  ...
+  |   |-- 06-3a-09
+  ...
 
 so that the build system can find those files and integrate them into
 the final kernel image. The early loader finds them and applies them.

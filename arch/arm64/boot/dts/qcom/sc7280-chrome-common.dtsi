@@ -85,7 +85,7 @@
 
 &remoteproc_wpss {
 	status = "okay";
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "ath11k/WCN6750/hw1.0/wpss.mdt";
 };
 
 /* Increase the size from 2.5MB to 8MB */

@@ -99,7 +99,7 @@
 };
 
 &adsp_pil {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/ifc6560/adsp.mbn";
 };
 
 &blsp_i2c6 {

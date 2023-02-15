@@ -33,7 +33,7 @@
 };
 
 &adsp_pil {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/msm8996/gemini/adsp.mbn";
 };
 
 &blsp2_i2c3 {
@@ -123,7 +123,7 @@
 
 &gpu {
 	zap-shader {
-		firmware-name = "/*(DEBLOBBED)*/";
+		firmware-name = "qcom/msm8996/gemini/a530_zap.mbn";
 	};
 };
 
@@ -132,8 +132,8 @@
 };
 
 &mss_pil {
-	firmware-name = "/*(DEBLOBBED)*/",
-			"/*(DEBLOBBED)*/";
+	firmware-name = "qcom/msm8996/gemini/mba.mbn",
+			"qcom/msm8996/gemini/modem.mbn";
 };
 
 &q6asmdai {
@@ -151,7 +151,7 @@
 };
 
 &slpi_pil {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/msm8996/gemini/slpi.mbn";
 };
 
 &sound {
@@ -215,7 +215,7 @@
 };
 
 &venus {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/msm8996/gemini/venus.mbn";
 };
 
 &rpm_requests {

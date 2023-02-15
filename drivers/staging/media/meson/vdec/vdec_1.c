@@ -34,7 +34,7 @@ vdec_1_load_firmware(struct amvdec_session *sess, const char *fwname)
 	int ret;
 	u32 i = 1000;
 
-	ret = reject_firmware(&fw, fwname, dev);
+	ret = request_firmware(&fw, fwname, dev);
 	if (ret < 0)
 		return -EINVAL;
 

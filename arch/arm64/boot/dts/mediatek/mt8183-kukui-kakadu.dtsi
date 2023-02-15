@@ -58,7 +58,7 @@
 };
 
 &bluetooth {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "nvm_00440302_i2s_eu.bin";
 };
 
 &i2c0 {

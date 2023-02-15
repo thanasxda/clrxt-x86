@@ -55,13 +55,13 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_bxt_machines[] = {
 	{
 		.id = "INT343A",
 		.drv_name = "bxt_alc298s_i2s",
-		.fw_filename = "/*(DEBLOBBED)*/",
+		.fw_filename = "intel/dsp_fw_bxtn.bin",
 		.sof_tplg_filename = "sof-apl-rt298.tplg",
 	},
 	{
 		.id = "DLGS7219",
 		.drv_name = "bxt_da7219_mx98357a",
-		.fw_filename = "/*(DEBLOBBED)*/",
+		.fw_filename = "intel/dsp_fw_bxtn.bin",
 		.machine_quirk = snd_soc_acpi_codec_list,
 		.quirk_data = &bxt_codecs,
 		.sof_tplg_filename = "sof-apl-da7219.tplg",

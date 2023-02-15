@@ -329,10 +329,11 @@ static struct am33xx_pm_platform_data *am33xx_pm_get_pdata(void)
 /*
  * Block system suspend initially. Later on pm33xx sets up it's own
  * platform_suspend_ops after probe. That depends also on loaded
- * wkup_m3_ipc /*(DEBLOBBED)*/
+ * wkup_m3_ipc and booted am335x-pm-firmware.elf.
+ */
 static int amx3_suspend_block(suspend_state_t state)
 {
-	pr_warn("PM not initialized for pm33xx, wkup_m3_ipc, or /*(DEBLOBBED)*/\n");
+	pr_warn("PM not initialized for pm33xx, wkup_m3_ipc, or am335x-pm-firmware.elf\n");
 
 	return -EINVAL;
 }

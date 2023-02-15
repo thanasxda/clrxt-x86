@@ -90,9 +90,9 @@ enum enum_flash_mode {
 };
 
 static const char * const ccg_fw_names[] = {
-	"/*(DEBLOBBED)*/",
-	"/*(DEBLOBBED)*/",
-	"/*(DEBLOBBED)*/"
+	"ccg_boot.cyacd",
+	"ccg_primary.cyacd",
+	"ccg_secondary.cyacd"
 };
 
 struct ccg_dev_info {
@@ -993,7 +993,7 @@ static bool ccg_check_fw_version(struct ucsi_ccg *uc, const char *fw_name,
 	u32 cur_version, new_version;
 	bool is_later = false;
 
-	if (reject_firmware(&fw, fw_name, dev) != 0) {
+	if (request_firmware(&fw, fw_name, dev) != 0) {
 		dev_err(dev, "error: Failed to open cyacd file %s\n", fw_name);
 		return false;
 	}
@@ -1089,7 +1089,7 @@ static int do_flash(struct ucsi_ccg *uc, enum enum_flash_mode mode)
 	u8 fw_cfg_sig[FW_CFG_TABLE_SIG_SIZE];
 	u8 *wr_buf;
 
-	err = reject_firmware(&fw, ccg_fw_names[mode], dev);
+	err = request_firmware(&fw, ccg_fw_names[mode], dev);
 	if (err) {
 		dev_err(dev, "request %s failed err=%d\n",
 			ccg_fw_names[mode], err);

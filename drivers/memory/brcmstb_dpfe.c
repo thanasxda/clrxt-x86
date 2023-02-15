@@ -233,7 +233,7 @@ ATTRIBUTE_GROUPS(dpfe_v3);
  */
 static const struct dpfe_api dpfe_api_old_v2 = {
 	.version = 1,
-	.fw_name = "/*(DEBLOBBED)*/",
+	.fw_name = "dpfe.bin",
 	.sysfs_attrs = dpfe_v2_groups,
 	.command = {
 		[DPFE_CMD_GET_INFO] = {
@@ -647,7 +647,7 @@ static int brcmstb_dpfe_download_firmware(struct brcmstb_dpfe_priv *priv)
 	if (!priv->dpfe_api->fw_name)
 		return -ENODEV;
 
-	ret = firmware_reject_nowarn(&fw, priv->dpfe_api->fw_name, dev);
+	ret = firmware_request_nowarn(&fw, priv->dpfe_api->fw_name, dev);
 	/*
 	 * Defer the firmware download if the firmware file couldn't be found.
 	 * The root file system may not be available yet.

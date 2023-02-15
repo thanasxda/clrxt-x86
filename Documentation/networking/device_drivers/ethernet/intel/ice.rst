@@ -131,7 +131,78 @@ your console, set dmesg to eight by entering the following::
 NOTE: This setting is not saved across reboots.
 
 
-/*(DEBLOBBED)*/
+Dynamic Device Personalization
+------------------------------
+Dynamic Device Personalization (DDP) allows you to change the packet processing
+pipeline of a device by applying a profile package to the device at runtime.
+Profiles can be used to, for example, add support for new protocols, change
+existing protocols, or change default settings. DDP profiles can also be rolled
+back without rebooting the system.
+
+The DDP package loads during device initialization. The driver looks for
+``intel/ice/ddp/ice.pkg`` in your firmware root (typically ``/lib/firmware/``
+or ``/lib/firmware/updates/``) and checks that it contains a valid DDP package
+file.
+
+NOTE: Your distribution should likely have provided the latest DDP file, but if
+ice.pkg is missing, you can find it in the linux-firmware repository or from
+intel.com.
+
+If the driver is unable to load the DDP package, the device will enter Safe
+Mode. Safe Mode disables advanced and performance features and supports only
+basic traffic and minimal functionality, such as updating the NVM or
+downloading a new driver or DDP package. Safe Mode only applies to the affected
+physical function and does not impact any other PFs. See the "Intel(R) Ethernet
+Adapters and Devices User Guide" for more details on DDP and Safe Mode.
+
+NOTES:
+
+- If you encounter issues with the DDP package file, you may need to download
+  an updated driver or DDP package file. See the log messages for more
+  information.
+
+- The ice.pkg file is a symbolic link to the default DDP package file.
+
+- You cannot update the DDP package if any PF drivers are already loaded. To
+  overwrite a package, unload all PFs and then reload the driver with the new
+  package.
+
+- Only the first loaded PF per device can download a package for that device.
+
+You can install specific DDP package files for different physical devices in
+the same system. To install a specific DDP package file:
+
+1. Download the DDP package file you want for your device.
+
+2. Rename the file ice-xxxxxxxxxxxxxxxx.pkg, where 'xxxxxxxxxxxxxxxx' is the
+   unique 64-bit PCI Express device serial number (in hex) of the device you
+   want the package downloaded on. The filename must include the complete
+   serial number (including leading zeros) and be all lowercase. For example,
+   if the 64-bit serial number is b887a3ffffca0568, then the file name would be
+   ice-b887a3ffffca0568.pkg.
+
+   To find the serial number from the PCI bus address, you can use the
+   following command::
+
+     # lspci -vv -s af:00.0 | grep -i Serial
+     Capabilities: [150 v1] Device Serial Number b8-87-a3-ff-ff-ca-05-68
+
+   You can use the following command to format the serial number without the
+   dashes::
+
+     # lspci -vv -s af:00.0 | grep -i Serial | awk '{print $7}' | sed s/-//g
+     b887a3ffffca0568
+
+3. Copy the renamed DDP package file to
+   ``/lib/firmware/updates/intel/ice/ddp/``. If the directory does not yet
+   exist, create it before copying the file.
+
+4. Unload all of the PFs on the device.
+
+5. Reload the driver with the new package.
+
+NOTE: The presence of a device-specific DDP package file overrides the loading
+of the default DDP package file (ice.pkg).
 
 
 Intel(R) Ethernet Flow Director

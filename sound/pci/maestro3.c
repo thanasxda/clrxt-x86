@@ -39,7 +39,8 @@
 MODULE_AUTHOR("Zach Brown <zab@zabbo.net>, Takashi Iwai <tiwai@suse.de>");
 MODULE_DESCRIPTION("ESS Maestro3 PCI");
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("ess/maestro3_assp_kernel.fw");
+MODULE_FIRMWARE("ess/maestro3_assp_minisrc.fw");
 
 static int index[SNDRV_CARDS] = SNDRV_DEFAULT_IDX;	/* Index 0-MAX */
 static char *id[SNDRV_CARDS] = SNDRV_DEFAULT_STR;	/* ID for this card */
@@ -2557,13 +2558,13 @@ snd_m3_create(struct snd_card *card, struct pci_dev *pci,
 	if (!chip->substreams)
 		return -ENOMEM;
 
-	err = reject_firmware(&chip->assp_kernel_image,
-			       "/*(DEBLOBBED)*/", &pci->dev);
+	err = request_firmware(&chip->assp_kernel_image,
+			       "ess/maestro3_assp_kernel.fw", &pci->dev);
 	if (err < 0)
 		return err;
 
-	err = reject_firmware(&chip->assp_minisrc_image,
-			       "/*(DEBLOBBED)*/", &pci->dev);
+	err = request_firmware(&chip->assp_minisrc_image,
+			       "ess/maestro3_assp_minisrc.fw", &pci->dev);
 	if (err < 0)
 		return err;
 

@@ -702,7 +702,7 @@ static int fsl_xcvr_load_firmware(struct fsl_xcvr *xcvr)
 	int ret = 0, rem, off, out, page = 0, size = FSL_XCVR_REG_OFFSET;
 	u32 mask, val;
 
-	ret = reject_firmware(&fw, xcvr->soc_data->fw_name, dev);
+	ret = request_firmware(&fw, xcvr->soc_data->fw_name, dev);
 	if (ret) {
 		dev_err(dev, "failed to request firmware.\n");
 		return ret;
@@ -1125,7 +1125,7 @@ static irqreturn_t irq0_isr(int irq, void *devid)
 }
 
 static const struct fsl_xcvr_soc_data fsl_xcvr_imx8mp_data = {
-	.fw_name = "/*(DEBLOBBED)*/",
+	.fw_name = "imx/xcvr/xcvr-imx8mp.bin",
 };
 
 static const struct of_device_id fsl_xcvr_dt_ids[] = {

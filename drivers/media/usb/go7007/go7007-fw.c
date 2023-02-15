@@ -23,7 +23,7 @@
 
 #include "go7007-priv.h"
 
-#define GO7007_FW_NAME "/*(DEBLOBBED)*/"
+#define GO7007_FW_NAME "go7007/go7007tv.bin"
 
 /* Constants used in the source firmware image to describe code segments */
 
@@ -1565,7 +1565,7 @@ int go7007_construct_fw_image(struct go7007 *go, u8 **fw, int *fwlen)
 	default:
 		return -1;
 	}
-	if (reject_firmware(&fw_entry, GO7007_FW_NAME, go->dev)) {
+	if (request_firmware(&fw_entry, GO7007_FW_NAME, go->dev)) {
 		dev_err(go->dev,
 			"unable to load firmware from file \"%s\"\n",
 			GO7007_FW_NAME);
@@ -1620,4 +1620,4 @@ fw_failed:
 	return -1;
 }
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(GO7007_FW_NAME);

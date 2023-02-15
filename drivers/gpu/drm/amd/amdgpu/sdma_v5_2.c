@@ -44,7 +44,15 @@
 #include "sdma_common.h"
 #include "sdma_v5_2.h"
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("amdgpu/sienna_cichlid_sdma.bin");
+MODULE_FIRMWARE("amdgpu/navy_flounder_sdma.bin");
+MODULE_FIRMWARE("amdgpu/dimgrey_cavefish_sdma.bin");
+MODULE_FIRMWARE("amdgpu/beige_goby_sdma.bin");
+
+MODULE_FIRMWARE("amdgpu/vangogh_sdma.bin");
+MODULE_FIRMWARE("amdgpu/yellow_carp_sdma.bin");
+MODULE_FIRMWARE("amdgpu/sdma_5_2_6.bin");
+MODULE_FIRMWARE("amdgpu/sdma_5_2_7.bin");
 
 #define SDMA1_REG_OFFSET 0x600
 #define SDMA3_REG_OFFSET 0x400
@@ -129,7 +137,7 @@ static int sdma_v5_2_init_microcode(struct amdgpu_device *adev)
 		BUG();
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s.bin", chip_name);
 
 	return amdgpu_sdma_init_microcode(adev, fw_name, 0, true);
 }

@@ -31,7 +31,7 @@
 #include "sev-dev.h"
 
 #define DEVICE_NAME		"sev"
-#define SEV_FW_FILE		"/*(DEBLOBBED)*/"
+#define SEV_FW_FILE		"amd/sev.fw"
 #define SEV_FW_NAME_SIZE	64
 
 static DEFINE_MUTEX(sev_cmd_mutex);
@@ -53,9 +53,9 @@ static bool psp_init_on_probe = true;
 module_param(psp_init_on_probe, bool, 0444);
 MODULE_PARM_DESC(psp_init_on_probe, "  if true, the PSP will be initialized on module init. Else the PSP will be initialized on the first command requiring it");
 
-/*(DEBLOBBED)*/ /* 1st gen EPYC */
-/*(DEBLOBBED)*/ /* 2nd gen EPYC */
-/*(DEBLOBBED)*/ /* 3rd gen EPYC */
+MODULE_FIRMWARE("amd/amd_sev_fam17h_model0xh.sbin"); /* 1st gen EPYC */
+MODULE_FIRMWARE("amd/amd_sev_fam17h_model3xh.sbin"); /* 2nd gen EPYC */
+MODULE_FIRMWARE("amd/amd_sev_fam19h_model0xh.sbin"); /* 3rd gen EPYC */
 
 static bool psp_dead;
 static int psp_timeout;
@@ -739,9 +739,9 @@ static int sev_get_firmware(struct device *dev,
 	 *
 	 * Fall-back to using generic name: sev.fw
 	 */
-	if ((firmware_reject_nowarn(firmware, fw_name_specific, dev) >= 0) ||
-	    (firmware_reject_nowarn(firmware, fw_name_subset, dev) >= 0) ||
-	    (firmware_reject_nowarn(firmware, SEV_FW_FILE, dev) >= 0))
+	if ((firmware_request_nowarn(firmware, fw_name_specific, dev) >= 0) ||
+	    (firmware_request_nowarn(firmware, fw_name_subset, dev) >= 0) ||
+	    (firmware_request_nowarn(firmware, SEV_FW_FILE, dev) >= 0))
 		return 0;
 
 	return -ENOENT;

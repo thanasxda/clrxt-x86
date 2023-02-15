@@ -401,9 +401,9 @@ MODULE_AUTHOR("Jes Sorensen <jes@trained-monkey.org>");
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("AceNIC/3C985/GA620 Gigabit Ethernet driver");
 #ifndef CONFIG_ACENIC_OMIT_TIGON_I
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("acenic/tg1.bin");
 #endif
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("acenic/tg2.bin");
 
 module_param_array_named(link, link_state, int, NULL, 0);
 module_param_array(trace, int, NULL, 0);
@@ -2861,7 +2861,7 @@ static void ace_clear(struct ace_regs __iomem *regs, u32 dest, int size)
 static int ace_load_firmware(struct net_device *dev)
 {
 	const struct firmware *fw;
-	const char *fw_name = "/*(DEBLOBBED)*/";
+	const char *fw_name = "acenic/tg2.bin";
 	struct ace_private *ap = netdev_priv(dev);
 	struct ace_regs __iomem *regs = ap->regs;
 	const __be32 *fw_data;
@@ -2875,9 +2875,9 @@ static int ace_load_firmware(struct net_device *dev)
 	}
 
 	if (ACE_IS_TIGON_I(ap))
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "acenic/tg1.bin";
 
-	ret = reject_firmware(&fw, fw_name, &ap->pdev->dev);
+	ret = request_firmware(&fw, fw_name, &ap->pdev->dev);
 	if (ret) {
 		printk(KERN_ERR "%s: Failed to load firmware \"%s\"\n",
 		       ap->name, fw_name);

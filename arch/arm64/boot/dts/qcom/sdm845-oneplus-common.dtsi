@@ -140,7 +140,7 @@
 
 &adsp_pas {
 	status = "okay";
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/sdm845/oneplus6/adsp.mbn";
 };
 
 &apps_rsc {
@@ -312,7 +312,7 @@
 
 &cdsp_pas {
 	status = "okay";
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/sdm845/oneplus6/cdsp.mbn";
 };
 
 &dsi0 {
@@ -372,7 +372,7 @@
 
 	zap-shader {
 		memory-region = <&gpu_mem>;
-		firmware-name = "/*(DEBLOBBED)*/";
+		firmware-name = "qcom/sdm845/oneplus6/a630_zap.mbn";
 	};
 };
 
@@ -426,7 +426,7 @@
 	status = "okay";
 
 	memory-region = <&ipa_fw_mem>;
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/sdm845/oneplus6/ipa_fws.mbn";
 };
 
 &mdss {
@@ -436,7 +436,7 @@
 /* Modem/wifi*/
 &mss_pil {
 	status = "okay";
-	firmware-name = "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/sdm845/oneplus6/mba.mbn", "qcom/sdm845/oneplus6/modem.mbn";
 };
 
 &pm8998_gpio {
@@ -536,7 +536,7 @@
 		 * This path is relative to the qca/
 		 * subdir under lib/firmware.
 		 */
-		firmware-name = "/*(DEBLOBBED)*/";
+		firmware-name = "oneplus6/crnv21.bin";
 
 		vddio-supply = <&vreg_s4a_1p8>;
 		vddxo-supply = <&vreg_l7a_1p8>;
@@ -657,7 +657,7 @@
 
 &venus {
 	status = "okay";
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/sdm845/oneplus6/venus.mbn";
 };
 
 &wifi {

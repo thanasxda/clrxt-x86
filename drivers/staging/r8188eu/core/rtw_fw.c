@@ -237,7 +237,7 @@ static int load_firmware(struct rt_firmware *rtfw, struct device *device)
 	int ret = _SUCCESS;
 	const struct firmware *fw;
 	const char *fw_name = FW_RTL8188EU;
-	int err = reject_firmware(&fw, fw_name, device);
+	int err = request_firmware(&fw, fw_name, device);
 
 	if (err) {
 		pr_err("Request firmware failed with error 0x%x\n", err);

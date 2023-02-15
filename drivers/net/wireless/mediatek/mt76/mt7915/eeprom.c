@@ -77,7 +77,7 @@ mt7915_eeprom_load_default(struct mt7915_dev *dev)
 	const struct firmware *fw = NULL;
 	int ret;
 
-	ret = reject_firmware(&fw, mt7915_eeprom_name(dev), dev->mt76.dev);
+	ret = request_firmware(&fw, mt7915_eeprom_name(dev), dev->mt76.dev);
 	if (ret)
 		return ret;
 

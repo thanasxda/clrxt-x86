@@ -3729,7 +3729,7 @@ static int allegro_mcu_hw_deinit(struct allegro_dev *dev)
 static void allegro_fw_callback(const struct firmware *fw, void *context)
 {
 	struct allegro_dev *dev = context;
-	const char *fw_codec_name = "/*(DEBLOBBED)*/";
+	const char *fw_codec_name = "al5e.fw";
 	const struct firmware *fw_codec;
 	int err;
 
@@ -3738,7 +3738,7 @@ static void allegro_fw_callback(const struct firmware *fw, void *context)
 
 	v4l2_dbg(1, debug, &dev->v4l2_dev,
 		 "requesting codec firmware '%s'\n", fw_codec_name);
-	err = reject_firmware(&fw_codec, fw_codec_name, &dev->plat_dev->dev);
+	err = request_firmware(&fw_codec, fw_codec_name, &dev->plat_dev->dev);
 	if (err)
 		goto err_release_firmware;
 
@@ -3813,11 +3813,11 @@ err_release_firmware:
 
 static int allegro_firmware_request_nowait(struct allegro_dev *dev)
 {
-	const char *fw = "/*(DEBLOBBED)*/";
+	const char *fw = "al5e_b.fw";
 
 	v4l2_dbg(1, debug, &dev->v4l2_dev,
 		 "requesting firmware '%s'\n", fw);
-	return reject_firmware_nowait(THIS_MODULE, true, fw,
+	return request_firmware_nowait(THIS_MODULE, true, fw,
 				       &dev->plat_dev->dev, GFP_KERNEL, dev,
 				       allegro_fw_callback);
 }

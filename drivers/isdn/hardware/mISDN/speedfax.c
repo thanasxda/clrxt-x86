@@ -99,7 +99,7 @@ set_debug(const char *val, const struct kernel_param *kp)
 MODULE_AUTHOR("Karsten Keil");
 MODULE_LICENSE("GPL v2");
 MODULE_VERSION(SPEEDFAX_REV);
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("isdn/ISAR.BIN");
 module_param_call(debug, set_debug, param_get_uint, &debug, S_IRUGO | S_IWUSR);
 MODULE_PARM_DESC(debug, "Speedfax debug mask");
 module_param(irqloops, uint, S_IRUGO | S_IWUSR);
@@ -378,7 +378,7 @@ setup_instance(struct sfax_hw *card)
 	card->isar.name = card->name;
 	card->isar.owner = THIS_MODULE;
 
-	err = reject_firmware(&firmware, "/*(DEBLOBBED)*/", &card->pdev->dev);
+	err = request_firmware(&firmware, "isdn/ISAR.BIN", &card->pdev->dev);
 	if (err < 0) {
 		pr_info("%s: firmware request failed %d\n",
 			card->name, err);

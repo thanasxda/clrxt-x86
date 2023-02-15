@@ -419,7 +419,7 @@ static struct tar_arch_info_t *load_tar_archive(struct device *dev,
 	INIT_LIST_HEAD(&tar_arch->ucodes);
 
 	/* Load tar archive */
-	ret = reject_firmware(&tar_arch->fw, tar_filename, dev);
+	ret = request_firmware(&tar_arch->fw, tar_filename, dev);
 	if (ret)
 		goto release_tar_arch;
 
@@ -897,7 +897,7 @@ static int ucode_load(struct device *dev, struct otx_cpt_ucode *ucode,
 	int ret;
 
 	set_ucode_filename(ucode, ucode_filename);
-	ret = reject_firmware(&fw, ucode->filename, dev);
+	ret = request_firmware(&fw, ucode->filename, dev);
 	if (ret)
 		return ret;
 

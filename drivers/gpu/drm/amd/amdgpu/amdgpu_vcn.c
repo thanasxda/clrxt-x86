@@ -36,28 +36,47 @@
 #include "soc15d.h"
 
 /* Firmware Names */
-#define FIRMWARE_RAVEN		"/*(DEBLOBBED)*/"
-#define FIRMWARE_PICASSO	"/*(DEBLOBBED)*/"
-#define FIRMWARE_RAVEN2		"/*(DEBLOBBED)*/"
-#define FIRMWARE_ARCTURUS	"/*(DEBLOBBED)*/"
-#define FIRMWARE_RENOIR		"/*(DEBLOBBED)*/"
-#define FIRMWARE_GREEN_SARDINE	"/*(DEBLOBBED)*/"
-#define FIRMWARE_NAVI10		"/*(DEBLOBBED)*/"
-#define FIRMWARE_NAVI14		"/*(DEBLOBBED)*/"
-#define FIRMWARE_NAVI12		"/*(DEBLOBBED)*/"
-#define FIRMWARE_SIENNA_CICHLID	"/*(DEBLOBBED)*/"
-#define FIRMWARE_NAVY_FLOUNDER	"/*(DEBLOBBED)*/"
-#define FIRMWARE_VANGOGH	"/*(DEBLOBBED)*/"
-#define FIRMWARE_DIMGREY_CAVEFISH	"/*(DEBLOBBED)*/"
-#define FIRMWARE_ALDEBARAN	"/*(DEBLOBBED)*/"
-#define FIRMWARE_BEIGE_GOBY	"/*(DEBLOBBED)*/"
-#define FIRMWARE_YELLOW_CARP	"/*(DEBLOBBED)*/"
-#define FIRMWARE_VCN_3_1_2	"/*(DEBLOBBED)*/"
-#define FIRMWARE_VCN4_0_0	"/*(DEBLOBBED)*/"
-#define FIRMWARE_VCN4_0_2	"/*(DEBLOBBED)*/"
-#define FIRMWARE_VCN4_0_4      "/*(DEBLOBBED)*/"
+#define FIRMWARE_RAVEN		"amdgpu/raven_vcn.bin"
+#define FIRMWARE_PICASSO	"amdgpu/picasso_vcn.bin"
+#define FIRMWARE_RAVEN2		"amdgpu/raven2_vcn.bin"
+#define FIRMWARE_ARCTURUS	"amdgpu/arcturus_vcn.bin"
+#define FIRMWARE_RENOIR		"amdgpu/renoir_vcn.bin"
+#define FIRMWARE_GREEN_SARDINE	"amdgpu/green_sardine_vcn.bin"
+#define FIRMWARE_NAVI10		"amdgpu/navi10_vcn.bin"
+#define FIRMWARE_NAVI14		"amdgpu/navi14_vcn.bin"
+#define FIRMWARE_NAVI12		"amdgpu/navi12_vcn.bin"
+#define FIRMWARE_SIENNA_CICHLID	"amdgpu/sienna_cichlid_vcn.bin"
+#define FIRMWARE_NAVY_FLOUNDER	"amdgpu/navy_flounder_vcn.bin"
+#define FIRMWARE_VANGOGH	"amdgpu/vangogh_vcn.bin"
+#define FIRMWARE_DIMGREY_CAVEFISH	"amdgpu/dimgrey_cavefish_vcn.bin"
+#define FIRMWARE_ALDEBARAN	"amdgpu/aldebaran_vcn.bin"
+#define FIRMWARE_BEIGE_GOBY	"amdgpu/beige_goby_vcn.bin"
+#define FIRMWARE_YELLOW_CARP	"amdgpu/yellow_carp_vcn.bin"
+#define FIRMWARE_VCN_3_1_2	"amdgpu/vcn_3_1_2.bin"
+#define FIRMWARE_VCN4_0_0	"amdgpu/vcn_4_0_0.bin"
+#define FIRMWARE_VCN4_0_2	"amdgpu/vcn_4_0_2.bin"
+#define FIRMWARE_VCN4_0_4      "amdgpu/vcn_4_0_4.bin"
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(FIRMWARE_RAVEN);
+MODULE_FIRMWARE(FIRMWARE_PICASSO);
+MODULE_FIRMWARE(FIRMWARE_RAVEN2);
+MODULE_FIRMWARE(FIRMWARE_ARCTURUS);
+MODULE_FIRMWARE(FIRMWARE_RENOIR);
+MODULE_FIRMWARE(FIRMWARE_GREEN_SARDINE);
+MODULE_FIRMWARE(FIRMWARE_ALDEBARAN);
+MODULE_FIRMWARE(FIRMWARE_NAVI10);
+MODULE_FIRMWARE(FIRMWARE_NAVI14);
+MODULE_FIRMWARE(FIRMWARE_NAVI12);
+MODULE_FIRMWARE(FIRMWARE_SIENNA_CICHLID);
+MODULE_FIRMWARE(FIRMWARE_NAVY_FLOUNDER);
+MODULE_FIRMWARE(FIRMWARE_VANGOGH);
+MODULE_FIRMWARE(FIRMWARE_DIMGREY_CAVEFISH);
+MODULE_FIRMWARE(FIRMWARE_BEIGE_GOBY);
+MODULE_FIRMWARE(FIRMWARE_YELLOW_CARP);
+MODULE_FIRMWARE(FIRMWARE_VCN_3_1_2);
+MODULE_FIRMWARE(FIRMWARE_VCN4_0_0);
+MODULE_FIRMWARE(FIRMWARE_VCN4_0_2);
+MODULE_FIRMWARE(FIRMWARE_VCN4_0_4);
 
 static void amdgpu_vcn_idle_work_handler(struct work_struct *work);
 
@@ -187,7 +206,7 @@ int amdgpu_vcn_sw_init(struct amdgpu_device *adev)
 		return -EINVAL;
 	}
 
-	r = reject_firmware(&adev->vcn.fw, fw_name, adev->dev);
+	r = request_firmware(&adev->vcn.fw, fw_name, adev->dev);
 	if (r) {
 		dev_err(adev->dev, "amdgpu_vcn: Can't load firmware \"%s\"\n",
 			fw_name);

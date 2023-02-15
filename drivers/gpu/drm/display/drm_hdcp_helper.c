@@ -233,11 +233,11 @@ static int drm_hdcp_srm_update(const u8 *buf, size_t count,
 static int drm_hdcp_request_srm(struct drm_device *drm_dev,
 				u8 **revoked_ksv_list, u32 *revoked_ksv_cnt)
 {
-	char fw_name[36] = "/*(DEBLOBBED)*/";
+	char fw_name[36] = "display_hdcp_srm.bin";
 	const struct firmware *fw;
 	int ret;
 
-	ret = reject_firmware_direct(&fw, (const char *)fw_name,
+	ret = request_firmware_direct(&fw, (const char *)fw_name,
 				      drm_dev->dev);
 	if (ret < 0) {
 		*revoked_ksv_cnt = 0;

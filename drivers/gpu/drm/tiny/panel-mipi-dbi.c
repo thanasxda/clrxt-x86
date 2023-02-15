@@ -32,7 +32,7 @@ static const u8 panel_mipi_dbi_magic[15] = { 'M', 'I', 'P', 'I', ' ', 'D', 'B', 
 /*
  * The display controller configuration is stored in a firmware file.
  * The Device Tree 'compatible' property value with a '.bin' suffix is passed
- * to reject_firmware() to fetch this file.
+ * to request_firmware() to fetch this file.
  */
 struct panel_mipi_dbi_config {
 	/* Magic string: panel_mipi_dbi_magic */
@@ -148,8 +148,8 @@ static struct panel_mipi_dbi_commands *panel_mipi_dbi_commands_from_fw(struct de
 	if (ret)
 		return ERR_PTR(ret);
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", compatible);
-	ret = reject_firmware(&fw, fw_name, dev);
+	snprintf(fw_name, sizeof(fw_name), "%s.bin", compatible);
+	ret = request_firmware(&fw, fw_name, dev);
 	if (ret) {
 		dev_err(dev, "No config file found for compatible '%s' (error=%d)\n",
 			compatible, ret);

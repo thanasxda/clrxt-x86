@@ -848,7 +848,7 @@ int comedi_load_firmware(struct comedi_device *dev,
 	if (!cb)
 		return -EINVAL;
 
-	ret = maybe_reject_firmware(&fw, name, device);
+	ret = request_firmware(&fw, name, device);
 	if (ret == 0) {
 		ret = cb(dev, fw->data, fw->size, context);
 		release_firmware(fw);

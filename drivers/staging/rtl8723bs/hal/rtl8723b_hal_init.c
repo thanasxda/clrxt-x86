@@ -326,11 +326,11 @@ s32 rtl8723b_FirmwareDownload(struct adapter *padapter, bool  bUsedWoWLANFw)
 	if (tmp_ps != 0x01)
 		pdbgpriv->dbg_downloadfw_pwr_state_cnt++;
 
-	fwfilepath = "/*(DEBLOBBED)*/";
+	fwfilepath = "rtlwifi/rtl8723bs_nic.bin";
 
 	pr_info("rtl8723bs: acquire FW from file:%s\n", fwfilepath);
 
-	rtStatus = reject_firmware(&fw, fwfilepath, device);
+	rtStatus = request_firmware(&fw, fwfilepath, device);
 	if (rtStatus) {
 		pr_err("Request firmware failed with error 0x%x\n", rtStatus);
 		rtStatus = _FAIL;

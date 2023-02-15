@@ -90,7 +90,7 @@ static int hl_request_fw(struct hl_device *hdev,
 	size_t fw_size;
 	int rc;
 
-	rc = reject_firmware(firmware_p, fw_name, hdev->dev);
+	rc = request_firmware(firmware_p, fw_name, hdev->dev);
 	if (rc) {
 		dev_err(hdev->dev, "Firmware file %s is not found! (error %d)\n",
 				fw_name, rc);

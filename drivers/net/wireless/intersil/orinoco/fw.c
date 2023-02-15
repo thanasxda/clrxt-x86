@@ -26,11 +26,16 @@ struct fw_info {
 };
 
 static const struct fw_info orinoco_fw[] = {
-	{ NULL, "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/", 0x00390000, 1000 },
-	{ NULL, "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/", 0, 1024 },
-	{ "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/", NULL, 0x00003100, 512 }
+	{ NULL, "agere_sta_fw.bin", "agere_ap_fw.bin", 0x00390000, 1000 },
+	{ NULL, "prism_sta_fw.bin", "prism_ap_fw.bin", 0, 1024 },
+	{ "symbol_sp24t_prim_fw", "symbol_sp24t_sec_fw", NULL, 0x00003100, 512 }
 };
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("agere_sta_fw.bin");
+MODULE_FIRMWARE("agere_ap_fw.bin");
+MODULE_FIRMWARE("prism_sta_fw.bin");
+MODULE_FIRMWARE("prism_ap_fw.bin");
+MODULE_FIRMWARE("symbol_sp24t_prim_fw");
+MODULE_FIRMWARE("symbol_sp24t_sec_fw");
 
 /* Structure used to access fields in FW
  * Make sure LE decoding macros are used
@@ -124,7 +129,7 @@ orinoco_dl_firmware(struct orinoco_private *priv,
 		goto free;
 
 	if (!orinoco_cached_fw_get(priv, false)) {
-		err = reject_firmware(&fw_entry, firmware, priv->dev);
+		err = request_firmware(&fw_entry, firmware, priv->dev);
 
 		if (err) {
 			dev_err(dev, "Cannot find firmware %s\n", firmware);
@@ -287,7 +292,7 @@ symbol_dl_firmware(struct orinoco_private *priv,
 	const struct firmware *fw_entry;
 
 	if (!orinoco_cached_fw_get(priv, true)) {
-		if (reject_firmware(&fw_entry, fw->pri_fw, priv->dev) != 0) {
+		if (request_firmware(&fw_entry, fw->pri_fw, priv->dev) != 0) {
 			dev_err(dev, "Cannot find firmware: %s\n", fw->pri_fw);
 			return -ENOENT;
 		}
@@ -306,7 +311,7 @@ symbol_dl_firmware(struct orinoco_private *priv,
 	}
 
 	if (!orinoco_cached_fw_get(priv, false)) {
-		if (reject_firmware(&fw_entry, fw->sta_fw, priv->dev) != 0) {
+		if (request_firmware(&fw_entry, fw->sta_fw, priv->dev) != 0) {
 			dev_err(dev, "Cannot find firmware: %s\n", fw->sta_fw);
 			return -ENOENT;
 		}
@@ -362,12 +367,12 @@ void orinoco_cache_fw(struct orinoco_private *priv, int ap)
 		fw = orinoco_fw[priv->firmware_type].sta_fw;
 
 	if (pri_fw) {
-		if (reject_firmware(&fw_entry, pri_fw, priv->dev) == 0)
+		if (request_firmware(&fw_entry, pri_fw, priv->dev) == 0)
 			priv->cached_pri_fw = fw_entry;
 	}
 
 	if (fw) {
-		if (reject_firmware(&fw_entry, fw, priv->dev) == 0)
+		if (request_firmware(&fw_entry, fw, priv->dev) == 0)
 			priv->cached_fw = fw_entry;
 	}
 }
