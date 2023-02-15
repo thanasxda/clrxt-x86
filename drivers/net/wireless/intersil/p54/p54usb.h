@@ -11,7 +11,7 @@
  * Copyright 2004-2006 Jean-Baptiste Note <jbnote@gmail.com>, et al.
  */
 
-/* for isl3886 register definitions used on ver 1 devices */
+/*(DEBLOBBED)*/
 #include "p54pci.h"
 #include <linux/usb/net2280.h>
 

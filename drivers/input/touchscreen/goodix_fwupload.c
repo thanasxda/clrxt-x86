@@ -193,9 +193,9 @@ static int goodix_firmware_upload(struct goodix_ts_data *ts)
 	const u8 *data;
 	int error;
 
-	snprintf(fw_name, sizeof(fw_name), "goodix/%s", ts->firmware_name);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", ts->firmware_name);
 
-	error = request_firmware(&fw, fw_name, &ts->client->dev);
+	error = reject_firmware(&fw, fw_name, &ts->client->dev);
 	if (error) {
 		dev_err(&ts->client->dev, "Firmware request error %d\n", error);
 		return error;

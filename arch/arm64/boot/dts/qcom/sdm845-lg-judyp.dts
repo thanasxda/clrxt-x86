@@ -26,19 +26,19 @@
 };
 
 &adsp_pas {
-	firmware-name = "qcom/sdm845/judyp/adsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &cdsp_pas {
-	firmware-name = "qcom/sdm845/judyp/cdsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &gpu {
 	zap-shader {
-		firmware-name = "qcom/sdm845/judyp/a630_zap.mbn";
+		firmware-name = "/*(DEBLOBBED)*/";
 	};
 };
 
 &mss_pil {
-	firmware-name = "qcom/sdm845/judyp/mba.mbn", "qcom/sdm845/judyp/modem.mbn";
+	firmware-name = "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/";
 };

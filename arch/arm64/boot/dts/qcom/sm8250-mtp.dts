@@ -160,7 +160,7 @@
 
 &adsp {
 	status = "okay";
-	firmware-name = "qcom/sm8250/adsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &apps_rsc {
@@ -465,7 +465,7 @@
 
 &cdsp {
 	status = "okay";
-	firmware-name = "qcom/sm8250/cdsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &gmu {
@@ -477,7 +477,7 @@
 
 	zap-shader {
 		memory-region = <&gpu_mem>;
-		firmware-name = "qcom/sm8250/a650_zap.mbn";
+		firmware-name = "/*(DEBLOBBED)*/";
 	};
 };
 
@@ -628,7 +628,7 @@
 
 &slpi {
 	status = "okay";
-	firmware-name = "qcom/sm8250/slpi.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &soc {

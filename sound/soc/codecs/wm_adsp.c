@@ -744,15 +744,15 @@ static int wm_adsp_request_firmware_file(struct wm_adsp *dsp,
 	int ret = 0;
 
 	if (system_name && asoc_component_prefix)
-		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s-%s.%s", dir, dsp->part,
+		*filename = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", dir, dsp->part,
 				      dsp->fwf_name, wm_adsp_fw[dsp->fw].file, system_name,
 				      asoc_component_prefix, filetype);
 	else if (system_name)
-		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s.%s", dir, dsp->part,
+		*filename = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", dir, dsp->part,
 				      dsp->fwf_name, wm_adsp_fw[dsp->fw].file, system_name,
 				      filetype);
 	else
-		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s.%s", dir, dsp->part, dsp->fwf_name,
+		*filename = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", dir, dsp->part, dsp->fwf_name,
 				      wm_adsp_fw[dsp->fw].file, filetype);
 
 	if (*filename == NULL)
@@ -773,7 +773,7 @@ static int wm_adsp_request_firmware_file(struct wm_adsp *dsp,
 		s++;
 	}
 
-	ret = firmware_request_nowarn(firmware, *filename, cs_dsp->dev);
+	ret = firmware_reject_nowarn(firmware, *filename, cs_dsp->dev);
 	if (ret != 0) {
 		adsp_dbg(dsp, "Failed to request '%s'\n", *filename);
 		kfree(*filename);

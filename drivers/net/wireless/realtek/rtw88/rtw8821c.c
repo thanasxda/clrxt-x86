@@ -1882,7 +1882,7 @@ static const struct rtw_reg_domain coex_info_hw_regs_8821c[] = {
 const struct rtw_chip_info rtw8821c_hw_spec = {
 	.ops = &rtw8821c_ops,
 	.id = RTW_CHIP_TYPE_8821C,
-	.fw_name = "rtw88/rtw8821c_fw.bin",
+	.fw_name = "/*(DEBLOBBED)*/",
 	.wlan_cpu = RTW_WCPU_11AC,
 	.tx_pkt_desc_sz = 48,
 	.tx_buf_desc_sz = 16,
@@ -1961,7 +1961,7 @@ const struct rtw_chip_info rtw8821c_hw_spec = {
 };
 EXPORT_SYMBOL(rtw8821c_hw_spec);
 
-MODULE_FIRMWARE("rtw88/rtw8821c_fw.bin");
+/*(DEBLOBBED)*/
 
 MODULE_AUTHOR("Realtek Corporation");
 MODULE_DESCRIPTION("Realtek 802.11ac wireless 8821c driver");

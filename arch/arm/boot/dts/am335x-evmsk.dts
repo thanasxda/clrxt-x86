@@ -721,5 +721,5 @@
 };
 
 &wkup_m3_ipc {
-	firmware-name = "am335x-evm-scale-data.bin";
+	firmware-name = "/*(DEBLOBBED)*/";
 };

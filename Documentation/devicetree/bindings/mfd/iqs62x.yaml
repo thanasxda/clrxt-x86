@@ -35,7 +35,7 @@ properties:
     description:
       Specifies the name of the calibration and configuration file selected by
       the driver. If this property is omitted, the name is chosen based on the
-      device name with ".bin" as the extension (e.g. iqs620a.bin for IQS620A).
+      device name with ".bin" as the extension (e.g. /*(DEBLOBBED)*/ for IQS620A).
 
   keys:
     $ref: ../input/iqs62x-keys.yaml
@@ -114,7 +114,7 @@ examples:
                     interrupt-parent = <&gpio>;
                     interrupts = <17 IRQ_TYPE_LEVEL_LOW>;
 
-                    firmware-name = "iqs620a_coil.bin";
+                    firmware-name = "/*(DEBLOBBED)*/";
 
                     keys {
                             compatible = "azoteq,iqs620a-keys";

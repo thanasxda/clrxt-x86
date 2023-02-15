@@ -28,13 +28,13 @@ static const char ice_driver_string[] = DRV_SUMMARY;
 static const char ice_copyright[] = "Copyright (c) 2018, Intel Corporation.";
 
 /* DDP Package file located in firmware search paths (e.g. /lib/firmware/) */
-#define ICE_DDP_PKG_PATH	"intel/ice/ddp/"
-#define ICE_DDP_PKG_FILE	ICE_DDP_PKG_PATH "ice.pkg"
+#define ICE_DDP_PKG_PATH	"/*(DEBLOBBED)*/"
+#define ICE_DDP_PKG_FILE	ICE_DDP_PKG_PATH /*(DEBLOBBED)*/
 
 MODULE_AUTHOR("Intel Corporation, <linux.nics@intel.com>");
 MODULE_DESCRIPTION(DRV_SUMMARY);
 MODULE_LICENSE("GPL v2");
-MODULE_FIRMWARE(ICE_DDP_PKG_FILE);
+/*(DEBLOBBED)*/
 
 static int debug = -1;
 module_param(debug, int, 0644);
@@ -4535,7 +4535,7 @@ static void ice_request_fw(struct ice_pf *pf)
 	 * and warning messages for other errors.
 	 */
 	if (opt_fw_filename) {
-		err = firmware_request_nowarn(&firmware, opt_fw_filename, dev);
+		err = firmware_reject_nowarn(&firmware, opt_fw_filename, dev);
 		if (err) {
 			kfree(opt_fw_filename);
 			goto dflt_pkg_load;
@@ -4549,7 +4549,7 @@ static void ice_request_fw(struct ice_pf *pf)
 	}
 
 dflt_pkg_load:
-	err = request_firmware(&firmware, ICE_DDP_PKG_FILE, dev);
+	err = reject_firmware(&firmware, ICE_DDP_PKG_FILE, dev);
 	if (err) {
 		dev_err(dev, "The DDP package file was not found or could not be read. Entering Safe Mode\n");
 		return;

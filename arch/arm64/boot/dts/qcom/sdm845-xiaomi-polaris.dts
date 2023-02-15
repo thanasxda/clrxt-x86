@@ -368,7 +368,7 @@
 };
 
 &cdsp_pas {
-	firmware-name = "qcom/sdm845/polaris/cdsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 	status = "okay";
 };
 
@@ -435,7 +435,7 @@
 
 	zap-shader {
 		memory-region = <&gpu_mem>;
-		firmware-name = "qcom/sdm845/polaris/a630_zap.mbn";
+		firmware-name = "/*(DEBLOBBED)*/";
 	};
 };
 
@@ -450,7 +450,7 @@
 
 &ipa {
 	memory-region = <&ipa_fw_mem>;
-	firmware-name = "qcom/sdm845/polaris/ipa_fws.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 	status = "okay";
 };
 
@@ -506,7 +506,7 @@
 };
 
 &mss_pil {
-	firmware-name = "qcom/sdm845/polaris/mba.mbn", "qcom/sdm845/polaris/modem.mbn";
+	firmware-name = "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/";
 	status = "okay";
 };
 
@@ -643,7 +643,7 @@
 		compatible = "qcom,wcn3990-bt";
 
 		/* This path is relative to the qca/ subdir under lib/firmware. */
-		firmware-name = "polaris/crnv21.bin";
+		firmware-name = "/*(DEBLOBBED)*/";
 
 		vddio-supply = <&vreg_s4a_1p8>;
 		vddxo-supply = <&vreg_l7a_1p8>;
@@ -703,7 +703,7 @@
 };
 
 &venus {
-	firmware-name = "qcom/sdm845/polaris/venus.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 	status = "okay";
 };
 

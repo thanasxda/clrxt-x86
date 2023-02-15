@@ -50,12 +50,12 @@
 #define ADF_4XXX_MAILBOX_BASE_OFFSET	(0x600970)
 
 /* Firmware Binaries */
-#define ADF_4XXX_FW		"qat_4xxx.bin"
-#define ADF_4XXX_MMP		"qat_4xxx_mmp.bin"
-#define ADF_4XXX_SYM_OBJ	"qat_4xxx_sym.bin"
-#define ADF_4XXX_DC_OBJ		"qat_4xxx_dc.bin"
-#define ADF_4XXX_ASYM_OBJ	"qat_4xxx_asym.bin"
-#define ADF_4XXX_ADMIN_OBJ	"qat_4xxx_admin.bin"
+#define ADF_4XXX_FW		"/*(DEBLOBBED)*/"
+#define ADF_4XXX_MMP		"/*(DEBLOBBED)*/"
+#define ADF_4XXX_SYM_OBJ	"/*(DEBLOBBED)*/"
+#define ADF_4XXX_DC_OBJ		"/*(DEBLOBBED)*/"
+#define ADF_4XXX_ASYM_OBJ	"/*(DEBLOBBED)*/"
+#define ADF_4XXX_ADMIN_OBJ	"/*(DEBLOBBED)*/"
 
 /* qat_4xxx fuse bits are different from old GENs, redefine them */
 enum icp_qat_4xxx_slice_mask {

@@ -550,7 +550,7 @@ static const struct venus_resources msm8916_res = {
 	.vmem_size = 0,
 	.vmem_addr = 0,
 	.dma_mask = 0xddc00000 - 1,
-	.fwname = "qcom/venus-1.8/venus.mdt",
+	.fwname = "/*(DEBLOBBED)*/",
 };
 
 static const struct freq_tbl msm8996_freq_table[] = {
@@ -583,7 +583,7 @@ static const struct venus_resources msm8996_res = {
 	.vmem_size = 0,
 	.vmem_addr = 0,
 	.dma_mask = 0xddc00000 - 1,
-	.fwname = "qcom/venus-4.2/venus.mdt",
+	.fwname = "/*(DEBLOBBED)*/",
 };
 
 static const struct freq_tbl sdm660_freq_table[] = {
@@ -646,7 +646,7 @@ static const struct venus_resources sdm660_res = {
 	.cp_nonpixel_start = 0x1000000,
 	.cp_nonpixel_size = 0x28000000,
 	.dma_mask = 0xd9000000 - 1,
-	.fwname = "qcom/venus-4.4/venus.mdt",
+	.fwname = "/*(DEBLOBBED)*/",
 };
 
 static const struct freq_tbl sdm845_freq_table[] = {
@@ -690,7 +690,7 @@ static const struct venus_resources sdm845_res = {
 	.vmem_size = 0,
 	.vmem_addr = 0,
 	.dma_mask = 0xe0000000 - 1,
-	.fwname = "qcom/venus-5.2/venus.mdt",
+	.fwname = "/*(DEBLOBBED)*/",
 };
 
 static const struct venus_resources sdm845_res_v2 = {
@@ -719,7 +719,7 @@ static const struct venus_resources sdm845_res_v2 = {
 	.cp_size = 0x70800000,
 	.cp_nonpixel_start = 0x1000000,
 	.cp_nonpixel_size = 0x24800000,
-	.fwname = "qcom/venus-5.2/venus.mdt",
+	.fwname = "/*(DEBLOBBED)*/",
 };
 
 static const struct freq_tbl sc7180_freq_table[] = {
@@ -762,7 +762,7 @@ static const struct venus_resources sc7180_res = {
 	.vmem_size = 0,
 	.vmem_addr = 0,
 	.dma_mask = 0xe0000000 - 1,
-	.fwname = "qcom/venus-5.4/venus.mdt",
+	.fwname = "/*(DEBLOBBED)*/",
 };
 
 static const struct freq_tbl sm8250_freq_table[] = {
@@ -816,7 +816,7 @@ static const struct venus_resources sm8250_res = {
 	.vmem_size = 0,
 	.vmem_addr = 0,
 	.dma_mask = 0xe0000000 - 1,
-	.fwname = "qcom/vpu-1.0/venus.mdt",
+	.fwname = "/*(DEBLOBBED)*/",
 };
 
 static const struct freq_tbl sc7280_freq_table[] = {
@@ -873,7 +873,7 @@ static const struct venus_resources sc7280_res = {
 	.vmem_size = 0,
 	.vmem_addr = 0,
 	.dma_mask = 0xe0000000 - 1,
-	.fwname = "qcom/vpu-2.0/venus.mbn",
+	.fwname = "/*(DEBLOBBED)*/",
 };
 
 static const struct of_device_id venus_dt_match[] = {

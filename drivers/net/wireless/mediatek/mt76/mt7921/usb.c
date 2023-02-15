@@ -364,8 +364,7 @@ failed:
 #endif /* CONFIG_PM */
 
 MODULE_DEVICE_TABLE(usb, mt7921u_device_table);
-MODULE_FIRMWARE(MT7921_FIRMWARE_WM);
-MODULE_FIRMWARE(MT7921_ROM_PATCH);
+/*(DEBLOBBED)*/
 
 static struct usb_driver mt7921u_driver = {
 	.name		= KBUILD_MODNAME,

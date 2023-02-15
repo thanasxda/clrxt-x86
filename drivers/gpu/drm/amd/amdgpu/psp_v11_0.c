@@ -41,33 +41,7 @@
 #include "oss/osssys_4_0_offset.h"
 #include "oss/osssys_4_0_sh_mask.h"
 
-MODULE_FIRMWARE("amdgpu/vega20_sos.bin");
-MODULE_FIRMWARE("amdgpu/vega20_asd.bin");
-MODULE_FIRMWARE("amdgpu/vega20_ta.bin");
-MODULE_FIRMWARE("amdgpu/navi10_sos.bin");
-MODULE_FIRMWARE("amdgpu/navi10_asd.bin");
-MODULE_FIRMWARE("amdgpu/navi10_ta.bin");
-MODULE_FIRMWARE("amdgpu/navi14_sos.bin");
-MODULE_FIRMWARE("amdgpu/navi14_asd.bin");
-MODULE_FIRMWARE("amdgpu/navi14_ta.bin");
-MODULE_FIRMWARE("amdgpu/navi12_sos.bin");
-MODULE_FIRMWARE("amdgpu/navi12_asd.bin");
-MODULE_FIRMWARE("amdgpu/navi12_ta.bin");
-MODULE_FIRMWARE("amdgpu/navi12_cap.bin");
-MODULE_FIRMWARE("amdgpu/arcturus_sos.bin");
-MODULE_FIRMWARE("amdgpu/arcturus_asd.bin");
-MODULE_FIRMWARE("amdgpu/arcturus_ta.bin");
-MODULE_FIRMWARE("amdgpu/sienna_cichlid_sos.bin");
-MODULE_FIRMWARE("amdgpu/sienna_cichlid_ta.bin");
-MODULE_FIRMWARE("amdgpu/sienna_cichlid_cap.bin");
-MODULE_FIRMWARE("amdgpu/navy_flounder_sos.bin");
-MODULE_FIRMWARE("amdgpu/navy_flounder_ta.bin");
-MODULE_FIRMWARE("amdgpu/vangogh_asd.bin");
-MODULE_FIRMWARE("amdgpu/vangogh_toc.bin");
-MODULE_FIRMWARE("amdgpu/dimgrey_cavefish_sos.bin");
-MODULE_FIRMWARE("amdgpu/dimgrey_cavefish_ta.bin");
-MODULE_FIRMWARE("amdgpu/beige_goby_sos.bin");
-MODULE_FIRMWARE("amdgpu/beige_goby_ta.bin");
+/*(DEBLOBBED)*/
 
 /* address block */
 #define smnMP1_FIRMWARE_FLAGS		0x3010024
@@ -140,8 +114,8 @@ static int psp_v11_0_init_microcode(struct psp_context *psp)
 		err = psp_init_asd_microcode(psp, chip_name);
 		if (err)
 			return err;
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_ta.bin", chip_name);
-		err = request_firmware(&adev->psp.ta_fw, fw_name, adev->dev);
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+		err = reject_firmware(&adev->psp.ta_fw, fw_name, adev->dev);
 		if (err) {
 			release_firmware(adev->psp.ta_fw);
 			adev->psp.ta_fw = NULL;
@@ -179,8 +153,8 @@ static int psp_v11_0_init_microcode(struct psp_context *psp)
 		err = psp_init_asd_microcode(psp, chip_name);
 		if (err)
 			return err;
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_ta.bin", chip_name);
-		err = request_firmware(&adev->psp.ta_fw, fw_name, adev->dev);
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+		err = reject_firmware(&adev->psp.ta_fw, fw_name, adev->dev);
 		if (err) {
 			release_firmware(adev->psp.ta_fw);
 			adev->psp.ta_fw = NULL;

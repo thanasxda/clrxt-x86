@@ -67,7 +67,7 @@ int btmtk_setup_firmware_79xx(struct hci_dev *hdev, const char *fwname,
 	u32 section_num, dl_size, section_offset;
 	u8 cmd[64];
 
-	err = request_firmware(&fw, fwname, &hdev->dev);
+	err = reject_firmware(&fw, fwname, &hdev->dev);
 	if (err < 0) {
 		bt_dev_err(hdev, "Failed to load firmware file (%d)", err);
 		return err;
@@ -179,7 +179,7 @@ int btmtk_setup_firmware(struct hci_dev *hdev, const char *fwname,
 	int err, dlen;
 	u8 flag, param;
 
-	err = request_firmware(&fw, fwname, &hdev->dev);
+	err = reject_firmware(&fw, fwname, &hdev->dev);
 	if (err < 0) {
 		bt_dev_err(hdev, "Failed to load firmware file (%d)", err);
 		return err;
@@ -285,7 +285,4 @@ MODULE_AUTHOR("Mark Chen <mark-yw.chen@mediatek.com>");
 MODULE_DESCRIPTION("Bluetooth support for MediaTek devices ver " VERSION);
 MODULE_VERSION(VERSION);
 MODULE_LICENSE("GPL");
-MODULE_FIRMWARE(FIRMWARE_MT7622);
-MODULE_FIRMWARE(FIRMWARE_MT7663);
-MODULE_FIRMWARE(FIRMWARE_MT7668);
-MODULE_FIRMWARE(FIRMWARE_MT7961);
+/*(DEBLOBBED)*/

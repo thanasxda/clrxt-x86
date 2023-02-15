@@ -790,7 +790,7 @@
 &scp {
 	status = "okay";
 
-	firmware-name = "mediatek/mt8192/scp.img";
+	firmware-name = "/*(DEBLOBBED)*/";
 	memory-region = <&scp_mem_reserved>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&scp_pins>;

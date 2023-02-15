@@ -684,7 +684,7 @@ static void xhci_pci_shutdown(struct usb_hcd *hcd)
 
 static const struct xhci_driver_data reneses_data = {
 	.quirks  = XHCI_RENESAS_FW_QUIRK,
-	.firmware = "renesas_usb_fw.mem",
+	/*(DEBLOBBED)*/"/*(DEBLOBBED)*/",
 };
 
 /* PCI driver selection metadata; PCI hotplugging uses this */
@@ -707,7 +707,7 @@ MODULE_DEVICE_TABLE(pci, pci_ids);
  * load firmware, so don't encumber the xhci-pci driver with it.
  */
 #if IS_ENABLED(CONFIG_USB_XHCI_PCI_RENESAS)
-MODULE_FIRMWARE("renesas_usb_fw.mem");
+/*(DEBLOBBED)*/
 #endif
 
 /* pci driver glue; this is a "new style" PCI driver module */

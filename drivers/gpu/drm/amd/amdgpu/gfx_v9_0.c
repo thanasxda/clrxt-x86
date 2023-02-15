@@ -63,71 +63,7 @@
 #define mmGCEA_PROBE_MAP                        0x070c
 #define mmGCEA_PROBE_MAP_BASE_IDX               0
 
-MODULE_FIRMWARE("amdgpu/vega10_ce.bin");
-MODULE_FIRMWARE("amdgpu/vega10_pfp.bin");
-MODULE_FIRMWARE("amdgpu/vega10_me.bin");
-MODULE_FIRMWARE("amdgpu/vega10_mec.bin");
-MODULE_FIRMWARE("amdgpu/vega10_mec2.bin");
-MODULE_FIRMWARE("amdgpu/vega10_rlc.bin");
-
-MODULE_FIRMWARE("amdgpu/vega12_ce.bin");
-MODULE_FIRMWARE("amdgpu/vega12_pfp.bin");
-MODULE_FIRMWARE("amdgpu/vega12_me.bin");
-MODULE_FIRMWARE("amdgpu/vega12_mec.bin");
-MODULE_FIRMWARE("amdgpu/vega12_mec2.bin");
-MODULE_FIRMWARE("amdgpu/vega12_rlc.bin");
-
-MODULE_FIRMWARE("amdgpu/vega20_ce.bin");
-MODULE_FIRMWARE("amdgpu/vega20_pfp.bin");
-MODULE_FIRMWARE("amdgpu/vega20_me.bin");
-MODULE_FIRMWARE("amdgpu/vega20_mec.bin");
-MODULE_FIRMWARE("amdgpu/vega20_mec2.bin");
-MODULE_FIRMWARE("amdgpu/vega20_rlc.bin");
-
-MODULE_FIRMWARE("amdgpu/raven_ce.bin");
-MODULE_FIRMWARE("amdgpu/raven_pfp.bin");
-MODULE_FIRMWARE("amdgpu/raven_me.bin");
-MODULE_FIRMWARE("amdgpu/raven_mec.bin");
-MODULE_FIRMWARE("amdgpu/raven_mec2.bin");
-MODULE_FIRMWARE("amdgpu/raven_rlc.bin");
-
-MODULE_FIRMWARE("amdgpu/picasso_ce.bin");
-MODULE_FIRMWARE("amdgpu/picasso_pfp.bin");
-MODULE_FIRMWARE("amdgpu/picasso_me.bin");
-MODULE_FIRMWARE("amdgpu/picasso_mec.bin");
-MODULE_FIRMWARE("amdgpu/picasso_mec2.bin");
-MODULE_FIRMWARE("amdgpu/picasso_rlc.bin");
-MODULE_FIRMWARE("amdgpu/picasso_rlc_am4.bin");
-
-MODULE_FIRMWARE("amdgpu/raven2_ce.bin");
-MODULE_FIRMWARE("amdgpu/raven2_pfp.bin");
-MODULE_FIRMWARE("amdgpu/raven2_me.bin");
-MODULE_FIRMWARE("amdgpu/raven2_mec.bin");
-MODULE_FIRMWARE("amdgpu/raven2_mec2.bin");
-MODULE_FIRMWARE("amdgpu/raven2_rlc.bin");
-MODULE_FIRMWARE("amdgpu/raven_kicker_rlc.bin");
-
-MODULE_FIRMWARE("amdgpu/arcturus_mec.bin");
-MODULE_FIRMWARE("amdgpu/arcturus_rlc.bin");
-
-MODULE_FIRMWARE("amdgpu/renoir_ce.bin");
-MODULE_FIRMWARE("amdgpu/renoir_pfp.bin");
-MODULE_FIRMWARE("amdgpu/renoir_me.bin");
-MODULE_FIRMWARE("amdgpu/renoir_mec.bin");
-MODULE_FIRMWARE("amdgpu/renoir_rlc.bin");
-
-MODULE_FIRMWARE("amdgpu/green_sardine_ce.bin");
-MODULE_FIRMWARE("amdgpu/green_sardine_pfp.bin");
-MODULE_FIRMWARE("amdgpu/green_sardine_me.bin");
-MODULE_FIRMWARE("amdgpu/green_sardine_mec.bin");
-MODULE_FIRMWARE("amdgpu/green_sardine_mec2.bin");
-MODULE_FIRMWARE("amdgpu/green_sardine_rlc.bin");
-
-MODULE_FIRMWARE("amdgpu/aldebaran_mec.bin");
-MODULE_FIRMWARE("amdgpu/aldebaran_mec2.bin");
-MODULE_FIRMWARE("amdgpu/aldebaran_rlc.bin");
-MODULE_FIRMWARE("amdgpu/aldebaran_sjt_mec.bin");
-MODULE_FIRMWARE("amdgpu/aldebaran_sjt_mec2.bin");
+/*(DEBLOBBED)*/
 
 #define mmTCP_CHAN_STEER_0_ARCT								0x0b03
 #define mmTCP_CHAN_STEER_0_ARCT_BASE_IDX							0
@@ -1253,8 +1189,8 @@ static int gfx_v9_0_init_cp_gfx_microcode(struct amdgpu_device *adev,
 	char fw_name[30];
 	int err;
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_pfp.bin", chip_name);
-	err = request_firmware(&adev->gfx.pfp_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+	err = reject_firmware(&adev->gfx.pfp_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gfx.pfp_fw);
@@ -1262,8 +1198,8 @@ static int gfx_v9_0_init_cp_gfx_microcode(struct amdgpu_device *adev,
 		goto out;
 	amdgpu_gfx_cp_init_microcode(adev, AMDGPU_UCODE_ID_CP_PFP);
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_me.bin", chip_name);
-	err = request_firmware(&adev->gfx.me_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+	err = reject_firmware(&adev->gfx.me_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gfx.me_fw);
@@ -1271,8 +1207,8 @@ static int gfx_v9_0_init_cp_gfx_microcode(struct amdgpu_device *adev,
 		goto out;
 	amdgpu_gfx_cp_init_microcode(adev, AMDGPU_UCODE_ID_CP_ME);
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_ce.bin", chip_name);
-	err = request_firmware(&adev->gfx.ce_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+	err = reject_firmware(&adev->gfx.ce_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gfx.ce_fw);
@@ -1305,27 +1241,20 @@ static int gfx_v9_0_init_rlc_microcode(struct amdgpu_device *adev,
 	uint16_t version_minor;
 	uint32_t smu_version;
 
-	/*
-	 * For Picasso && AM4 SOCKET board, we use picasso_rlc_am4.bin
-	 * instead of picasso_rlc.bin.
-	 * Judgment method:
-	 * PCO AM4: revision >= 0xC8 && revision <= 0xCF
-	 *          or revision >= 0xD8 && revision <= 0xDF
-	 * otherwise is PCO FP5
-	 */
+	/*(DEBLOBBED)*/
 	if (!strcmp(chip_name, "picasso") &&
 		(((adev->pdev->revision >= 0xC8) && (adev->pdev->revision <= 0xCF)) ||
 		((adev->pdev->revision >= 0xD8) && (adev->pdev->revision <= 0xDF))))
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_rlc_am4.bin", chip_name);
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
 	else if (!strcmp(chip_name, "raven") && (amdgpu_pm_load_smu_firmware(adev, &smu_version) == 0) &&
 		(smu_version >= 0x41e2b))
 		/**
 		*SMC is loaded by SBIOS on APU and it's able to get the SMU version directly.
 		*/
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_kicker_rlc.bin", chip_name);
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
 	else
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_rlc.bin", chip_name);
-	err = request_firmware(&adev->gfx.rlc_fw, fw_name, adev->dev);
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+	err = reject_firmware(&adev->gfx.rlc_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gfx.rlc_fw);
@@ -1364,11 +1293,11 @@ static int gfx_v9_0_init_cp_compute_microcode(struct amdgpu_device *adev,
 	int err;
 
 	if (amdgpu_sriov_vf(adev) && (adev->asic_type == CHIP_ALDEBARAN))
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_sjt_mec.bin", chip_name);
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
 	else
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mec.bin", chip_name);
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
 
-	err = request_firmware(&adev->gfx.mec_fw, fw_name, adev->dev);
+	err = reject_firmware(&adev->gfx.mec_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gfx.mec_fw);
@@ -1379,11 +1308,11 @@ static int gfx_v9_0_init_cp_compute_microcode(struct amdgpu_device *adev,
 
 	if (gfx_v9_0_load_mec2_fw_bin_support(adev)) {
 		if (amdgpu_sriov_vf(adev) && (adev->asic_type == CHIP_ALDEBARAN))
-			snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_sjt_mec2.bin", chip_name);
+			snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
 		else
-			snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mec2.bin", chip_name);
+			snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
 
-		err = request_firmware(&adev->gfx.mec2_fw, fw_name, adev->dev);
+		err = reject_firmware(&adev->gfx.mec2_fw, fw_name, adev->dev);
 		if (!err) {
 			err = amdgpu_ucode_validate(adev->gfx.mec2_fw);
 			if (err)

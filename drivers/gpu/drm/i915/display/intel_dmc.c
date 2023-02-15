@@ -43,10 +43,7 @@
 #define DMC_VERSION_MINOR(version)	((version) & 0xffff)
 
 #define DMC_PATH(platform, major, minor) \
-	"i915/"				 \
-	__stringify(platform) "_dmc_ver" \
-	__stringify(major) "_"		 \
-	__stringify(minor) ".bin"
+	"/*(DEBLOBBED)*/"
 
 #define DISPLAY_VER13_DMC_MAX_FW_SIZE	0x20000
 
@@ -54,52 +51,52 @@
 
 #define DG2_DMC_PATH			DMC_PATH(dg2, 2, 07)
 #define DG2_DMC_VERSION_REQUIRED	DMC_VERSION(2, 07)
-MODULE_FIRMWARE(DG2_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define ADLP_DMC_PATH			DMC_PATH(adlp, 2, 16)
 #define ADLP_DMC_VERSION_REQUIRED	DMC_VERSION(2, 16)
-MODULE_FIRMWARE(ADLP_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define ADLS_DMC_PATH			DMC_PATH(adls, 2, 01)
 #define ADLS_DMC_VERSION_REQUIRED	DMC_VERSION(2, 1)
-MODULE_FIRMWARE(ADLS_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define DG1_DMC_PATH			DMC_PATH(dg1, 2, 02)
 #define DG1_DMC_VERSION_REQUIRED	DMC_VERSION(2, 2)
-MODULE_FIRMWARE(DG1_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define RKL_DMC_PATH			DMC_PATH(rkl, 2, 03)
 #define RKL_DMC_VERSION_REQUIRED	DMC_VERSION(2, 3)
-MODULE_FIRMWARE(RKL_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define TGL_DMC_PATH			DMC_PATH(tgl, 2, 12)
 #define TGL_DMC_VERSION_REQUIRED	DMC_VERSION(2, 12)
-MODULE_FIRMWARE(TGL_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define ICL_DMC_PATH			DMC_PATH(icl, 1, 09)
 #define ICL_DMC_VERSION_REQUIRED	DMC_VERSION(1, 9)
 #define ICL_DMC_MAX_FW_SIZE		0x6000
-MODULE_FIRMWARE(ICL_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define GLK_DMC_PATH			DMC_PATH(glk, 1, 04)
 #define GLK_DMC_VERSION_REQUIRED	DMC_VERSION(1, 4)
 #define GLK_DMC_MAX_FW_SIZE		0x4000
-MODULE_FIRMWARE(GLK_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define KBL_DMC_PATH			DMC_PATH(kbl, 1, 04)
 #define KBL_DMC_VERSION_REQUIRED	DMC_VERSION(1, 4)
 #define KBL_DMC_MAX_FW_SIZE		BXT_DMC_MAX_FW_SIZE
-MODULE_FIRMWARE(KBL_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define SKL_DMC_PATH			DMC_PATH(skl, 1, 27)
 #define SKL_DMC_VERSION_REQUIRED	DMC_VERSION(1, 27)
 #define SKL_DMC_MAX_FW_SIZE		BXT_DMC_MAX_FW_SIZE
-MODULE_FIRMWARE(SKL_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define BXT_DMC_PATH			DMC_PATH(bxt, 1, 07)
 #define BXT_DMC_VERSION_REQUIRED	DMC_VERSION(1, 7)
 #define BXT_DMC_MAX_FW_SIZE		0x3000
-MODULE_FIRMWARE(BXT_DMC_PATH);
+/*(DEBLOBBED)*/
 
 #define DMC_DEFAULT_FW_OFFSET		0xFFFFFFFF
 #define PACKAGE_MAX_FW_INFO_ENTRIES	20
@@ -852,7 +849,7 @@ static void dmc_load_work_fn(struct work_struct *work)
 	dev_priv = container_of(work, typeof(*dev_priv), display.dmc.work);
 	dmc = &dev_priv->display.dmc;
 
-	request_firmware(&fw, dev_priv->display.dmc.fw_path, dev_priv->drm.dev);
+	reject_firmware(&fw, dev_priv->display.dmc.fw_path, dev_priv->drm.dev);
 	parse_dmc_fw(dev_priv, fw);
 
 	if (intel_dmc_has_payload(dev_priv)) {

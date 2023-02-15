@@ -20,7 +20,7 @@
 };
 
 &adsp_pil {
-	firmware-name = "qcom/msm8996/natrium/adsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &blsp2_i2c6 {
@@ -69,13 +69,13 @@
 
 &gpu {
 	zap-shader {
-		firmware-name = "qcom/msm8996/natrium/a530_zap.mbn";
+		firmware-name = "/*(DEBLOBBED)*/";
 	};
 };
 
 &mss_pil {
-	firmware-name = "qcom/msm8996/natrium/mba.mbn",
-			"qcom/msm8996/natrium/modem.mbn";
+	firmware-name = "/*(DEBLOBBED)*/",
+			"/*(DEBLOBBED)*/";
 };
 
 &pmi8994_wled {
@@ -100,7 +100,7 @@
 };
 
 &slpi_pil {
-	firmware-name = "qcom/msm8996/natrium/slpi.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &sound {
@@ -161,7 +161,7 @@
 };
 
 &venus {
-	firmware-name = "qcom/msm8996/natrium/venus.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &rpm_requests {

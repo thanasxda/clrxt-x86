@@ -885,7 +885,7 @@ static int mxl692_init(struct dvb_frontend *fe)
 	if (status)
 		goto err;
 
-	status = request_firmware(&firmware, MXL692_FIRMWARE, &client->dev);
+	status = reject_firmware(&firmware, MXL692_FIRMWARE, &client->dev);
 	if (status) {
 		dev_dbg(&dev->i2c_client->dev, "firmware missing? %s\n",
 			MXL692_FIRMWARE);
@@ -1365,5 +1365,5 @@ module_i2c_driver(mxl692_driver);
 
 MODULE_AUTHOR("Brad Love <brad@nextdimension.cc>");
 MODULE_DESCRIPTION("MaxLinear MxL692 demodulator/tuner driver");
-MODULE_FIRMWARE(MXL692_FIRMWARE);
+/*(DEBLOBBED)*/
 MODULE_LICENSE("GPL");

@@ -46,7 +46,7 @@ static int vpu_core_load_firmware(struct vpu_core *core)
 		return -EINVAL;
 	}
 
-	ret = request_firmware(&pfw, core->res->fwname, core->dev);
+	ret = reject_firmware(&pfw, core->res->fwname, core->dev);
 	dev_dbg(core->dev, "request_firmware %s : %d\n", core->res->fwname, ret);
 	if (ret) {
 		dev_err(core->dev, "request firmware %s failed, ret = %d\n",
@@ -828,7 +828,7 @@ static const struct dev_pm_ops vpu_core_pm_ops = {
 
 static struct vpu_core_resources imx8q_enc = {
 	.type = VPU_CORE_TYPE_ENC,
-	.fwname = "vpu/vpu_fw_imx8_enc.bin",
+	.fwname = "/*(DEBLOBBED)*/",
 	.stride = 16,
 	.max_width = 1920,
 	.max_height = 1920,
@@ -843,7 +843,7 @@ static struct vpu_core_resources imx8q_enc = {
 
 static struct vpu_core_resources imx8q_dec = {
 	.type = VPU_CORE_TYPE_DEC,
-	.fwname = "vpu/vpu_fw_imx8_dec.bin",
+	.fwname = "/*(DEBLOBBED)*/",
 	.stride = 256,
 	.max_width = 8188,
 	.max_height = 8188,

@@ -56,10 +56,7 @@
 #undef pr_info
 #undef pr_debug
 
-MODULE_FIRMWARE("amdgpu/aldebaran_smc.bin");
-MODULE_FIRMWARE("amdgpu/smu_13_0_0.bin");
-MODULE_FIRMWARE("amdgpu/smu_13_0_7.bin");
-MODULE_FIRMWARE("amdgpu/smu_13_0_10.bin");
+/*(DEBLOBBED)*/
 
 #define mmMP1_SMN_C2PMSG_66                                                                            0x0282
 #define mmMP1_SMN_C2PMSG_66_BASE_IDX                                                                   0
@@ -109,9 +106,9 @@ int smu_v13_0_init_microcode(struct smu_context *smu)
 		chip_name = ucode_prefix;
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s.bin", chip_name);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
 
-	err = request_firmware(&adev->pm.fw, fw_name, adev->dev);
+	err = reject_firmware(&adev->pm.fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->pm.fw);

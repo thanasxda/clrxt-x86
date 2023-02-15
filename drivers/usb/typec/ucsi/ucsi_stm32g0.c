@@ -666,7 +666,7 @@ static int ucsi_stm32g0_probe(struct i2c_client *client, const struct i2c_device
 		 * Asynchronously flash (e.g. bootloader mode) or update the running firmware,
 		 * not to hang the boot process
 		 */
-		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT, g0->fw_name, g0->dev,
+		ret = reject_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT, g0->fw_name, g0->dev,
 					      GFP_KERNEL, g0->ucsi, ucsi_stm32g0_fw_cb);
 		if (ret < 0) {
 			dev_err_probe(dev, ret, "firmware request failed\n");

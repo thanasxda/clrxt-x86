@@ -106,7 +106,7 @@
 
 &adsp_pas {
 	status = "okay";
-	firmware-name = "qcom/sdm845/axolotl/adsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &apps_rsc {
@@ -407,7 +407,7 @@
 
 &cdsp_pas {
 	status = "okay";
-	firmware-name = "qcom/sdm845/axolotl/cdsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &dsi0 {
@@ -465,7 +465,7 @@
 
 	zap-shader {
 		memory-region = <&gpu_mem>;
-		firmware-name = "qcom/sdm845/axolotl/a630_zap.mbn";
+		firmware-name = "/*(DEBLOBBED)*/";
 	};
 };
 
@@ -497,7 +497,7 @@
 	status = "okay";
 
 	memory-region = <&ipa_fw_mem>;
-	firmware-name = "qcom/sdm845/axolotl/ipa_fws.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &mdss {
@@ -506,7 +506,7 @@
 
 &mss_pil {
 	status = "okay";
-	firmware-name = "qcom/sdm845/axolotl/mba.mbn", "qcom/sdm845/axolotl/modem.mbn";
+	firmware-name = "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/";
 };
 
 &pm8998_gpio {
@@ -749,7 +749,7 @@
 
 &venus {
 	status = "okay";
-	firmware-name = "qcom/sdm845/axolotl/venus.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &wifi {

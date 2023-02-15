@@ -71,7 +71,7 @@ static struct snd_soc_acpi_mach avs_skl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(0),
 		},
-		.tplg_filename = "rt286-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "10508825",
@@ -79,7 +79,7 @@ static struct snd_soc_acpi_mach avs_skl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(1),
 		},
-		.tplg_filename = "nau8825-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "INT343B",
@@ -87,7 +87,7 @@ static struct snd_soc_acpi_mach avs_skl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(0),
 		},
-		.tplg_filename = "ssm4567-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "MX98357A",
@@ -95,7 +95,7 @@ static struct snd_soc_acpi_mach avs_skl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(0),
 		},
-		.tplg_filename = "max98357a-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{},
 };
@@ -109,7 +109,7 @@ static struct snd_soc_acpi_mach avs_kbl_i2s_machines[] = {
 		},
 		.quirk_data = &kbl_dmi_table,
 		.machine_quirk = dmi_match_quirk,
-		.tplg_filename = "rt286-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "INT343A",
@@ -119,7 +119,7 @@ static struct snd_soc_acpi_mach avs_kbl_i2s_machines[] = {
 		},
 		.quirk_data = &kblr_dmi_table,
 		.machine_quirk = dmi_match_quirk,
-		.tplg_filename = "rt298-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "MX98373",
@@ -127,7 +127,7 @@ static struct snd_soc_acpi_mach avs_kbl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(0),
 		},
-		.tplg_filename = "max98373-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "DLGS7219",
@@ -135,7 +135,7 @@ static struct snd_soc_acpi_mach avs_kbl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(1),
 		},
-		.tplg_filename = "da7219-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{},
 };
@@ -147,7 +147,7 @@ static struct snd_soc_acpi_mach avs_apl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(5),
 		},
-		.tplg_filename = "rt298-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "INT34C3",
@@ -156,7 +156,7 @@ static struct snd_soc_acpi_mach avs_apl_i2s_machines[] = {
 			.i2s_link_mask = AVS_SSP_RANGE(0, 5),
 		},
 		.pdata = (unsigned long[]){ 0, 0, 0x14, 0, 0, 0 }, /* SSP2 TDMs */
-		.tplg_filename = "tdf8532-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "MX98357A",
@@ -164,7 +164,7 @@ static struct snd_soc_acpi_mach avs_apl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(5),
 		},
-		.tplg_filename = "max98357a-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "DLGS7219",
@@ -172,7 +172,7 @@ static struct snd_soc_acpi_mach avs_apl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(1),
 		},
-		.tplg_filename = "da7219-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{},
 };
@@ -184,7 +184,7 @@ static struct snd_soc_acpi_mach avs_gml_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(2),
 		},
-		.tplg_filename = "rt298-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{},
 };
@@ -195,42 +195,42 @@ static struct snd_soc_acpi_mach avs_test_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(0),
 		},
-		.tplg_filename = "i2s-test-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.drv_name = "avs_i2s_test",
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(1),
 		},
-		.tplg_filename = "i2s-test-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.drv_name = "avs_i2s_test",
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(2),
 		},
-		.tplg_filename = "i2s-test-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.drv_name = "avs_i2s_test",
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(3),
 		},
-		.tplg_filename = "i2s-test-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.drv_name = "avs_i2s_test",
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(4),
 		},
-		.tplg_filename = "i2s-test-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.drv_name = "avs_i2s_test",
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(5),
 		},
-		.tplg_filename = "i2s-test-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	/* no NULL terminator, as we depend on ARRAY SIZE due to .id == NULL */
 };
@@ -297,7 +297,7 @@ static int avs_register_dmic_board(struct avs_dev *adev)
 	if (ret < 0)
 		return ret;
 
-	mach.tplg_filename = "dmic-tplg.bin";
+	mach.tplg_filename = "/*(DEBLOBBED)*/";
 	mach.mach_params.platform = "dmic-platform";
 
 	board = platform_device_register_data(NULL, "avs_dmic", PLATFORM_DEVID_NONE,
@@ -427,7 +427,7 @@ static int avs_register_hda_board(struct avs_dev *adev, struct hda_codec *codec)
 
 	mach.pdata = codec;
 	mach.mach_params.platform = pname;
-	mach.tplg_filename = devm_kasprintf(adev->dev, GFP_KERNEL, "hda-%08x-tplg.bin",
+	mach.tplg_filename = devm_kasprintf(adev->dev, GFP_KERNEL, "/*(DEBLOBBED)*/",
 					    hdev->vendor_id);
 	if (!mach.tplg_filename)
 		return -ENOMEM;
