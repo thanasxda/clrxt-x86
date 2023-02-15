@@ -748,6 +748,9 @@ void submit_bio_noacct(struct bio *bio)
 			status = BLK_STS_OK;
 			goto end_io;
 		}
+
+		if (bio->bi_opf & REQ_PREFLUSH)
+			current->fsync_count++;
 	}
 
 	if (!test_bit(QUEUE_FLAG_POLL, &q->queue_flags))
