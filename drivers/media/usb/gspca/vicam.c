@@ -24,12 +24,12 @@
 #include <linux/ihex.h>
 #include "gspca.h"
 
-#define VICAM_FIRMWARE "/*(DEBLOBBED)*/"
+#define VICAM_FIRMWARE "vicam/firmware.fw"
 
 MODULE_AUTHOR("Hans de Goede <hdegoede@redhat.com>");
 MODULE_DESCRIPTION("GSPCA ViCam USB Camera Driver");
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(VICAM_FIRMWARE);
 
 struct sd {
 	struct gspca_dev gspca_dev;	/* !! must be the first item */
@@ -228,10 +228,10 @@ static int sd_init(struct gspca_dev *gspca_dev)
 	const struct firmware *fw;
 	u8 *firmware_buf;
 
-	ret = reject_firmware(&fw, VICAM_FIRMWARE,
+	ret = request_ihex_firmware(&fw, VICAM_FIRMWARE,
 				    &gspca_dev->dev->dev);
 	if (ret) {
-		pr_err("Failed to load \"/*(DEBLOBBED)*/\": %d\n", ret);
+		pr_err("Failed to load \"vicam/firmware.fw\": %d\n", ret);
 		return ret;
 	}
 

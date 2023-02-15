@@ -2930,8 +2930,8 @@ int psp_init_asd_microcode(struct psp_context *psp,
 		return -EINVAL;
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
-	err = reject_firmware(&adev->psp.asd_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_asd.bin", chip_name);
+	err = request_firmware(&adev->psp.asd_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 
@@ -2966,8 +2966,8 @@ int psp_init_toc_microcode(struct psp_context *psp,
 		return -EINVAL;
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
-	err = reject_firmware(&adev->psp.toc_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_toc.bin", chip_name);
+	err = request_firmware(&adev->psp.toc_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 
@@ -3135,8 +3135,8 @@ int psp_init_sos_microcode(struct psp_context *psp,
 		return -EINVAL;
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
-	err = reject_firmware(&adev->psp.sos_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_sos.bin", chip_name);
+	err = request_firmware(&adev->psp.sos_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 
@@ -3295,8 +3295,8 @@ int psp_init_ta_microcode(struct psp_context *psp,
 		return -EINVAL;
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
-	err = reject_firmware(&adev->psp.ta_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_ta.bin", chip_name);
+	err = request_firmware(&adev->psp.ta_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 
@@ -3353,8 +3353,8 @@ int psp_init_cap_microcode(struct psp_context *psp,
 		return -EINVAL;
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
-	err = reject_firmware(&adev->psp.cap_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_cap.bin", chip_name);
+	err = request_firmware(&adev->psp.cap_fw, fw_name, adev->dev);
 	if (err) {
 		dev_warn(adev->dev, "cap microcode does not exist, skip\n");
 		err = 0;
@@ -3446,8 +3446,8 @@ static ssize_t psp_usbc_pd_fw_sysfs_write(struct device *dev,
 	if (!drm_dev_enter(ddev, &idx))
 		return -ENODEV;
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", buf);
-	ret = reject_firmware(&usbc_pd_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s", buf);
+	ret = request_firmware(&usbc_pd_fw, fw_name, adev->dev);
 	if (ret)
 		goto fail;
 

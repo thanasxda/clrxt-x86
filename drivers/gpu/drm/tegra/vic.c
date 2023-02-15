@@ -415,7 +415,7 @@ static const struct tegra_drm_client_ops vic_ops = {
 	.can_use_memory_ctx = vic_can_use_memory_ctx,
 };
 
-#define NVIDIA_TEGRA_124_VIC_FIRMWARE "/*(DEBLOBBED)*/"
+#define NVIDIA_TEGRA_124_VIC_FIRMWARE "nvidia/tegra124/vic03_ucode.bin"
 
 static const struct vic_config vic_t124_config = {
 	.firmware = NVIDIA_TEGRA_124_VIC_FIRMWARE,
@@ -423,7 +423,7 @@ static const struct vic_config vic_t124_config = {
 	.supports_sid = false,
 };
 
-#define NVIDIA_TEGRA_210_VIC_FIRMWARE "/*(DEBLOBBED)*/"
+#define NVIDIA_TEGRA_210_VIC_FIRMWARE "nvidia/tegra210/vic04_ucode.bin"
 
 static const struct vic_config vic_t210_config = {
 	.firmware = NVIDIA_TEGRA_210_VIC_FIRMWARE,
@@ -431,7 +431,7 @@ static const struct vic_config vic_t210_config = {
 	.supports_sid = false,
 };
 
-#define NVIDIA_TEGRA_186_VIC_FIRMWARE "/*(DEBLOBBED)*/"
+#define NVIDIA_TEGRA_186_VIC_FIRMWARE "nvidia/tegra186/vic04_ucode.bin"
 
 static const struct vic_config vic_t186_config = {
 	.firmware = NVIDIA_TEGRA_186_VIC_FIRMWARE,
@@ -439,7 +439,7 @@ static const struct vic_config vic_t186_config = {
 	.supports_sid = true,
 };
 
-#define NVIDIA_TEGRA_194_VIC_FIRMWARE "/*(DEBLOBBED)*/"
+#define NVIDIA_TEGRA_194_VIC_FIRMWARE "nvidia/tegra194/vic.bin"
 
 static const struct vic_config vic_t194_config = {
 	.firmware = NVIDIA_TEGRA_194_VIC_FIRMWARE,
@@ -447,7 +447,7 @@ static const struct vic_config vic_t194_config = {
 	.supports_sid = true,
 };
 
-#define NVIDIA_TEGRA_234_VIC_FIRMWARE "/*(DEBLOBBED)*/"
+#define NVIDIA_TEGRA_234_VIC_FIRMWARE "nvidia/tegra234/vic.bin"
 
 static const struct vic_config vic_t234_config = {
 	.firmware = NVIDIA_TEGRA_234_VIC_FIRMWARE,
@@ -581,17 +581,17 @@ struct platform_driver tegra_vic_driver = {
 };
 
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_124_SOC)
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(NVIDIA_TEGRA_124_VIC_FIRMWARE);
 #endif
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC)
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(NVIDIA_TEGRA_210_VIC_FIRMWARE);
 #endif
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_186_SOC)
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(NVIDIA_TEGRA_186_VIC_FIRMWARE);
 #endif
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_194_SOC)
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(NVIDIA_TEGRA_194_VIC_FIRMWARE);
 #endif
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_234_SOC)
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(NVIDIA_TEGRA_234_VIC_FIRMWARE);
 #endif

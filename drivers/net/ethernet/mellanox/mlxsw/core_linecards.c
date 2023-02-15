@@ -1418,7 +1418,7 @@ mlxsw_linecard_types_file_parse(struct mlxsw_linecard_types_info *types_info)
 }
 
 #define MLXSW_LINECARDS_INI_BUNDLE_FILENAME_FMT \
-	"/*(DEBLOBBED)*/"
+	"mellanox/lc_ini_bundle_%u_%u.bin"
 #define MLXSW_LINECARDS_INI_BUNDLE_FILENAME_LEN \
 	(sizeof(MLXSW_LINECARDS_INI_BUNDLE_FILENAME_FMT) + 4)
 
@@ -1436,7 +1436,7 @@ static int mlxsw_linecard_types_init(struct mlxsw_core *mlxsw_core,
 		       rev->minor, rev->subminor);
 	WARN_ON(err >= sizeof(filename));
 
-	err = reject_firmware_direct(&firmware, filename,
+	err = request_firmware_direct(&firmware, filename,
 				      linecards->bus_info->dev);
 	if (err) {
 		dev_warn(linecards->bus_info->dev, "Could not request linecards INI file \"%s\", provisioning will not be possible\n",

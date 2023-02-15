@@ -3851,7 +3851,10 @@ static int terratec_active_radio_upgrade(struct bttv *btv)
 /*
  * minimal bootstrap for the WinTV/PVR -- upload altera firmware.
  *
- * /*(DEBLOBBED)*/
+ * The hcwamc.rbf firmware file is on the Hauppauge driver CD.  Have
+ * a look at Pvr/pvr45xxx.EXE (self-extracting zip archive, can be
+ * unpacked with unzip).
+ */
 #define PVR_GPIO_DELAY		10
 
 #define BTTV_ALT_DATA		0x000001
@@ -3900,7 +3903,7 @@ static int pvr_boot(struct bttv *btv)
 	const struct firmware *fw_entry;
 	int rc;
 
-	rc = reject_firmware(&fw_entry, "/*(DEBLOBBED)*/", &btv->c.pci->dev);
+	rc = request_firmware(&fw_entry, "hcwamc.rbf", &btv->c.pci->dev);
 	if (rc != 0) {
 		pr_warn("%d: no altera firmware [via hotplug]\n", btv->c.nr);
 		return rc;

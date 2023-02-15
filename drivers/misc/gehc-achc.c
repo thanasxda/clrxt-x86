@@ -388,7 +388,7 @@ static int ezport_firmware_load(struct spi_device *spi, const char *fwname)
 	const struct firmware *fw;
 	int ret;
 
-	ret = reject_firmware(&fw, fwname, &spi->dev);
+	ret = request_firmware(&fw, fwname, &spi->dev);
 	if (ret) {
 		dev_err(&spi->dev, "Could not get firmware: %d\n", ret);
 		return ret;
@@ -443,7 +443,7 @@ static ssize_t update_firmware_store(struct device *dev, struct device_attribute
 		return -EINVAL;
 
 	mutex_lock(&achc->device_lock);
-	ret = ezport_flash(achc->ezport, achc->reset, "/*(DEBLOBBED)*/");
+	ret = ezport_flash(achc->ezport, achc->reset, "achc.bin");
 	mutex_unlock(&achc->device_lock);
 
 	if (ret < 0)

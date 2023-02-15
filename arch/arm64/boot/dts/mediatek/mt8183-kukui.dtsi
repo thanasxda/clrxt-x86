@@ -979,7 +979,7 @@
 		compatible = "qcom,qca6174-bt";
 		enable-gpios = <&pio 120 0>;
 		clocks = <&clk32k>;
-		firmware-name = "/*(DEBLOBBED)*/";
+		firmware-name = "nvm_00440302_i2s.bin";
 	};
 };
 

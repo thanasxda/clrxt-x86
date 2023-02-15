@@ -2515,7 +2515,7 @@ MODULE_AUTHOR(DRV_PROJECT);
 MODULE_VERSION(DRV_VERSION);
 MODULE_DESCRIPTION("Ralink RT73 USB Wireless LAN driver.");
 MODULE_DEVICE_TABLE(usb, rt73usb_device_table);
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(FIRMWARE_RT2571);
 MODULE_LICENSE("GPL");
 
 static int rt73usb_probe(struct usb_interface *usb_intf,

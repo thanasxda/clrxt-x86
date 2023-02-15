@@ -721,7 +721,7 @@ static int iqs5xx_fw_file_parse(struct i2c_client *client,
 	 * Because the ihex2fw tool tolerates neither (1) nor (2), the slightly
 	 * nonstandard ihex firmware is parsed directly by the driver.
 	 */
-	error = reject_firmware(&fw, fw_file, &client->dev);
+	error = request_firmware(&fw, fw_file, &client->dev);
 	if (error) {
 		dev_err(&client->dev, "Failed to request firmware %s: %d\n",
 			fw_file, error);

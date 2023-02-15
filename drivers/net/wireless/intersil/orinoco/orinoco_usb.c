@@ -102,7 +102,7 @@ static struct ez_usb_fw firmware = {
 #define err(format, arg...) \
 	do { printk(KERN_ERR PFX format "\n", ## arg); } while (0)
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("orinoco_ezusb_fw");
 
 /*
  * Under some conditions, the card gets stuck and stops paying attention
@@ -1699,7 +1699,7 @@ static int ezusb_probe(struct usb_interface *interface,
 		goto error;
 	}
 
-	if (reject_firmware(&fw_entry, "/*(DEBLOBBED)*/",
+	if (request_firmware(&fw_entry, "orinoco_ezusb_fw",
 			     &interface->dev) == 0) {
 		firmware.size = fw_entry->size;
 		firmware.code = fw_entry->data;

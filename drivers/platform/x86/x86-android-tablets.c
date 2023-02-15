@@ -657,7 +657,7 @@ static const struct property_entry chuwi_hi8_gsl1680_props[] = {
 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1140),
 	PROPERTY_ENTRY_BOOL("touchscreen-swapped-x-y"),
 	PROPERTY_ENTRY_BOOL("silead,home-button"),
-	PROPERTY_ENTRY_STRING("firmware-name", "/*(DEBLOBBED)*/"),
+	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-chuwi-hi8.fw"),
 	{ }
 };
 
@@ -1343,7 +1343,7 @@ static const struct software_node whitelabel_tm800a550l_accel_node = {
 };
 
 static const struct property_entry whitelabel_tm800a550l_goodix_props[] = {
-	PROPERTY_ENTRY_STRING("firmware-name", "/*(DEBLOBBED)*/"),
+	PROPERTY_ENTRY_STRING("firmware-name", "gt912-tm800a550l.fw"),
 	PROPERTY_ENTRY_STRING("goodix,config-name", "gt912-tm800a550l.cfg"),
 	PROPERTY_ENTRY_U32("goodix,main-clk", 54),
 	{ }

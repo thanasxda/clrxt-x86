@@ -407,5 +407,5 @@
 };
 
 &wkup_m3_ipc {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "am335x-bone-scale-data.bin";
 };

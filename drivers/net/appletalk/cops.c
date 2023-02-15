@@ -76,7 +76,8 @@ static const char *version =
 #include <asm/dma.h>
 
 #include "cops.h"		/* Our Stuff */
-/*(DEBLOBBED)*/
+#include "cops_ltdrv.h"		/* Firmware code for Tangent type cards. */
+#include "cops_ffdrv.h"		/* Firmware code for Dayna type cards. */
 
 /*
  *      The name of the card. Is used for messages and in the requests for
@@ -522,16 +523,16 @@ static void cops_load (struct net_device *dev)
 #ifdef CONFIG_COPS_DAYNA        
         if(lp->board==DAYNA)
         {
-		printk(KERN_INFO "%s: Missing Free firmware.\n", dev->name);
-		return;
+                ltf->length=sizeof(ffdrv_code);
+                ltf->data=ffdrv_code;
         }
         else
 #endif        
 #ifdef CONFIG_COPS_TANGENT
         if(lp->board==TANGENT)
         {
-		printk(KERN_INFO "%s: Missing Free firmware.\n", dev->name);
-		return;
+                ltf->length=sizeof(ltdrv_code);
+                ltf->data=ltdrv_code;
         }
         else
 #endif

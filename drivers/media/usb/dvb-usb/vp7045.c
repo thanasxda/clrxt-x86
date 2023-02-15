@@ -191,7 +191,7 @@ MODULE_DEVICE_TABLE(usb, vp7045_usb_table);
 
 static struct dvb_usb_device_properties vp7045_properties = {
 	.usb_ctrl = CYPRESS_FX2,
-	.firmware = "/*(DEBLOBBED)*/",
+	.firmware = "dvb-usb-vp7045-01.fw",
 	.size_of_priv = 20,
 
 	.num_adapters = 1,

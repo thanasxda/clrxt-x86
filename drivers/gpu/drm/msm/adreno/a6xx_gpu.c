@@ -877,7 +877,7 @@ static bool a6xx_ucode_check_version(struct a6xx_gpu *a6xx_gpu,
 	 *
 	 * a660 targets have all the critical security fixes from the start
 	 */
-	if (!strcmp(sqe_name, "/*(DEBLOBBED)*/")) {
+	if (!strcmp(sqe_name, "a630_sqe.fw")) {
 		/*
 		 * If the lowest nibble is 0xa that is an indication that this
 		 * microcode has been patched. The actual version is in dword
@@ -898,7 +898,7 @@ static bool a6xx_ucode_check_version(struct a6xx_gpu *a6xx_gpu,
 		DRM_DEV_ERROR(&gpu->pdev->dev,
 			"a630 SQE ucode is too old. Have version %x need at least %x\n",
 			buf[0] & 0xfff, 0x190);
-	} else if (!strcmp(sqe_name, "/*(DEBLOBBED)*/")) {
+	} else if (!strcmp(sqe_name, "a650_sqe.fw")) {
 		if ((buf[0] & 0xfff) >= 0x095) {
 			ret = true;
 			goto out;
@@ -907,7 +907,7 @@ static bool a6xx_ucode_check_version(struct a6xx_gpu *a6xx_gpu,
 		DRM_DEV_ERROR(&gpu->pdev->dev,
 			"a650 SQE ucode is too old. Have version %x need at least %x\n",
 			buf[0] & 0xfff, 0x095);
-	} else if (!strcmp(sqe_name, "/*(DEBLOBBED)*/")) {
+	} else if (!strcmp(sqe_name, "a660_sqe.fw")) {
 		ret = true;
 	} else {
 		DRM_DEV_ERROR(&gpu->pdev->dev,

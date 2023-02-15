@@ -166,7 +166,7 @@
 
 &adsp_pil {
 	status = "okay";
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/apq8096/adsp.mbn";
 };
 
 &blsp2_i2c1 {
@@ -261,7 +261,7 @@
 &mss_pil {
 	status = "okay";
 	pll-supply = <&vreg_l12a_1p8>;
-	firmware-name = "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/";
+	firmware-name = "qcom/apq8096/mba.mbn", "qcom/apq8096/modem.mbn";
 };
 
 &pm8994_resin {

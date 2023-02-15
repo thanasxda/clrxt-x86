@@ -54,7 +54,9 @@ static void gmc_v7_0_set_gmc_funcs(struct amdgpu_device *adev);
 static void gmc_v7_0_set_irq_funcs(struct amdgpu_device *adev);
 static int gmc_v7_0_wait_for_idle(void *handle);
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("amdgpu/bonaire_mc.bin");
+MODULE_FIRMWARE("amdgpu/hawaii_mc.bin");
+MODULE_FIRMWARE("amdgpu/topaz_mc.bin");
 
 static const u32 golden_settings_iceland_a11[] =
 {
@@ -152,9 +154,9 @@ static int gmc_v7_0_init_microcode(struct amdgpu_device *adev)
 	default: BUG();
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mc.bin", chip_name);
 
-	err = reject_firmware(&adev->gmc.fw, fw_name, adev->dev);
+	err = request_firmware(&adev->gmc.fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gmc.fw);

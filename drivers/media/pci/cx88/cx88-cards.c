@@ -3389,7 +3389,7 @@ void cx88_setup_xc3028(struct cx88_core *core, struct xc2028_ctrl *ctl)
 {
 	memset(ctl, 0, sizeof(*ctl));
 
-	ctl->fname   = "/*(DEBLOBBED)*/";
+	ctl->fname   = XC2028_DEFAULT_FIRMWARE;
 	ctl->max_len = 64;
 
 	switch (core->boardnr) {
@@ -3418,7 +3418,7 @@ void cx88_setup_xc3028(struct cx88_core *core, struct xc2028_ctrl *ctl)
 		break;
 	case CX88_BOARD_NOTONLYTV_LV3H:
 		ctl->demod			= XC3028_FE_ZARLINK456;
-		ctl->fname			= "/*(DEBLOBBED)*/";
+		ctl->fname			= XC3028L_DEFAULT_FIRMWARE;
 		ctl->read_not_reliable	= 1;
 		break;
 	case CX88_BOARD_WINFAST_TV2000_XP_GLOBAL:

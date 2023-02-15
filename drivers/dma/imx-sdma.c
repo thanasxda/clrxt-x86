@@ -2040,7 +2040,7 @@ static int sdma_get_firmware(struct sdma_engine *sdma,
 {
 	int ret;
 
-	ret = reject_firmware_nowait(THIS_MODULE,
+	ret = request_firmware_nowait(THIS_MODULE,
 			FW_ACTION_UEVENT, fw_name, sdma->dev,
 			GFP_KERNEL, sdma, sdma_load_firmware);
 
@@ -2374,9 +2374,9 @@ module_platform_driver(sdma_driver);
 MODULE_AUTHOR("Sascha Hauer, Pengutronix <s.hauer@pengutronix.de>");
 MODULE_DESCRIPTION("i.MX SDMA driver");
 #if IS_ENABLED(CONFIG_SOC_IMX6Q)
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("imx/sdma/sdma-imx6q.bin");
 #endif
 #if IS_ENABLED(CONFIG_SOC_IMX7D) || IS_ENABLED(CONFIG_SOC_IMX8M)
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("imx/sdma/sdma-imx7d.bin");
 #endif
 MODULE_LICENSE("GPL");

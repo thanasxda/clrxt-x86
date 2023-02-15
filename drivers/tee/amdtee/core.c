@@ -182,7 +182,7 @@ static int copy_ta_binary(struct tee_context *ctx, void *ptr, void **ta,
 	int n, rc = 0;
 
 	n = snprintf(fw_name, TA_PATH_MAX,
-		     "/*(DEBLOBBED)*/",
+		     "%s/%08x-%04x-%04x-%02x%02x%02x%02x%02x%02x%02x%02x.bin",
 		     TA_LOAD_PATH, uuid->lo, uuid->mid, uuid->hi_ver,
 		     uuid->seq_n[0], uuid->seq_n[1],
 		     uuid->seq_n[2], uuid->seq_n[3],
@@ -194,7 +194,7 @@ static int copy_ta_binary(struct tee_context *ctx, void *ptr, void **ta,
 	}
 
 	mutex_lock(&drv_mutex);
-	n = reject_firmware(&fw, fw_name, &ctx->teedev->dev);
+	n = request_firmware(&fw, fw_name, &ctx->teedev->dev);
 	if (n) {
 		pr_err("failed to load firmware %s\n", fw_name);
 		rc = -ENOMEM;

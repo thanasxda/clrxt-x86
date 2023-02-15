@@ -185,9 +185,9 @@ int cx2341x_handler_setup(struct cx2341x_handler *cxhdl);
 void cx2341x_handler_set_busy(struct cx2341x_handler *cxhdl, int busy);
 
 /* Firmware names */
-#define CX2341X_FIRM_ENC_FILENAME "/*(DEBLOBBED)*/"
+#define CX2341X_FIRM_ENC_FILENAME "v4l-cx2341x-enc.fw"
 /* Decoder firmware for the cx23415 only */
-#define CX2341X_FIRM_DEC_FILENAME "/*(DEBLOBBED)*/"
+#define CX2341X_FIRM_DEC_FILENAME "v4l-cx2341x-dec.fw"
 
 /* Firmware API commands */
 

@@ -143,7 +143,9 @@ MODULE_AUTHOR("Traverse Technologies <support@traverse.com.au>");
 MODULE_DESCRIPTION("Solos PCI driver");
 MODULE_VERSION(VERSION);
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("solos-FPGA.bin");
+MODULE_FIRMWARE("solos-Firmware.bin");
+MODULE_FIRMWARE("solos-db-FPGA.bin");
 MODULE_PARM_DESC(reset, "Reset Solos chips on startup");
 MODULE_PARM_DESC(atmdebug, "Print ATM data");
 MODULE_PARM_DESC(firmware_upgrade, "Initiate Solos firmware upgrade");
@@ -629,14 +631,14 @@ static int flash_upgrade(struct solos_card *card, int chip)
 
 	switch (chip) {
 	case 0:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "solos-FPGA.bin";
 		if (card->atmel_flash)
 			blocksize = ATMEL_FPGA_BLOCK;
 		else
 			blocksize = SPI_FLASH_BLOCK;
 		break;
 	case 1:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "solos-Firmware.bin";
 		if (card->atmel_flash)
 			blocksize = ATMEL_SOLOS_BLOCK;
 		else
@@ -644,7 +646,7 @@ static int flash_upgrade(struct solos_card *card, int chip)
 		break;
 	case 2:
 		if (card->fpga_version > LEGACY_BUFFERS){
-			fw_name = "/*(DEBLOBBED)*/";
+			fw_name = "solos-db-FPGA.bin";
 			if (card->atmel_flash)
 				blocksize = ATMEL_FPGA_BLOCK;
 			else
@@ -657,7 +659,7 @@ static int flash_upgrade(struct solos_card *card, int chip)
 		break;
 	case 3:
 		if (card->fpga_version > LEGACY_BUFFERS){
-			fw_name = "/*(DEBLOBBED)*/";
+			fw_name = "solos-Firmware.bin";
 			if (card->atmel_flash)
 				blocksize = ATMEL_SOLOS_BLOCK;
 			else
@@ -672,7 +674,7 @@ static int flash_upgrade(struct solos_card *card, int chip)
 		return -ENODEV;
 	}
 
-	if (reject_firmware(&fw, fw_name, &card->dev->dev))
+	if (request_firmware(&fw, fw_name, &card->dev->dev))
 		return -ENOENT;
 
 	dev_info(&card->dev->dev, "Flash upgrade starting\n");

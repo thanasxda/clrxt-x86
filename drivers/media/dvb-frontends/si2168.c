@@ -446,7 +446,7 @@ static int si2168_init(struct dvb_frontend *fe)
 		goto err;
 
 	/* request the firmware, this will block and timeout */
-	ret = reject_firmware(&fw, dev->firmware_name, &client->dev);
+	ret = request_firmware(&fw, dev->firmware_name, &client->dev);
 	if (ret) {
 		dev_err(&client->dev,
 			"firmware file '%s' not found\n",
@@ -809,4 +809,7 @@ module_i2c_driver(si2168_driver);
 MODULE_AUTHOR("Antti Palosaari <crope@iki.fi>");
 MODULE_DESCRIPTION("Silicon Labs Si2168 DVB-T/T2/C demodulator driver");
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(SI2168_A20_FIRMWARE);
+MODULE_FIRMWARE(SI2168_A30_FIRMWARE);
+MODULE_FIRMWARE(SI2168_B40_FIRMWARE);
+MODULE_FIRMWARE(SI2168_D60_FIRMWARE);

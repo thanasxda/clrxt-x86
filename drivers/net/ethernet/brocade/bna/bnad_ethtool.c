@@ -1032,7 +1032,7 @@ bnad_flash_device(struct net_device *netdev, struct ethtool_flash *eflash)
 	const struct firmware *fw;
 	int ret = 0;
 
-	ret = reject_firmware(&fw, eflash->data, &bnad->pcidev->dev);
+	ret = request_firmware(&fw, eflash->data, &bnad->pcidev->dev);
 	if (ret) {
 		netdev_err(netdev, "can't load firmware %s\n", eflash->data);
 		goto out;

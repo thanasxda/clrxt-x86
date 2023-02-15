@@ -2704,7 +2704,7 @@ static const struct rtw_reg_domain coex_info_hw_regs_8723d[] = {
 const struct rtw_chip_info rtw8723d_hw_spec = {
 	.ops = &rtw8723d_ops,
 	.id = RTW_CHIP_TYPE_8723D,
-	.fw_name = "/*(DEBLOBBED)*/",
+	.fw_name = "rtw88/rtw8723d_fw.bin",
 	.wlan_cpu = RTW_WCPU_11N,
 	.tx_pkt_desc_sz = 40,
 	.tx_buf_desc_sz = 16,
@@ -2784,7 +2784,7 @@ const struct rtw_chip_info rtw8723d_hw_spec = {
 };
 EXPORT_SYMBOL(rtw8723d_hw_spec);
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("rtw88/rtw8723d_fw.bin");
 
 MODULE_AUTHOR("Realtek Corporation");
 MODULE_DESCRIPTION("Realtek 802.11n wireless 8723d driver");

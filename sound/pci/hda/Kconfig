@@ -247,7 +247,7 @@ config SND_HDA_CODEC_CA0132_DSP
 	  features like equalizer or echo cancellation.
 
 	  Note that this option requires the external firmware file
-	  (/*(DEBLOBBED)*/).
+	  (ctefx.bin).
 
 config SND_HDA_CODEC_CMEDIA
 	tristate "Build C-Media HD-audio codec support"

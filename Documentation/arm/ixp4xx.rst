@@ -35,13 +35,17 @@ Linux currently supports the following features on the IXP4xx chips:
   See arch/arm/mach-ixp4xx/include/mach/platform.h for access functions.
 - Timers (watchdog, OS)
 
-The following components of the chips are not supported by Linux /*(DEBLOBBED)*/:
+The following components of the chips are not supported by Linux and
+require the use of Intel's proprietary CSR software:
 
 - USB device interface
 - Network interfaces (HSS, Utopia, NPEs, etc)
 - Network offload functionality
 
-/*(DEBLOBBED)*/
+If you need to use any of the above, you need to download Intel's
+software from:
+
+   http://developer.intel.com/design/network/products/npfamily/ixp425.htm
 
 DO NOT POST QUESTIONS TO THE LINUX MAILING LISTS REGARDING THE PROPRIETARY
 SOFTWARE.

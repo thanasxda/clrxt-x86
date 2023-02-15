@@ -22,7 +22,8 @@
 #include "priv.h"
 
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_186_SOC)
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("nvidia/gp10b/acr/bl.bin");
+MODULE_FIRMWARE("nvidia/gp10b/acr/ucode_load.bin");
 #endif
 
 static const struct nvkm_acr_hsf_fwif

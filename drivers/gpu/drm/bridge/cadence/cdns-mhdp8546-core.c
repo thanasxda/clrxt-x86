@@ -805,7 +805,7 @@ static int cdns_mhdp_load_firmware(struct cdns_mhdp_device *mhdp)
 {
 	int ret;
 
-	ret = reject_firmware_nowait(THIS_MODULE, true, FW_NAME, mhdp->dev,
+	ret = request_firmware_nowait(THIS_MODULE, true, FW_NAME, mhdp->dev,
 				      GFP_KERNEL, mhdp, cdns_mhdp_fw_cb);
 	if (ret) {
 		dev_err(mhdp->dev, "failed to load firmware (%s), ret: %d\n",
@@ -2637,7 +2637,7 @@ static struct platform_driver mhdp_driver = {
 };
 module_platform_driver(mhdp_driver);
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(FW_NAME);
 
 MODULE_AUTHOR("Quentin Schulz <quentin.schulz@free-electrons.com>");
 MODULE_AUTHOR("Swapnil Jakhade <sjakhade@cadence.com>");

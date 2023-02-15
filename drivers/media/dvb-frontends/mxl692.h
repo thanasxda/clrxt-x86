@@ -14,7 +14,7 @@
 
 #include <media/dvb_frontend.h>
 
-#define MXL692_FIRMWARE "/*(DEBLOBBED)*/"
+#define MXL692_FIRMWARE "dvb-demod-mxl692.fw"
 
 struct mxl692_config {
 	unsigned char  id;

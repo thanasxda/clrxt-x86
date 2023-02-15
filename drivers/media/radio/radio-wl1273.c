@@ -491,7 +491,7 @@ static int wl1273_fm_upload_firmware_patch(struct wl1273_device *radio)
 	struct wl1273_core *core = radio->core;
 	unsigned int packet_num;
 	const struct firmware *fw_p;
-	const char *fw_name = "/*(DEBLOBBED)*/";
+	const char *fw_name = "radio-wl1273-fw.bin";
 	struct device *dev = radio->dev;
 	__u8 *ptr;
 	int r;
@@ -502,7 +502,7 @@ static int wl1273_fm_upload_firmware_patch(struct wl1273_device *radio)
 	 * Uploading the firmware patch is not always necessary,
 	 * so we only print an info message.
 	 */
-	if (reject_firmware(&fw_p, fw_name, dev)) {
+	if (request_firmware(&fw_p, fw_name, dev)) {
 		dev_info(dev, "%s - %s not found\n", __func__, fw_name);
 
 		return 0;

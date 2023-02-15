@@ -20,7 +20,8 @@
 
 1) FOR DRIVER INSTALL
 
-	a) /*(DEBLOBBED)*/
+	a) Copy sd8787.bin to /lib/firmware/mrvl/ directory,
+	   create the directory if it doesn't exist.
 	b) Install WLAN driver,
 		insmod mwifiex.ko
 	c) Uninstall WLAN driver,

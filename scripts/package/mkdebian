@@ -2,7 +2,7 @@
 #
 # Copyright 2003 Wichert Akkerman <wichert@wiggy.net>
 #
-# Simple script to generate a debian/ directory for a GNU Linux-libre.
+# Simple script to generate a debian/ directory for a Linux kernel.
 
 set -e
 
@@ -143,22 +143,22 @@ extra_build_depends="$extra_build_depends, $(if_enabled_echo CONFIG_SYSTEM_TRUST
 cat <<EOF > debian/changelog
 $sourcename ($packageversion) $distribution; urgency=low
 
-  * Custom built GNU Linux-libre.
+  * Custom built Linux kernel.
 
  -- $maintainer  $(date -R)
 EOF
 
 # Generate copyright file
 cat <<EOF > debian/copyright
-This is a packacked upstream version of the GNU Linux-libre.
+This is a packacked upstream version of the Linux kernel.
 
 The sources may be found at most Linux archive sites, including:
-https://linux-libre.fsfla.org/
+https://www.kernel.org/pub/linux/kernel
 
 Copyright: 1991 - 2018 Linus Torvalds and others.
 
 The git repository for mainline kernel development is at:
-/*(DEBLOBBED)*/
+git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -176,12 +176,12 @@ Priority: optional
 Maintainer: $maintainer
 Rules-Requires-Root: no
 Build-Depends: bc, rsync, kmod, cpio, bison, flex | flex:native $extra_build_depends
-Homepage: https://linux-libre.fsfla.org/
+Homepage: https://www.kernel.org/
 
 Package: $packagename-$version
 Architecture: $debarch
-Description: GNU Linux-libre, version $version
- This package contains the GNU Linux-libre, modules and corresponding other
+Description: Linux kernel, version $version
+ This package contains the Linux kernel, modules and corresponding other
  files, version: $version.
 
 Package: linux-libc-dev
@@ -189,7 +189,7 @@ Section: devel
 Provides: linux-kernel-headers
 Architecture: $debarch
 Description: Linux support headers for userspace development
- This package provides userspaces headers from the GNU Linux-libre.  These headers
+ This package provides userspaces headers from the Linux kernel.  These headers
  are used by the installed headers for GNU glibc and other system libraries.
 Multi-Arch: same
 EOF
@@ -199,7 +199,7 @@ cat <<EOF >> debian/control
 
 Package: linux-headers-$version
 Architecture: $debarch
-Description: GNU Linux-libre headers for $version on $debarch
+Description: Linux kernel headers for $version on $debarch
  This package provides kernel header files for $version on $debarch
  .
  This is useful for people who need to build external modules
@@ -212,7 +212,7 @@ cat <<EOF >> debian/control
 Package: linux-image-$version-dbg
 Section: debug
 Architecture: $debarch
-Description: GNU Linux-libre debugging symbols for $version
+Description: Linux kernel debugging symbols for $version
  This package will come in handy if you need to debug the kernel. It provides
  all the necessary debug symbols for the kernel and its modules.
 EOF

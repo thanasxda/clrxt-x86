@@ -81,8 +81,8 @@
 #include "smuio_v13_0.h"
 #include "smuio_v13_0_6.h"
 
-#define FIRMWARE_IP_DISCOVERY "/*(DEBLOBBED)*/"
-/*(DEBLOBBED)*/
+#define FIRMWARE_IP_DISCOVERY "amdgpu/ip_discovery.bin"
+MODULE_FIRMWARE(FIRMWARE_IP_DISCOVERY);
 
 #define mmRCC_CONFIG_MEMSIZE	0xde3
 #define mmMM_INDEX		0x0
@@ -222,7 +222,7 @@ static int amdgpu_discovery_read_binary_from_file(struct amdgpu_device *adev, ui
 		return -EINVAL;
 	}
 
-	r = reject_firmware(&fw, fw_name, adev->dev);
+	r = request_firmware(&fw, fw_name, adev->dev);
 	if (r) {
 		dev_err(adev->dev, "can't load firmware \"%s\"\n",
 			fw_name);

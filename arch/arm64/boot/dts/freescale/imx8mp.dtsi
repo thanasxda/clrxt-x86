@@ -995,7 +995,7 @@
 					 <&clk IMX8MP_CLK_AHB>;
 				clock-names = "ipg", "ahb";
 				#dma-cells = <3>;
-				fsl,sdma-ram-script-name = "/*(DEBLOBBED)*/";
+				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
 			};
 
 			fec: ethernet@30be0000 {

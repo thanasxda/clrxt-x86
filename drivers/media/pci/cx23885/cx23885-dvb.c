@@ -1342,7 +1342,7 @@ static int dvb_register(struct cx23885_tsport *port)
 				.i2c_addr  = 0x61,
 			};
 			static struct xc2028_ctrl ctl = {
-				.fname       = "/*(DEBLOBBED)*/",
+				.fname       = XC2028_DEFAULT_FIRMWARE,
 				.max_len     = 64,
 				.demod       = XC3028_FE_OREN538,
 			};
@@ -1394,7 +1394,7 @@ static int dvb_register(struct cx23885_tsport *port)
 				.i2c_addr  = 0x64,
 			};
 			static struct xc2028_ctrl ctl = {
-				.fname   = "/*(DEBLOBBED)*/",
+				.fname   = XC3028L_DEFAULT_FIRMWARE,
 				.max_len = 64,
 				.demod   = XC3028_FE_DIBCOM52,
 				/* This is true for all demods with
@@ -1436,7 +1436,7 @@ static int dvb_register(struct cx23885_tsport *port)
 				.i2c_addr  = 0x61,
 			};
 			static struct xc2028_ctrl ctl = {
-				.fname       = "/*(DEBLOBBED)*/",
+				.fname       = XC2028_DEFAULT_FIRMWARE,
 				.max_len     = 64,
 				.demod       = XC3028_FE_ZARLINK456,
 			};
@@ -1488,7 +1488,7 @@ static int dvb_register(struct cx23885_tsport *port)
 				.i2c_addr  = 0x61,
 			};
 			static struct xc2028_ctrl ctl = {
-				.fname       = "/*(DEBLOBBED)*/",
+				.fname       = XC2028_DEFAULT_FIRMWARE,
 				.max_len     = 64,
 				.demod       = XC3028_FE_ZARLINK456,
 			};

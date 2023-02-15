@@ -264,7 +264,7 @@ static int get_firmware_variant(struct ishtp_cl_data *client_data,
 			"Error: ISH firmware-name device property required\n");
 		return rv;
 	}
-	return snprintf(filename, FILENAME_SIZE, "/*(DEBLOBBED)*/", val);
+	return snprintf(filename, FILENAME_SIZE, "intel/%s", val);
 }
 
 /**
@@ -768,7 +768,7 @@ static int load_fw_from_host(struct ishtp_cl_data *client_data)
 	if (rv < 0)
 		goto end_err_filename_buf_release;
 
-	rv = reject_firmware(&fw, filename, cl_data_to_dev(client_data));
+	rv = request_firmware(&fw, filename, cl_data_to_dev(client_data));
 	if (rv < 0)
 		goto end_err_filename_buf_release;
 

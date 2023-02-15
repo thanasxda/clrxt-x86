@@ -2448,8 +2448,8 @@ static int ath11k_qmi_load_bdf_qmi(struct ath11k_base *ab,
 	} else {
 		file_type = ATH11K_QMI_FILE_TYPE_CALDATA;
 
-		/*(DEBLOBBED)*/
-		snprintf(filename, sizeof(filename), "/*(DEBLOBBED)*/",
+		/* cal-<bus>-<id>.bin */
+		snprintf(filename, sizeof(filename), "cal-%s-%s.bin",
 			 ath11k_bus_str(ab->hif.bus), dev_name(dev));
 		fw_entry = ath11k_core_firmware_request(ab, filename);
 		if (!IS_ERR(fw_entry))

@@ -155,7 +155,7 @@
 };
 
 &adsp_pil {
-	firmware-name = "/*(DEBLOBBED)*/";
+	firmware-name = "adsp.mdt";
 };
 
 &blsp_i2c1 {

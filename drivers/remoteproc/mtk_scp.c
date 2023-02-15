@@ -817,7 +817,7 @@ static int scp_probe(struct platform_device *pdev)
 	struct mtk_scp *scp;
 	struct rproc *rproc;
 	struct resource *res;
-	const char *fw_name = "/*(DEBLOBBED)*/";
+	const char *fw_name = "scp.img";
 	int ret, i;
 
 	ret = rproc_of_parse_firmware(dev, 0, &fw_name);

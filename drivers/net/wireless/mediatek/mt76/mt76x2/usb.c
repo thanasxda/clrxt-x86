@@ -128,7 +128,8 @@ err:
 }
 
 MODULE_DEVICE_TABLE(usb, mt76x2u_device_table);
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(MT7662_FIRMWARE);
+MODULE_FIRMWARE(MT7662_ROM_PATCH);
 
 static struct usb_driver mt76x2u_driver = {
 	.name		= KBUILD_MODNAME,

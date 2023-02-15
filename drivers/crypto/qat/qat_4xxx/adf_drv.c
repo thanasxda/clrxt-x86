@@ -346,7 +346,8 @@ module_pci_driver(adf_driver);
 
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_AUTHOR("Intel");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(ADF_4XXX_FW);
+MODULE_FIRMWARE(ADF_4XXX_MMP);
 MODULE_DESCRIPTION("Intel(R) QuickAssist Technology");
 MODULE_VERSION(ADF_DRV_VERSION);
 MODULE_SOFTDEP("pre: crypto-intel_qat");

@@ -69,7 +69,8 @@ static const struct of_device_id of_wmac_match[] = {
 };
 
 MODULE_DEVICE_TABLE(of, of_wmac_match);
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(MT7628_FIRMWARE_E1);
+MODULE_FIRMWARE(MT7628_FIRMWARE_E2);
 
 struct platform_driver mt76_wmac_driver = {
 	.probe		= mt76_wmac_probe,

@@ -67,18 +67,18 @@
 
 static const struct wilink_family_data wl127x_data = {
 	.name = "wl127x",
-	.nvs_name = "/*(DEBLOBBED)*/",
+	.nvs_name = "ti-connectivity/wl127x-nvs.bin",
 };
 
 static const struct wilink_family_data wl128x_data = {
 	.name = "wl128x",
-	.nvs_name = "/*(DEBLOBBED)*/",
+	.nvs_name = "ti-connectivity/wl128x-nvs.bin",
 };
 
 static const struct wilink_family_data wl18xx_data = {
 	.name = "wl18xx",
-	.cfg_name = "/*(DEBLOBBED)*/",
-	.nvs_name = "/*(DEBLOBBED)*/",
+	.cfg_name = "ti-connectivity/wl18xx-conf.bin",
+	.nvs_name = "ti-connectivity/wl1271-nvs.bin",
 };
 
 struct wl12xx_spi_glue {

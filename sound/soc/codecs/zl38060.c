@@ -175,7 +175,7 @@ static int zl38_load_firmware(struct device *dev, struct regmap *regmap)
 	 * 3. convert ihex to binary (.fw) using ihex2fw tool which is included
 	 *    with the Linux kernel sources
 	 */
-	err = reject_firmware(&fw, "/*(DEBLOBBED)*/", dev);
+	err = request_ihex_firmware(&fw, "zl38060.fw", dev);
 	if (err)
 		return err;
 	err = zl38_fw_enter_boot_mode(regmap);

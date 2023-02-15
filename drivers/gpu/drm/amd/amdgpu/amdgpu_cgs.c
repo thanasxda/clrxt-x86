@@ -250,16 +250,16 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
 		if (!adev->pm.fw) {
 			switch (adev->asic_type) {
 			case CHIP_TAHITI:
-				strcpy(fw_name, "/*(DEBLOBBED)*/");
+				strcpy(fw_name, "radeon/tahiti_smc.bin");
 				break;
 			case CHIP_PITCAIRN:
 				if ((adev->pdev->revision == 0x81) &&
 				    ((adev->pdev->device == 0x6810) ||
 				    (adev->pdev->device == 0x6811))) {
 					info->is_kicker = true;
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "radeon/pitcairn_k_smc.bin");
 				} else {
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "radeon/pitcairn_smc.bin");
 				}
 				break;
 			case CHIP_VERDE:
@@ -273,9 +273,9 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
 					((adev->pdev->device == 0x6823) ||
 					(adev->pdev->device == 0x682b)))) {
 					info->is_kicker = true;
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "radeon/verde_k_smc.bin");
 				} else {
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "radeon/verde_smc.bin");
 				}
 				break;
 			case CHIP_OLAND:
@@ -287,9 +287,9 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
 				    ((adev->pdev->revision == 0x83) &&
 					(adev->pdev->device == 0x6610))) {
 					info->is_kicker = true;
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "radeon/oland_k_smc.bin");
 				} else {
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "radeon/oland_smc.bin");
 				}
 				break;
 			case CHIP_HAINAN:
@@ -301,13 +301,13 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
 					(adev->pdev->device == 0x6665) ||
 					 (adev->pdev->device == 0x6667)))) {
 					info->is_kicker = true;
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "radeon/hainan_k_smc.bin");
 				} else if ((adev->pdev->revision == 0xc3) &&
 					 (adev->pdev->device == 0x6665)) {
 					info->is_kicker = true;
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "radeon/banks_k_2_smc.bin");
 				} else {
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "radeon/hainan_smc.bin");
 				}
 				break;
 			case CHIP_BONAIRE:
@@ -315,17 +315,17 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
 					(adev->pdev->revision == 0x81) ||
 					(adev->pdev->device == 0x665f)) {
 					info->is_kicker = true;
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/bonaire_k_smc.bin");
 				} else {
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/bonaire_smc.bin");
 				}
 				break;
 			case CHIP_HAWAII:
 				if (adev->pdev->revision == 0x80) {
 					info->is_kicker = true;
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/hawaii_k_smc.bin");
 				} else {
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/hawaii_smc.bin");
 				}
 				break;
 			case CHIP_TOPAZ:
@@ -335,83 +335,83 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
 				    ((adev->pdev->device == 0x6900) && (adev->pdev->revision == 0xD1)) ||
 				    ((adev->pdev->device == 0x6900) && (adev->pdev->revision == 0xD3))) {
 					info->is_kicker = true;
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/topaz_k_smc.bin");
 				} else
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/topaz_smc.bin");
 				break;
 			case CHIP_TONGA:
 				if (((adev->pdev->device == 0x6939) && (adev->pdev->revision == 0xf1)) ||
 				    ((adev->pdev->device == 0x6938) && (adev->pdev->revision == 0xf1))) {
 					info->is_kicker = true;
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/tonga_k_smc.bin");
 				} else
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/tonga_smc.bin");
 				break;
 			case CHIP_FIJI:
-				strcpy(fw_name, "/*(DEBLOBBED)*/");
+				strcpy(fw_name, "amdgpu/fiji_smc.bin");
 				break;
 			case CHIP_POLARIS11:
 				if (type == CGS_UCODE_ID_SMU) {
 					if (ASICID_IS_P21(adev->pdev->device, adev->pdev->revision)) {
 						info->is_kicker = true;
-						strcpy(fw_name, "/*(DEBLOBBED)*/");
+						strcpy(fw_name, "amdgpu/polaris11_k_smc.bin");
 					} else if (ASICID_IS_P31(adev->pdev->device, adev->pdev->revision)) {
 						info->is_kicker = true;
-						strcpy(fw_name, "/*(DEBLOBBED)*/");
+						strcpy(fw_name, "amdgpu/polaris11_k2_smc.bin");
 					} else {
-						strcpy(fw_name, "/*(DEBLOBBED)*/");
+						strcpy(fw_name, "amdgpu/polaris11_smc.bin");
 					}
 				} else if (type == CGS_UCODE_ID_SMU_SK) {
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/polaris11_smc_sk.bin");
 				}
 				break;
 			case CHIP_POLARIS10:
 				if (type == CGS_UCODE_ID_SMU) {
 					if (ASICID_IS_P20(adev->pdev->device, adev->pdev->revision)) {
 						info->is_kicker = true;
-						strcpy(fw_name, "/*(DEBLOBBED)*/");
+						strcpy(fw_name, "amdgpu/polaris10_k_smc.bin");
 					} else if (ASICID_IS_P30(adev->pdev->device, adev->pdev->revision)) {
 						info->is_kicker = true;
-						strcpy(fw_name, "/*(DEBLOBBED)*/");
+						strcpy(fw_name, "amdgpu/polaris10_k2_smc.bin");
 					} else {
-						strcpy(fw_name, "/*(DEBLOBBED)*/");
+						strcpy(fw_name, "amdgpu/polaris10_smc.bin");
 					}
 				} else if (type == CGS_UCODE_ID_SMU_SK) {
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/polaris10_smc_sk.bin");
 				}
 				break;
 			case CHIP_POLARIS12:
 				if (ASICID_IS_P23(adev->pdev->device, adev->pdev->revision)) {
 					info->is_kicker = true;
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/polaris12_k_smc.bin");
 				} else {
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/polaris12_smc.bin");
 				}
 				break;
 			case CHIP_VEGAM:
-				strcpy(fw_name, "/*(DEBLOBBED)*/");
+				strcpy(fw_name, "amdgpu/vegam_smc.bin");
 				break;
 			case CHIP_VEGA10:
 				if ((adev->pdev->device == 0x687f) &&
 					((adev->pdev->revision == 0xc0) ||
 					(adev->pdev->revision == 0xc1) ||
 					(adev->pdev->revision == 0xc3)))
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/vega10_acg_smc.bin");
 				else
-					strcpy(fw_name, "/*(DEBLOBBED)*/");
+					strcpy(fw_name, "amdgpu/vega10_smc.bin");
 				break;
 			case CHIP_VEGA12:
-				strcpy(fw_name, "/*(DEBLOBBED)*/");
+				strcpy(fw_name, "amdgpu/vega12_smc.bin");
 				break;
 			case CHIP_VEGA20:
-				strcpy(fw_name, "/*(DEBLOBBED)*/");
+				strcpy(fw_name, "amdgpu/vega20_smc.bin");
 				break;
 			default:
 				DRM_ERROR("SMC firmware not supported\n");
 				return -EINVAL;
 			}
 
-			err = reject_firmware(&adev->pm.fw, fw_name, adev->dev);
+			err = request_firmware(&adev->pm.fw, fw_name, adev->dev);
 			if (err) {
 				DRM_ERROR("Failed to request firmware\n");
 				return err;

@@ -36,14 +36,19 @@
 #include "p17v.h"
 
 
-#define HANA_FILENAME "/*(DEBLOBBED)*/"
-#define DOCK_FILENAME "/*(DEBLOBBED)*/"
-#define EMU1010B_FILENAME "/*(DEBLOBBED)*/"
-#define MICRO_DOCK_FILENAME "/*(DEBLOBBED)*/"
-#define EMU0404_FILENAME "/*(DEBLOBBED)*/"
-#define EMU1010_NOTEBOOK_FILENAME "/*(DEBLOBBED)*/"
+#define HANA_FILENAME "emu/hana.fw"
+#define DOCK_FILENAME "emu/audio_dock.fw"
+#define EMU1010B_FILENAME "emu/emu1010b.fw"
+#define MICRO_DOCK_FILENAME "emu/micro_dock.fw"
+#define EMU0404_FILENAME "emu/emu0404.fw"
+#define EMU1010_NOTEBOOK_FILENAME "emu/emu1010_notebook.fw"
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(HANA_FILENAME);
+MODULE_FIRMWARE(DOCK_FILENAME);
+MODULE_FIRMWARE(EMU1010B_FILENAME);
+MODULE_FIRMWARE(MICRO_DOCK_FILENAME);
+MODULE_FIRMWARE(EMU0404_FILENAME);
+MODULE_FIRMWARE(EMU1010_NOTEBOOK_FILENAME);
 
 
 /*************************************************************************
@@ -714,7 +719,7 @@ static int snd_emu1010_load_firmware(struct snd_emu10k1 *emu, int dock,
 		filename = firmware_names[emu->card_capabilities->emu_model][dock];
 		if (!filename)
 			return 0;
-		err = reject_firmware(fw, filename, &emu->pci->dev);
+		err = request_firmware(fw, filename, &emu->pci->dev);
 		if (err)
 			return err;
 	}

@@ -46,17 +46,17 @@ struct load_image_entry {
 /* default firmware images names */
 static const struct load_image_entry image_tab[][NUM_BOOT_STAGES] = {
 	[VALKYRIE_A0] = {
-		{VK_IMAGE_TYPE_BOOT1, {"/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/"}},
-		{VK_IMAGE_TYPE_BOOT2, {"/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/"}}
+		{VK_IMAGE_TYPE_BOOT1, {"vk_a0-boot1.bin", "vk-boot1.bin"}},
+		{VK_IMAGE_TYPE_BOOT2, {"vk_a0-boot2.bin", "vk-boot2.bin"}}
 	},
 	[VALKYRIE_B0] = {
-		{VK_IMAGE_TYPE_BOOT1, {"/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/"}},
-		{VK_IMAGE_TYPE_BOOT2, {"/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/"}}
+		{VK_IMAGE_TYPE_BOOT1, {"vk_b0-boot1.bin", "vk-boot1.bin"}},
+		{VK_IMAGE_TYPE_BOOT2, {"vk_b0-boot2.bin", "vk-boot2.bin"}}
 	},
 
 	[VIPER] = {
-		{VK_IMAGE_TYPE_BOOT1, {"/*(DEBLOBBED)*/", ""}},
-		{VK_IMAGE_TYPE_BOOT2, {"/*(DEBLOBBED)*/", ""}}
+		{VK_IMAGE_TYPE_BOOT1, {"vp-boot1.bin", ""}},
+		{VK_IMAGE_TYPE_BOOT2, {"vp-boot2.bin", ""}}
 	},
 };
 
@@ -618,7 +618,7 @@ static int bcm_vk_load_image_by_type(struct bcm_vk *vk, u32 load_type,
 	}
 
 	offset = 0;
-	ret = reject_partial_firmware_into_buf(&fw, filename, dev,
+	ret = request_partial_firmware_into_buf(&fw, filename, dev,
 						bufp, max_buf, offset);
 	if (ret) {
 		dev_err(dev, "Error %d requesting firmware file: %s\n",
@@ -703,7 +703,7 @@ static int bcm_vk_load_image_by_type(struct bcm_vk *vk, u32 load_type,
 					  TXFR_COMPLETE_TIMEOUT_MS);
 			if (ret == 0) {
 				offset += max_buf;
-				ret = reject_partial_firmware_into_buf
+				ret = request_partial_firmware_into_buf
 						(&fw,
 						 filename,
 						 dev, bufp,
@@ -842,7 +842,7 @@ static const char *get_load_fw_name(struct bcm_vk *vk,
 
 	for (i = 0; i < IMG_PER_TYPE_MAX; i++) {
 		fw = NULL;
-		ret = reject_partial_firmware_into_buf(&fw,
+		ret = request_partial_firmware_into_buf(&fw,
 							entry->image_name[i],
 							dev, &dummy,
 							sizeof(dummy),

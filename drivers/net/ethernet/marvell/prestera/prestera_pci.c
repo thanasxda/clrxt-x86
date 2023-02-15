@@ -20,7 +20,7 @@
 #define PRESTERA_PREV_FW_MAJ_VER	4
 #define PRESTERA_PREV_FW_MIN_VER	0
 
-#define PRESTERA_FW_PATH_FMT	"/*(DEBLOBBED)*/"
+#define PRESTERA_FW_PATH_FMT	"mrvl/prestera/mvsw_prestera_fw-v%u.%u.img"
 
 #define PRESTERA_FW_HDR_MAGIC		0x351D9D06
 #define PRESTERA_FW_DL_TIMEOUT_MS	50000
@@ -700,7 +700,7 @@ pick_fw_ver:
 	snprintf(fw_path, sizeof(fw_path), PRESTERA_FW_PATH_FMT,
 		 ver_maj, ver_min);
 
-	err = reject_firmware_direct(&fw->bin, fw_path, fw->dev.dev);
+	err = request_firmware_direct(&fw->bin, fw_path, fw->dev.dev);
 	if (err) {
 		if (ver_maj == PRESTERA_SUPP_FW_MAJ_VER) {
 			ver_maj = PRESTERA_PREV_FW_MAJ_VER;

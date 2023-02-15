@@ -102,7 +102,7 @@ Supported hardware
      - Integrated low pass filter (LPF), access via .adjPhase (compliant to ITU-T G.8273.2)
      - Programmable output periodic signals
      - Programmable inputs can time stamp external triggers
-     - Driver and/or hardware configuration through firmware (/*(DEBLOBBED)*/)
+     - Driver and/or hardware configuration through firmware (idtcm.bin)
           - LPF settings (bandwidth, phase limiting, automatic holdover, physical layer assist (per ITU-T G.8273.2))
           - Programmable output PTP clocks, any frequency up to 1GHz (to other PHY/MAC time stampers, refclk to ASSPs/SoCs/FPGAs)
           - Lock to GNSS input, automatic switching between GNSS and user-space PHC control (optional)

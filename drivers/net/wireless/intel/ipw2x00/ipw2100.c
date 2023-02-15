@@ -8287,11 +8287,19 @@ static void ipw2100_wx_event_work(struct work_struct *work)
 	wireless_send_event(priv->net_dev, SIOCGIWAP, &wrqu, NULL);
 }
 
-/*(DEBLOBBED)*/
+#define IPW2100_FW_MAJOR_VERSION 1
+#define IPW2100_FW_MINOR_VERSION 3
 
-#define IPW2100_FW_PREFIX "/*(DEBLOBBED)*/" /*(DEBLOBBED)*/
+#define IPW2100_FW_MINOR(x) ((x & 0xff) >> 8)
+#define IPW2100_FW_MAJOR(x) (x & 0xff)
 
-#define IPW2100_FW_NAME(x) IPW2100_FW_PREFIX /*(DEBLOBBED)*/
+#define IPW2100_FW_VERSION ((IPW2100_FW_MINOR_VERSION << 8) | \
+                             IPW2100_FW_MAJOR_VERSION)
+
+#define IPW2100_FW_PREFIX "ipw2100-" __stringify(IPW2100_FW_MAJOR_VERSION) \
+"." __stringify(IPW2100_FW_MINOR_VERSION)
+
+#define IPW2100_FW_NAME(x) IPW2100_FW_PREFIX "" x ".fw"
 
 /*
 
@@ -8319,7 +8327,13 @@ static int ipw2100_mod_firmware_load(struct ipw2100_fw *fw)
 	struct ipw2100_fw_header *h =
 	    (struct ipw2100_fw_header *)fw->fw_entry->data;
 
-	/*(DEBLOBBED)*/
+	if (IPW2100_FW_MAJOR(h->version) != IPW2100_FW_MAJOR_VERSION) {
+		printk(KERN_WARNING DRV_NAME ": Firmware image not compatible "
+		       "(detected version id of %u). "
+		       "See Documentation/networking/device_drivers/wifi/intel/ipw2100.rst\n",
+		       h->version);
+		return 1;
+	}
 
 	fw->version = h->version;
 	fw->fw.data = fw->fw_entry->data + sizeof(struct ipw2100_fw_header);
@@ -8354,7 +8368,7 @@ static int ipw2100_get_firmware(struct ipw2100_priv *priv,
 		break;
 	}
 
-	rc = reject_firmware(&fw->fw_entry, fw_name, &priv->pci_dev->dev);
+	rc = request_firmware(&fw->fw_entry, fw_name, &priv->pci_dev->dev);
 
 	if (rc < 0) {
 		printk(KERN_ERR DRV_NAME ": "
@@ -8370,11 +8384,11 @@ static int ipw2100_get_firmware(struct ipw2100_priv *priv,
 	return 0;
 }
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(IPW2100_FW_NAME("-i"));
 #ifdef CONFIG_IPW2100_MONITOR
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(IPW2100_FW_NAME("-p"));
 #endif
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(IPW2100_FW_NAME(""));
 
 static void ipw2100_release_firmware(struct ipw2100_priv *priv,
 				     struct ipw2100_fw *fw)

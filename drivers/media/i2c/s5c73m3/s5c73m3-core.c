@@ -347,9 +347,9 @@ static int s5c73m3_load_fw(struct v4l2_subdev *sd)
 	int ret;
 	char fw_name[20];
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/",
+	snprintf(fw_name, sizeof(fw_name), "SlimISP_%.2s.bin",
 							state->fw_file_version);
-	ret = reject_firmware(&fw, fw_name, &client->dev);
+	ret = request_firmware(&fw, fw_name, &client->dev);
 	if (ret < 0) {
 		v4l2_err(sd, "Firmware request failed (%s)\n", fw_name);
 		return -EINVAL;

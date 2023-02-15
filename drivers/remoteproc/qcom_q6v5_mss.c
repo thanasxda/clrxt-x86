@@ -438,7 +438,7 @@ static void q6v5_debug_policy_load(struct q6v5 *qproc, void *mba_region)
 {
 	const struct firmware *dp_fw;
 
-	if (reject_firmware_direct(&dp_fw, "msadp", qproc->dev))
+	if (request_firmware_direct(&dp_fw, "msadp", qproc->dev))
 		return;
 
 	if (SZ_1M + dp_fw->size <= qproc->mba_size) {
@@ -1271,7 +1271,7 @@ static int q6v5_reload_mba(struct rproc *rproc)
 	const struct firmware *fw;
 	int ret;
 
-	ret = reject_firmware(&fw, rproc->firmware, qproc->dev);
+	ret = request_firmware(&fw, rproc->firmware, qproc->dev);
 	if (ret < 0)
 		return ret;
 
@@ -1311,7 +1311,7 @@ static int q6v5_mpss_load(struct q6v5 *qproc)
 	if (!fw_name)
 		return -ENOMEM;
 
-	ret = reject_firmware(&fw, fw_name, qproc->dev);
+	ret = request_firmware(&fw, fw_name, qproc->dev);
 	if (ret < 0) {
 		dev_err(qproc->dev, "unable to load %s\n", fw_name);
 		goto out;
@@ -1407,7 +1407,7 @@ static int q6v5_mpss_load(struct q6v5 *qproc)
 		} else if (phdr->p_filesz) {
 			/* Replace "xxx.xxx" with "xxx.bxx" */
 			sprintf(fw_name + fw_name_len - 3, "b%02d", i);
-			ret = reject_firmware_into_buf(&seg_fw, fw_name, qproc->dev,
+			ret = request_firmware_into_buf(&seg_fw, fw_name, qproc->dev,
 							ptr, phdr->p_filesz);
 			if (ret) {
 				dev_err(qproc->dev, "failed to load %s\n", fw_name);
@@ -1590,7 +1590,7 @@ static int qcom_q6v5_register_dump_segments(struct rproc *rproc,
 	unsigned long i;
 	int ret;
 
-	ret = reject_firmware(&fw, qproc->hexagon_mdt_image, qproc->dev);
+	ret = request_firmware(&fw, qproc->hexagon_mdt_image, qproc->dev);
 	if (ret < 0) {
 		dev_err(qproc->dev, "unable to load %s\n",
 			qproc->hexagon_mdt_image);
@@ -1922,7 +1922,7 @@ static int q6v5_probe(struct platform_device *pdev)
 	qproc = (struct q6v5 *)rproc->priv;
 	qproc->dev = &pdev->dev;
 	qproc->rproc = rproc;
-	qproc->hexagon_mdt_image = "/*(DEBLOBBED)*/";
+	qproc->hexagon_mdt_image = "modem.mdt";
 	ret = of_property_read_string_index(pdev->dev.of_node, "firmware-name",
 					    1, &qproc->hexagon_mdt_image);
 	if (ret < 0 && ret != -EINVAL) {
@@ -2075,7 +2075,7 @@ static int q6v5_remove(struct platform_device *pdev)
 }
 
 static const struct rproc_hexagon_res sc7180_mss = {
-	.hexagon_mba_image = "/*(DEBLOBBED)*/",
+	.hexagon_mba_image = "mba.mbn",
 	.proxy_clk_names = (char*[]){
 		"xo",
 		NULL
@@ -2108,7 +2108,7 @@ static const struct rproc_hexagon_res sc7180_mss = {
 };
 
 static const struct rproc_hexagon_res sc7280_mss = {
-	.hexagon_mba_image = "/*(DEBLOBBED)*/",
+	.hexagon_mba_image = "mba.mbn",
 	.proxy_clk_names = (char*[]){
 		"xo",
 		"pka",
@@ -2136,7 +2136,7 @@ static const struct rproc_hexagon_res sc7280_mss = {
 };
 
 static const struct rproc_hexagon_res sdm845_mss = {
-	.hexagon_mba_image = "/*(DEBLOBBED)*/",
+	.hexagon_mba_image = "mba.mbn",
 	.proxy_clk_names = (char*[]){
 			"xo",
 			"prng",
@@ -2171,7 +2171,7 @@ static const struct rproc_hexagon_res sdm845_mss = {
 };
 
 static const struct rproc_hexagon_res msm8998_mss = {
-	.hexagon_mba_image = "/*(DEBLOBBED)*/",
+	.hexagon_mba_image = "mba.mbn",
 	.proxy_clk_names = (char*[]){
 			"xo",
 			"qdss",
@@ -2202,7 +2202,7 @@ static const struct rproc_hexagon_res msm8998_mss = {
 };
 
 static const struct rproc_hexagon_res msm8996_mss = {
-	.hexagon_mba_image = "/*(DEBLOBBED)*/",
+	.hexagon_mba_image = "mba.mbn",
 	.proxy_supply = (struct qcom_mss_reg_res[]) {
 		{
 			.supply = "pll",
@@ -2241,7 +2241,7 @@ static const struct rproc_hexagon_res msm8996_mss = {
 };
 
 static const struct rproc_hexagon_res msm8916_mss = {
-	.hexagon_mba_image = "/*(DEBLOBBED)*/",
+	.hexagon_mba_image = "mba.mbn",
 	.proxy_supply = (struct qcom_mss_reg_res[]) {
 		{
 			.supply = "pll",
@@ -2286,7 +2286,7 @@ static const struct rproc_hexagon_res msm8916_mss = {
 };
 
 static const struct rproc_hexagon_res msm8974_mss = {
-	.hexagon_mba_image = "/*(DEBLOBBED)*/",
+	.hexagon_mba_image = "mba.b00",
 	.proxy_supply = (struct qcom_mss_reg_res[]) {
 		{
 			.supply = "pll",

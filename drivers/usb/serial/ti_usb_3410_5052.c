@@ -489,7 +489,18 @@ MODULE_AUTHOR(TI_DRIVER_AUTHOR);
 MODULE_DESCRIPTION(TI_DRIVER_DESC);
 MODULE_LICENSE("GPL");
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("ti_3410.fw");
+MODULE_FIRMWARE("ti_5052.fw");
+MODULE_FIRMWARE("mts_cdma.fw");
+MODULE_FIRMWARE("mts_gsm.fw");
+MODULE_FIRMWARE("mts_edge.fw");
+MODULE_FIRMWARE("mts_mt9234mu.fw");
+MODULE_FIRMWARE("mts_mt9234zba.fw");
+MODULE_FIRMWARE("moxa/moxa-1110.fw");
+MODULE_FIRMWARE("moxa/moxa-1130.fw");
+MODULE_FIRMWARE("moxa/moxa-1131.fw");
+MODULE_FIRMWARE("moxa/moxa-1150.fw");
+MODULE_FIRMWARE("moxa/moxa-1151.fw");
 
 MODULE_DEVICE_TABLE(usb, ti_id_table_combined);
 
@@ -1574,49 +1585,49 @@ static int ti_download_firmware(struct ti_device *tdev)
 	if (le16_to_cpu(dev->descriptor.idVendor) == MXU1_VENDOR_ID) {
 		snprintf(buf,
 			sizeof(buf),
-			"/*(DEBLOBBED)*/",
+			"moxa/moxa-%04x.fw",
 			le16_to_cpu(dev->descriptor.idProduct));
 
-		status = reject_firmware(&fw_p, buf, &dev->dev);
+		status = request_firmware(&fw_p, buf, &dev->dev);
 		goto check_firmware;
 	}
 
 	/* try ID specific firmware first, then try generic firmware */
-	sprintf(buf, "/*(DEBLOBBED)*/",
+	sprintf(buf, "ti_usb-v%04x-p%04x.fw",
 			le16_to_cpu(dev->descriptor.idVendor),
 			le16_to_cpu(dev->descriptor.idProduct));
-	status = reject_firmware(&fw_p, buf, &dev->dev);
+	status = request_firmware(&fw_p, buf, &dev->dev);
 
 	if (status != 0) {
 		buf[0] = '\0';
 		if (le16_to_cpu(dev->descriptor.idVendor) == MTS_VENDOR_ID) {
 			switch (le16_to_cpu(dev->descriptor.idProduct)) {
 			case MTS_CDMA_PRODUCT_ID:
-				strcpy(buf, "/*(DEBLOBBED)*/");
+				strcpy(buf, "mts_cdma.fw");
 				break;
 			case MTS_GSM_PRODUCT_ID:
-				strcpy(buf, "/*(DEBLOBBED)*/");
+				strcpy(buf, "mts_gsm.fw");
 				break;
 			case MTS_EDGE_PRODUCT_ID:
-				strcpy(buf, "/*(DEBLOBBED)*/");
+				strcpy(buf, "mts_edge.fw");
 				break;
 			case MTS_MT9234MU_PRODUCT_ID:
-				strcpy(buf, "/*(DEBLOBBED)*/");
+				strcpy(buf, "mts_mt9234mu.fw");
 				break;
 			case MTS_MT9234ZBA_PRODUCT_ID:
-				strcpy(buf, "/*(DEBLOBBED)*/");
+				strcpy(buf, "mts_mt9234zba.fw");
 				break;
 			case MTS_MT9234ZBAOLD_PRODUCT_ID:
-				strcpy(buf, "/*(DEBLOBBED)*/");
+				strcpy(buf, "mts_mt9234zba.fw");
 				break;			}
 		}
 		if (buf[0] == '\0') {
 			if (tdev->td_is_3410)
-				strcpy(buf, "/*(DEBLOBBED)*/");
+				strcpy(buf, "ti_3410.fw");
 			else
-				strcpy(buf, "/*(DEBLOBBED)*/");
+				strcpy(buf, "ti_5052.fw");
 		}
-		status = reject_firmware(&fw_p, buf, &dev->dev);
+		status = request_firmware(&fw_p, buf, &dev->dev);
 	}
 
 check_firmware:

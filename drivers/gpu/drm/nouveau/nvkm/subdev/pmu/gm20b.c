@@ -220,7 +220,9 @@ gm20b_pmu = {
 };
 
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC)
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("nvidia/gm20b/pmu/desc.bin");
+MODULE_FIRMWARE("nvidia/gm20b/pmu/image.bin");
+MODULE_FIRMWARE("nvidia/gm20b/pmu/sig.bin");
 #endif
 
 int

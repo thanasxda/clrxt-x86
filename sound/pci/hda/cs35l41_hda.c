@@ -124,15 +124,15 @@ static int cs35l41_request_firmware_file(struct cs35l41_hda *cs35l41,
 				      dsp_name, hda_cs_dsp_fw_ids[cs35l41->firmware_type],
 				      ssid, spkid, filetype);
 	else if (ssid && amp_name)
-		*filename = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", dir, CS35L41_PART,
+		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s-%s.%s", dir, CS35L41_PART,
 				      dsp_name, hda_cs_dsp_fw_ids[cs35l41->firmware_type],
 				      ssid, amp_name, filetype);
 	else if (ssid)
-		*filename = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", dir, CS35L41_PART,
+		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s.%s", dir, CS35L41_PART,
 				      dsp_name, hda_cs_dsp_fw_ids[cs35l41->firmware_type],
 				      ssid, filetype);
 	else
-		*filename = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", dir, CS35L41_PART,
+		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s.%s", dir, CS35L41_PART,
 				      dsp_name, hda_cs_dsp_fw_ids[cs35l41->firmware_type],
 				      filetype);
 
@@ -153,7 +153,7 @@ static int cs35l41_request_firmware_file(struct cs35l41_hda *cs35l41,
 		s++;
 	}
 
-	ret = firmware_reject_nowarn(firmware, *filename, cs35l41->dev);
+	ret = firmware_request_nowarn(firmware, *filename, cs35l41->dev);
 	if (ret != 0) {
 		dev_dbg(cs35l41->dev, "Failed to request '%s'\n", *filename);
 		kfree(*filename);

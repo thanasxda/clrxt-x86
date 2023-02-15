@@ -31,7 +31,11 @@
 
 #define MESSAGE_HEADER_LEN	4
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("libertas/usb8388_v9.bin");
+MODULE_FIRMWARE("libertas/usb8388_v5.bin");
+MODULE_FIRMWARE("libertas/usb8388.bin");
+MODULE_FIRMWARE("libertas/usb8682.bin");
+MODULE_FIRMWARE("usb8388.bin");
 
 enum {
 	MODEL_UNKNOWN = 0x0,
@@ -41,12 +45,12 @@ enum {
 
 /* table of firmware file names */
 static const struct lbs_fw_table fw_table[] = {
-	{ MODEL_8388, "/*(DEBLOBBED)*/", NULL },
-	{ MODEL_8388, "/*(DEBLOBBED)*/", NULL },
-	{ MODEL_8388, "/*(DEBLOBBED)*/", NULL },
-	{ MODEL_8388, "/*(DEBLOBBED)*/", NULL },
-	{ MODEL_8388, "/*(DEBLOBBED)*/", NULL },
-	{ MODEL_8682, "/*(DEBLOBBED)*/", NULL },
+	{ MODEL_8388, "libertas/usb8388_olpc.bin", NULL },
+	{ MODEL_8388, "libertas/usb8388_v9.bin", NULL },
+	{ MODEL_8388, "libertas/usb8388_v5.bin", NULL },
+	{ MODEL_8388, "libertas/usb8388.bin", NULL },
+	{ MODEL_8388, "usb8388.bin", NULL },
+	{ MODEL_8682, "libertas/usb8682.bin", NULL },
 	{ 0, NULL, NULL }
 };
 

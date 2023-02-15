@@ -215,7 +215,7 @@ struct phy;
 #define MB_MODULE_ID_GENERAL			0x0a
 
 /* firmware and opcodes */
-#define FW_NAME					"/*(DEBLOBBED)*/"
+#define FW_NAME					"cadence/mhdp8546.bin"
 #define CDNS_MHDP_IMEM				0x10000
 
 #define GENERAL_MAIN_CONTROL			0x01

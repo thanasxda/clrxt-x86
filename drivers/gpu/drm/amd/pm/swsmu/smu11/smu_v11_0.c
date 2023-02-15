@@ -56,7 +56,14 @@
 #undef pr_info
 #undef pr_debug
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("amdgpu/arcturus_smc.bin");
+MODULE_FIRMWARE("amdgpu/navi10_smc.bin");
+MODULE_FIRMWARE("amdgpu/navi14_smc.bin");
+MODULE_FIRMWARE("amdgpu/navi12_smc.bin");
+MODULE_FIRMWARE("amdgpu/sienna_cichlid_smc.bin");
+MODULE_FIRMWARE("amdgpu/navy_flounder_smc.bin");
+MODULE_FIRMWARE("amdgpu/dimgrey_cavefish_smc.bin");
+MODULE_FIRMWARE("amdgpu/beige_goby_smc.bin");
 
 #define SMU11_VOLTAGE_SCALE 4
 
@@ -118,9 +125,9 @@ int smu_v11_0_init_microcode(struct smu_context *smu)
 		return -EINVAL;
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_smc.bin", chip_name);
 
-	err = reject_firmware(&adev->pm.fw, fw_name, adev->dev);
+	err = request_firmware(&adev->pm.fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->pm.fw);

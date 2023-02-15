@@ -6,7 +6,7 @@
 #define _SOFTING_DEVICE_H_
 
 /* softing firmware directory prefix */
-#define fw_dir /*(DEBLOBBED)*/
+#define fw_dir "softing-4.6/"
 
 struct softing_platform_data {
 	unsigned int manf;

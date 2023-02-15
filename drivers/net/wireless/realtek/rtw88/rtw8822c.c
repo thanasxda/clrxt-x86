@@ -5313,7 +5313,7 @@ static const struct rtw_reg_domain coex_info_hw_regs_8822c[] = {
 const struct rtw_chip_info rtw8822c_hw_spec = {
 	.ops = &rtw8822c_ops,
 	.id = RTW_CHIP_TYPE_8822C,
-	.fw_name = "/*(DEBLOBBED)*/",
+	.fw_name = "rtw88/rtw8822c_fw.bin",
 	.wlan_cpu = RTW_WCPU_11AC,
 	.tx_pkt_desc_sz = 48,
 	.tx_buf_desc_sz = 16,
@@ -5371,7 +5371,7 @@ const struct rtw_chip_info rtw8822c_hw_spec = {
 	.ampdu_density = IEEE80211_HT_MPDU_DENSITY_2,
 
 #ifdef CONFIG_PM
-	.wow_fw_name = "/*(DEBLOBBED)*/",
+	.wow_fw_name = "rtw88/rtw8822c_wow_fw.bin",
 	.wowlan_stub = &rtw_wowlan_stub_8822c,
 	.max_sched_scan_ssids = 4,
 #endif
@@ -5412,7 +5412,8 @@ const struct rtw_chip_info rtw8822c_hw_spec = {
 };
 EXPORT_SYMBOL(rtw8822c_hw_spec);
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("rtw88/rtw8822c_fw.bin");
+MODULE_FIRMWARE("rtw88/rtw8822c_wow_fw.bin");
 
 MODULE_AUTHOR("Realtek Corporation");
 MODULE_DESCRIPTION("Realtek 802.11ac wireless 8822c driver");

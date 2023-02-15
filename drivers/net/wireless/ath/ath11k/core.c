@@ -929,7 +929,7 @@ const struct firmware *ath11k_core_firmware_request(struct ath11k_base *ab,
 
 	ath11k_core_create_firmware_path(ab, file, path, sizeof(path));
 
-	ret = firmware_reject_nowarn(&fw, path, ab->dev);
+	ret = firmware_request_nowarn(&fw, path, ab->dev);
 	if (ret)
 		return ERR_PTR(ret);
 
@@ -1206,7 +1206,7 @@ int ath11k_core_fetch_bdf(struct ath11k_base *ab, struct ath11k_board_data *bd)
 			ath11k_err(ab, "failed to fetch board data for %s from %s\n",
 				   fallback_boardname, filepath);
 
-		ath11k_err(ab, "failed to fetch /*(DEBLOBBED)*/ from %s\n",
+		ath11k_err(ab, "failed to fetch board.bin from %s\n",
 			   ab->hw_params.fw.dir);
 		return ret;
 	}

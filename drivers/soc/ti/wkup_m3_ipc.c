@@ -154,7 +154,7 @@ static int wkup_m3_init_scale_data(struct wkup_m3_ipc *m3_ipc,
 	if (!m3_ipc->sd_fw_name)
 		return ret;
 
-	ret = reject_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+	ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
 				      m3_ipc->sd_fw_name, dev, GFP_ATOMIC,
 				      m3_ipc, wkup_m3_scale_data_fw_cb);
 

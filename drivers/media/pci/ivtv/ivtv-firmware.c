@@ -30,7 +30,7 @@
 #define IVTV_CMD_SDRAM_REFRESH_INIT	0x80000640
 #define IVTV_SDRAM_SLEEPTIME		600
 
-#define IVTV_DECODE_INIT_MPEG_FILENAME	"/*(DEBLOBBED)*/"
+#define IVTV_DECODE_INIT_MPEG_FILENAME	"v4l-cx2341x-init.mpg"
 #define IVTV_DECODE_INIT_MPEG_SIZE	(152*1024)
 
 /* Encoder/decoder firmware sizes */
@@ -43,7 +43,7 @@ static int load_fw_direct(const char *fn, volatile u8 __iomem *mem, struct ivtv 
 	int retries = 3;
 
 retry:
-	if (retries && reject_firmware(&fw, fn, &itv->pdev->dev) == 0) {
+	if (retries && request_firmware(&fw, fn, &itv->pdev->dev) == 0) {
 		int i;
 		volatile u32 __iomem *dst = (volatile u32 __iomem *)mem;
 		const u32 *src = (const u32 *)fw->data;
@@ -385,4 +385,6 @@ int ivtv_firmware_check(struct ivtv *itv, char *where)
 	return res;
 }
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(CX2341X_FIRM_ENC_FILENAME);
+MODULE_FIRMWARE(CX2341X_FIRM_DEC_FILENAME);
+MODULE_FIRMWARE(IVTV_DECODE_INIT_MPEG_FILENAME);

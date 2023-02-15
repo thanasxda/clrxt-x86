@@ -9,7 +9,7 @@
  * see Documentation/driver-api/media/drivers/dvb-usb.rst for more information
  */
 #include "af9005.h"
-/*(DEBLOBBED)*/
+#include "af9005-script.h"
 #include "mt2060.h"
 #include "qt1010.h"
 #include <asm/div64.h>
@@ -957,10 +957,31 @@ static int af9005_fe_init(struct dvb_frontend *fe)
 		return ret;
 
 	/* load init script */
-	{
-		err("Missing Free init script\n");
-		return scriptlen = ret = -EINVAL;
-		/*(DEBLOBBED)*/
+	deb_info("load init script\n");
+	scriptlen = sizeof(script) / sizeof(RegDesc);
+	for (i = 0; i < scriptlen; i++) {
+		if ((ret =
+		     af9005_write_register_bits(state->d, script[i].reg,
+						script[i].pos,
+						script[i].len, script[i].val)))
+			return ret;
+		/* save 3 bytes of original fcw */
+		if (script[i].reg == 0xae18)
+			temp2 = script[i].val;
+		if (script[i].reg == 0xae19)
+			temp1 = script[i].val;
+		if (script[i].reg == 0xae1a)
+			temp0 = script[i].val;
+
+		/* save original unplug threshold */
+		if (script[i].reg == xd_p_reg_unplug_th)
+			state->original_if_unplug_th = script[i].val;
+		if (script[i].reg == xd_p_reg_unplug_rf_gain_th)
+			state->original_rf_unplug_th = script[i].val;
+		if (script[i].reg == xd_p_reg_unplug_dtop_if_gain_th)
+			state->original_dtop_if_unplug_th = script[i].val;
+		if (script[i].reg == xd_p_reg_unplug_dtop_rf_gain_th)
+			state->original_dtop_rf_unplug_th = script[i].val;
 
 	}
 	state->original_fcw =

@@ -21,7 +21,7 @@
 /*
  * 8051 firmware image.
  */
-#define FIRMWARE_RT2870			"/*(DEBLOBBED)*/"
+#define FIRMWARE_RT2870			"rt2870.bin"
 #define FIRMWARE_IMAGE_BASE		0x3000
 
 /*

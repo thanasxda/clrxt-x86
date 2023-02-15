@@ -34,7 +34,7 @@
 #include "rtl8188e_hal.h"
 #include "rtw_fw.h"
 
-#define FW_RTL8188EU	"/*(DEBLOBBED)*/"
+#define FW_RTL8188EU	"rtlwifi/rtl8188eufw.bin"
 
 struct registry_priv {
 	u8	rfintfs;

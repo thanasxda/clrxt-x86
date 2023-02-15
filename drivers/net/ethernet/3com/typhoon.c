@@ -94,7 +94,7 @@ static const int multicast_filter_limit = 32;
 #define TX_TIMEOUT  (2*HZ)
 
 #define PKT_BUF_SZ		1536
-#define FIRMWARE_NAME		"/*(DEBLOBBED)*/"
+#define FIRMWARE_NAME		"3com/typhoon.bin"
 
 #define pr_fmt(fmt)		KBUILD_MODNAME " " fmt
 
@@ -128,7 +128,7 @@ static const int multicast_filter_limit = 32;
 
 MODULE_AUTHOR("David Dillow <dave@thedillows.org>");
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(FIRMWARE_NAME);
 MODULE_DESCRIPTION("3Com Typhoon Family (3C990, 3CR990, and variants)");
 MODULE_PARM_DESC(rx_copybreak, "Packets smaller than this are copied and "
 			       "the buffer given back to the NIC. Default "
@@ -1278,7 +1278,7 @@ typhoon_request_firmware(struct typhoon *tp)
 	if (typhoon_fw)
 		return 0;
 
-	err = reject_firmware(&typhoon_fw, FIRMWARE_NAME, &tp->pdev->dev);
+	err = request_firmware(&typhoon_fw, FIRMWARE_NAME, &tp->pdev->dev);
 	if (err) {
 		netdev_err(tp->dev, "Failed to load firmware \"%s\"\n",
 			   FIRMWARE_NAME);

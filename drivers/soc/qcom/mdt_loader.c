@@ -48,7 +48,7 @@ static ssize_t mdt_load_split_segment(void *ptr, const struct elf32_phdr *phdrs,
 		return -ENOMEM;
 
 	sprintf(seg_name + strlen(fw_name) - 3, "b%02d", segment);
-	ret = reject_firmware_into_buf(&seg_fw, seg_name, dev,
+	ret = request_firmware_into_buf(&seg_fw, seg_name, dev,
 					ptr, phdr->p_filesz);
 	if (ret) {
 		dev_err(dev, "error %zd loading %s\n", ret, seg_name);

@@ -1603,7 +1603,7 @@ int avs_load_topology(struct snd_soc_component *comp, const char *filename)
 	const struct firmware *fw;
 	int ret;
 
-	ret = reject_firmware(&fw, filename, comp->dev);
+	ret = request_firmware(&fw, filename, comp->dev);
 	if (ret < 0) {
 		dev_err(comp->dev, "request topology \"%s\" failed: %d\n", filename, ret);
 		return ret;

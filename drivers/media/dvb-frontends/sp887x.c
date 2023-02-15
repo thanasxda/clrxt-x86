@@ -3,7 +3,13 @@
    Driver for the Spase sp887x demodulator
 */
 
-/*(DEBLOBBED)*/
+/*
+ * This driver needs external firmware. Please use the command
+ * "<kerneldir>/scripts/get_dvb_firmware sp887x" to
+ * download/extract it, and then copy it to /usr/lib/hotplug/firmware
+ * or /lib/firmware (depending on configuration of firmware hotplug).
+ */
+#define SP887X_DEFAULT_FIRMWARE "dvb-fe-sp887x.fw"
 
 #include <linux/init.h>
 #include <linux/module.h>
@@ -517,8 +523,8 @@ static int sp887x_init(struct dvb_frontend* fe)
 
 	if (!state->initialised) {
 		/* request the firmware, this will block until someone uploads it */
-		printk("sp887x: waiting for firmware upload (%s)...\n", "/*(DEBLOBBED)*/");
-		ret = state->config->request_firmware(fe, &fw, "/*(DEBLOBBED)*/");
+		printk("sp887x: waiting for firmware upload (%s)...\n", SP887X_DEFAULT_FIRMWARE);
+		ret = state->config->request_firmware(fe, &fw, SP887X_DEFAULT_FIRMWARE);
 		if (ret) {
 			printk("sp887x: no firmware upload (timeout or file not found?)\n");
 			return ret;

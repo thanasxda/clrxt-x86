@@ -25,7 +25,7 @@
 #include <net/mac802154.h>
 #include <net/cfg802154.h>
 
-#define FIRMWARE "/*(DEBLOBBED)*/"
+#define FIRMWARE "adf7242_firmware.bin"
 #define MAX_POLL_LOOPS 200
 
 /* All Registers */
@@ -1070,11 +1070,15 @@ static int adf7242_hw_init(struct adf7242_local *lp)
 	adf7242_cmd(lp, CMD_RC_RESET);
 	adf7242_cmd(lp, CMD_RC_IDLE);
 
-	/*(DEBLOBBED)*/
-	ret = reject_firmware(&fw, FIRMWARE, &lp->spi->dev);
+	/* get ADF7242 addon firmware
+	 * build this driver as module
+	 * and place under /lib/firmware/adf7242_firmware.bin
+	 * or compile firmware into the kernel.
+	 */
+	ret = request_firmware(&fw, FIRMWARE, &lp->spi->dev);
 	if (ret) {
 		dev_err(&lp->spi->dev,
-			"reject_firmware() failed with %d\n", ret);
+			"request_firmware() failed with %d\n", ret);
 		return ret;
 	}
 

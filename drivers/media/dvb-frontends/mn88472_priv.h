@@ -14,7 +14,7 @@
 #include <linux/firmware.h>
 #include <linux/regmap.h>
 
-#define MN88472_FIRMWARE "/*(DEBLOBBED)*/"
+#define MN88472_FIRMWARE "dvb-demod-mn88472-02.fw"
 
 struct mn88472_dev {
 	struct i2c_client *client[3];

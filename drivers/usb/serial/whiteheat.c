@@ -191,9 +191,9 @@ static int whiteheat_firmware_download(struct usb_serial *serial,
 {
 	int response;
 
-	response = ezusb_fx1_ihex_firmware_download(serial->dev, "/*(DEBLOBBED)*/");
+	response = ezusb_fx1_ihex_firmware_download(serial->dev, "whiteheat_loader.fw");
 	if (response >= 0) {
-		response = ezusb_fx1_ihex_firmware_download(serial->dev, "/*(DEBLOBBED)*/");
+		response = ezusb_fx1_ihex_firmware_download(serial->dev, "whiteheat.fw");
 		if (response >= 0)
 			return 0;
 	}
@@ -804,4 +804,5 @@ MODULE_AUTHOR(DRIVER_AUTHOR);
 MODULE_DESCRIPTION(DRIVER_DESC);
 MODULE_LICENSE("GPL");
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("whiteheat.fw");
+MODULE_FIRMWARE("whiteheat_loader.fw");

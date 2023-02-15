@@ -209,14 +209,14 @@ struct xc5000_fw_cfg {
 	u8 fw_checksum_supported;
 };
 
-#define XC5000A_FIRMWARE "/*(DEBLOBBED)*/"
+#define XC5000A_FIRMWARE "dvb-fe-xc5000-1.6.114.fw"
 static const struct xc5000_fw_cfg xc5000a_1_6_114 = {
 	.name = XC5000A_FIRMWARE,
 	.size = 12401,
 	.pll_reg = 0x806c,
 };
 
-#define XC5000C_FIRMWARE "/*(DEBLOBBED)*/"
+#define XC5000C_FIRMWARE "dvb-fe-xc5000c-4.1.30.7.fw"
 static const struct xc5000_fw_cfg xc5000c_41_024_5 = {
 	.name = XC5000C_FIRMWARE,
 	.size = 16497,
@@ -1111,7 +1111,7 @@ static int xc_load_fw_and_init_tuner(struct dvb_frontend *fe, int force)
 		return 0;
 
 	if (!priv->firmware) {
-		ret = reject_firmware(&fw, desired_fw->name,
+		ret = request_firmware(&fw, desired_fw->name,
 					priv->i2c_props.adap->dev.parent);
 		if (ret) {
 			pr_err("xc5000: Upload failed. rc %d\n", ret);
@@ -1465,4 +1465,5 @@ EXPORT_SYMBOL(xc5000_attach);
 MODULE_AUTHOR("Steven Toth");
 MODULE_DESCRIPTION("Xceive xc5000 silicon tuner driver");
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(XC5000A_FIRMWARE);
+MODULE_FIRMWARE(XC5000C_FIRMWARE);

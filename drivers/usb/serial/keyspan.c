@@ -1615,51 +1615,51 @@ static int keyspan_fake_startup(struct usb_serial *serial)
 		/* Select firmware image on the basis of idProduct */
 	switch (le16_to_cpu(serial->dev->descriptor.idProduct)) {
 	case keyspan_usa28_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa28.fw";
 		break;
 
 	case keyspan_usa28x_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa28x.fw";
 		break;
 
 	case keyspan_usa28xa_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa28xa.fw";
 		break;
 
 	case keyspan_usa28xb_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa28xb.fw";
 		break;
 
 	case keyspan_usa19_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa19.fw";
 		break;
 
 	case keyspan_usa19qi_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa19qi.fw";
 		break;
 
 	case keyspan_mpr_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/mpr.fw";
 		break;
 
 	case keyspan_usa19qw_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa19qw.fw";
 		break;
 
 	case keyspan_usa18x_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa18x.fw";
 		break;
 
 	case keyspan_usa19w_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa19w.fw";
 		break;
 
 	case keyspan_usa49w_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa49w.fw";
 		break;
 
 	case keyspan_usa49wlc_pre_product_id:
-		fw_name = "/*(DEBLOBBED)*/";
+		fw_name = "keyspan/usa49wlc.fw";
 		break;
 
 	default:
@@ -3091,4 +3091,15 @@ MODULE_AUTHOR(DRIVER_AUTHOR);
 MODULE_DESCRIPTION(DRIVER_DESC);
 MODULE_LICENSE("GPL");
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("keyspan/usa28.fw");
+MODULE_FIRMWARE("keyspan/usa28x.fw");
+MODULE_FIRMWARE("keyspan/usa28xa.fw");
+MODULE_FIRMWARE("keyspan/usa28xb.fw");
+MODULE_FIRMWARE("keyspan/usa19.fw");
+MODULE_FIRMWARE("keyspan/usa19qi.fw");
+MODULE_FIRMWARE("keyspan/mpr.fw");
+MODULE_FIRMWARE("keyspan/usa19qw.fw");
+MODULE_FIRMWARE("keyspan/usa18x.fw");
+MODULE_FIRMWARE("keyspan/usa19w.fw");
+MODULE_FIRMWARE("keyspan/usa49w.fw");
+MODULE_FIRMWARE("keyspan/usa49wlc.fw");

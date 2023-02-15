@@ -62,7 +62,9 @@ to start accessing the card with utilities such as scan, tzap,
 dvbstream etc.
 
 The frontend module sp887x.o, requires an external   firmware.
-/*(DEBLOBBED)*/
+Please use  the  command "get_dvb_firmware sp887x" to download
+it. Then copy it to /usr/lib/hotplug/firmware or /lib/firmware/
+(depending on configuration of firmware hotplug).
 
 Known Limitations
 ~~~~~~~~~~~~~~~~~

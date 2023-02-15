@@ -69,19 +69,24 @@
 #include <linux/firmware.h>
 #include "bnx2x_fw_file_hdr.h"
 /* FW files */
-/*(DEBLOBBED)*/
-#define bnx2x_init_block(bp, start, end) \
-  return (printk(KERN_ERR "%s: Missing Free firmware\n", bp->dev->name),\
-	  -EINVAL)
+#define FW_FILE_VERSION					\
+	__stringify(BCM_5710_FW_MAJOR_VERSION) "."	\
+	__stringify(BCM_5710_FW_MINOR_VERSION) "."	\
+	__stringify(BCM_5710_FW_REVISION_VERSION) "."	\
+	__stringify(BCM_5710_FW_ENGINEERING_VERSION)
 
-/*(DEBLOBBED)*/
+#define FW_FILE_VERSION_V15				\
+	__stringify(BCM_5710_FW_MAJOR_VERSION) "."      \
+	__stringify(BCM_5710_FW_MINOR_VERSION) "."	\
+	__stringify(BCM_5710_FW_REVISION_VERSION_V15) "."	\
+	__stringify(BCM_5710_FW_ENGINEERING_VERSION)
 
-#define FW_FILE_NAME_E1		"/*(DEBLOBBED)*/"
-#define FW_FILE_NAME_E1H	"/*(DEBLOBBED)*/"
-#define FW_FILE_NAME_E2		"/*(DEBLOBBED)*/"
-#define FW_FILE_NAME_E1_V15	"/*(DEBLOBBED)*/"
-#define FW_FILE_NAME_E1H_V15	"/*(DEBLOBBED)*/"
-#define FW_FILE_NAME_E2_V15	"/*(DEBLOBBED)*/"
+#define FW_FILE_NAME_E1		"bnx2x/bnx2x-e1-" FW_FILE_VERSION ".fw"
+#define FW_FILE_NAME_E1H	"bnx2x/bnx2x-e1h-" FW_FILE_VERSION ".fw"
+#define FW_FILE_NAME_E2		"bnx2x/bnx2x-e2-" FW_FILE_VERSION ".fw"
+#define FW_FILE_NAME_E1_V15	"bnx2x/bnx2x-e1-" FW_FILE_VERSION_V15 ".fw"
+#define FW_FILE_NAME_E1H_V15	"bnx2x/bnx2x-e1h-" FW_FILE_VERSION_V15 ".fw"
+#define FW_FILE_NAME_E2_V15	"bnx2x/bnx2x-e2-" FW_FILE_VERSION_V15 ".fw"
 
 /* Time in jiffies before concluding the transmitter is hung */
 #define TX_TIMEOUT		(5*HZ)
@@ -92,7 +97,12 @@ MODULE_DESCRIPTION("QLogic "
 		   "57712/57712_MF/57800/57800_MF/57810/57810_MF/"
 		   "57840/57840_MF Driver");
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(FW_FILE_NAME_E1);
+MODULE_FIRMWARE(FW_FILE_NAME_E1H);
+MODULE_FIRMWARE(FW_FILE_NAME_E2);
+MODULE_FIRMWARE(FW_FILE_NAME_E1_V15);
+MODULE_FIRMWARE(FW_FILE_NAME_E1H_V15);
+MODULE_FIRMWARE(FW_FILE_NAME_E2_V15);
 
 int bnx2x_num_queues;
 module_param_named(num_queues, bnx2x_num_queues, int, 0444);
@@ -746,10 +756,11 @@ static int bnx2x_mc_assert(struct bnx2x *bp)
 		}
 	}
 
-	BNX2X_ERR("Chip Revision: %s, /*(DEBLOBBED)*/\n",
+	BNX2X_ERR("Chip Revision: %s, FW Version: %d_%d_%d\n",
 		  CHIP_IS_E1(bp) ? "everest1" :
 		  CHIP_IS_E1H(bp) ? "everest1h" :
-		  CHIP_IS_E2(bp) ? "everest2" : "everest3"/*(DEBLOBBED)*/);
+		  CHIP_IS_E2(bp) ? "everest2" : "everest3",
+		  bp->fw_major, bp->fw_minor, bp->fw_rev);
 
 	return rc;
 }
@@ -13262,7 +13273,60 @@ err_out:
 	return rc;
 }
 
-/*(DEBLOBBED)*/
+static int bnx2x_check_firmware(struct bnx2x *bp)
+{
+	const struct firmware *firmware = bp->firmware;
+	struct bnx2x_fw_file_hdr *fw_hdr;
+	struct bnx2x_fw_file_section *sections;
+	u32 offset, len, num_ops;
+	__be16 *ops_offsets;
+	int i;
+	const u8 *fw_ver;
+
+	if (firmware->size < sizeof(struct bnx2x_fw_file_hdr)) {
+		BNX2X_ERR("Wrong FW size\n");
+		return -EINVAL;
+	}
+
+	fw_hdr = (struct bnx2x_fw_file_hdr *)firmware->data;
+	sections = (struct bnx2x_fw_file_section *)fw_hdr;
+
+	/* Make sure none of the offsets and sizes make us read beyond
+	 * the end of the firmware data */
+	for (i = 0; i < sizeof(*fw_hdr) / sizeof(*sections); i++) {
+		offset = be32_to_cpu(sections[i].offset);
+		len = be32_to_cpu(sections[i].len);
+		if (offset + len > firmware->size) {
+			BNX2X_ERR("Section %d length is out of bounds\n", i);
+			return -EINVAL;
+		}
+	}
+
+	/* Likewise for the init_ops offsets */
+	offset = be32_to_cpu(fw_hdr->init_ops_offsets.offset);
+	ops_offsets = (__force __be16 *)(firmware->data + offset);
+	num_ops = be32_to_cpu(fw_hdr->init_ops.len) / sizeof(struct raw_op);
+
+	for (i = 0; i < be32_to_cpu(fw_hdr->init_ops_offsets.len) / 2; i++) {
+		if (be16_to_cpu(ops_offsets[i]) > num_ops) {
+			BNX2X_ERR("Section offset %d is out of bounds\n", i);
+			return -EINVAL;
+		}
+	}
+
+	/* Check FW version */
+	offset = be32_to_cpu(fw_hdr->fw_version.offset);
+	fw_ver = firmware->data + offset;
+	if (fw_ver[0] != bp->fw_major || fw_ver[1] != bp->fw_minor ||
+	    fw_ver[2] != bp->fw_rev || fw_ver[3] != bp->fw_eng) {
+		BNX2X_ERR("Bad FW version:%d.%d.%d.%d. Should be %d.%d.%d.%d\n",
+			  fw_ver[0], fw_ver[1], fw_ver[2], fw_ver[3],
+			  bp->fw_major, bp->fw_minor, bp->fw_rev, bp->fw_eng);
+		return -EINVAL;
+	}
+
+	return 0;
+}
 
 static void be32_to_cpu_n(const u8 *_source, u8 *_target, u32 n)
 {
@@ -13360,25 +13424,27 @@ static int bnx2x_init_firmware(struct bnx2x *bp)
 
 	BNX2X_DEV_INFO("Loading %s\n", fw_file_name);
 
-	rc = reject_firmware(&bp->firmware, fw_file_name, &bp->pdev->dev);
+	rc = request_firmware(&bp->firmware, fw_file_name, &bp->pdev->dev);
 	if (rc) {
 		BNX2X_DEV_INFO("Trying to load older fw %s\n", fw_file_name_v15);
 
 		/* try to load prev version */
-		rc = reject_firmware(&bp->firmware, fw_file_name_v15, &bp->pdev->dev);
+		rc = request_firmware(&bp->firmware, fw_file_name_v15, &bp->pdev->dev);
 
 		if (rc)
 			goto request_firmware_exit;
 
-		/*(DEBLOBBED)*/
+		bp->fw_rev = BCM_5710_FW_REVISION_VERSION_V15;
 	} else {
 		bp->fw_cap |= FW_CAP_INVALIDATE_VF_FP_HSI;
-		/*(DEBLOBBED)*/
+		bp->fw_rev = BCM_5710_FW_REVISION_VERSION;
 	}
 
-	/*(DEBLOBBED)*/
+	bp->fw_major = BCM_5710_FW_MAJOR_VERSION;
+	bp->fw_minor = BCM_5710_FW_MINOR_VERSION;
+	bp->fw_eng = BCM_5710_FW_ENGINEERING_VERSION;
 
-	/*(DEBLOBBED)*/
+	rc = bnx2x_check_firmware(bp);
 	if (rc) {
 		BNX2X_ERR("Corrupt firmware file %s\n", fw_file_name);
 		goto request_firmware_exit;

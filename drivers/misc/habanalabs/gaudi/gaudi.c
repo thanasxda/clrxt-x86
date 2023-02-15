@@ -59,9 +59,9 @@
  *
  */
 
-#define GAUDI_BOOT_FIT_FILE	"/*(DEBLOBBED)*/"
-#define GAUDI_LINUX_FW_FILE	"/*(DEBLOBBED)*/"
-#define GAUDI_TPC_FW_FILE	"/*(DEBLOBBED)*/"
+#define GAUDI_BOOT_FIT_FILE	"habanalabs/gaudi/gaudi-boot-fit.itb"
+#define GAUDI_LINUX_FW_FILE	"habanalabs/gaudi/gaudi-fit.itb"
+#define GAUDI_TPC_FW_FILE	"habanalabs/gaudi/gaudi_tpc.bin"
 
 #define GAUDI_DMA_POOL_BLK_SIZE		0x100 /* 256 bytes */
 
@@ -1048,7 +1048,7 @@ static int gaudi_init_tpc_mem(struct hl_device *hdev)
 	int rc, count = 5;
 
 again:
-	rc = reject_firmware(&fw, GAUDI_TPC_FW_FILE, hdev->dev);
+	rc = request_firmware(&fw, GAUDI_TPC_FW_FILE, hdev->dev);
 	if (rc == -EINTR && count-- > 0) {
 		msleep(50);
 		goto again;

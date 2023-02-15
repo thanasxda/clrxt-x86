@@ -37,7 +37,7 @@
 
 #define DRV_NAME			"rp2"
 
-#define RP2_FW_NAME			"/*(DEBLOBBED)*/"
+#define RP2_FW_NAME			"rp2.fw"
 #define RP2_UCODE_BYTES			0x3f
 
 #define PORTS_PER_ASIC			16
@@ -758,7 +758,7 @@ static int rp2_probe(struct pci_dev *pdev,
 		return -ENOMEM;
 	card->ports = ports;
 
-	rc = reject_firmware(&fw, RP2_FW_NAME, &pdev->dev);
+	rc = request_firmware(&fw, RP2_FW_NAME, &pdev->dev);
 	if (rc < 0) {
 		dev_err(&pdev->dev, "cannot find '%s' firmware image\n",
 			RP2_FW_NAME);
@@ -860,4 +860,4 @@ module_exit(rp2_uart_exit);
 MODULE_DESCRIPTION("Comtrol RocketPort EXPRESS/INFINITY driver");
 MODULE_AUTHOR("Kevin Cernekee <cernekee@gmail.com>");
 MODULE_LICENSE("GPL v2");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(RP2_FW_NAME);

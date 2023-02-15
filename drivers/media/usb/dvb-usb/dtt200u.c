@@ -189,7 +189,7 @@ MODULE_DEVICE_TABLE(usb, dtt200u_usb_table);
 
 static struct dvb_usb_device_properties dtt200u_properties = {
 	.usb_ctrl = CYPRESS_FX2,
-	.firmware = "/*(DEBLOBBED)*/",
+	.firmware = "dvb-usb-dtt200u-01.fw",
 
 	.size_of_priv     = sizeof(struct dtt200u_state),
 
@@ -241,7 +241,7 @@ static struct dvb_usb_device_properties dtt200u_properties = {
 
 static struct dvb_usb_device_properties wt220u_properties = {
 	.usb_ctrl = CYPRESS_FX2,
-	.firmware = "/*(DEBLOBBED)*/",
+	.firmware = "dvb-usb-wt220u-02.fw",
 
 	.size_of_priv     = sizeof(struct dtt200u_state),
 
@@ -293,7 +293,7 @@ static struct dvb_usb_device_properties wt220u_properties = {
 
 static struct dvb_usb_device_properties wt220u_fc_properties = {
 	.usb_ctrl = CYPRESS_FX2,
-	.firmware = "/*(DEBLOBBED)*/",
+	.firmware = "dvb-usb-wt220u-fc03.fw",
 
 	.size_of_priv     = sizeof(struct dtt200u_state),
 
@@ -345,7 +345,7 @@ static struct dvb_usb_device_properties wt220u_fc_properties = {
 
 static struct dvb_usb_device_properties wt220u_zl0353_properties = {
 	.usb_ctrl = CYPRESS_FX2,
-	.firmware = "/*(DEBLOBBED)*/",
+	.firmware = "dvb-usb-wt220u-zl0353-01.fw",
 
 	.size_of_priv     = sizeof(struct dtt200u_state),
 
@@ -397,7 +397,7 @@ static struct dvb_usb_device_properties wt220u_zl0353_properties = {
 
 static struct dvb_usb_device_properties wt220u_miglia_properties = {
 	.usb_ctrl = CYPRESS_FX2,
-	.firmware = "/*(DEBLOBBED)*/",
+	.firmware = "dvb-usb-wt220u-miglia-01.fw",
 
 	.size_of_priv     = sizeof(struct dtt200u_state),
 

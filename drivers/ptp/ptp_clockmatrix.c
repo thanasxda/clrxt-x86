@@ -1268,7 +1268,7 @@ static int idtcm_load_firmware(struct idtcm *idtcm,
 
 	dev_info(idtcm->dev, "requesting firmware '%s'", fname);
 
-	err = reject_firmware(&fw, fname, dev);
+	err = request_firmware(&fw, fname, dev);
 	if (err) {
 		dev_err(idtcm->dev,
 			"Failed at line %d in %s!", __LINE__, __func__);

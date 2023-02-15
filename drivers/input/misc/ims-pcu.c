@@ -756,7 +756,7 @@ static int ims_pcu_switch_to_bootloader(struct ims_pcu *pcu)
  *             Firmware Update handling                              *
  *********************************************************************/
 
-#define IMS_PCU_FIRMWARE_NAME	"/*(DEBLOBBED)*/"
+#define IMS_PCU_FIRMWARE_NAME	"imspcu.fw"
 
 struct ims_pcu_flash_fmt {
 	__le32 addr;
@@ -1168,7 +1168,7 @@ static ssize_t ims_pcu_update_firmware_store(struct device *dev,
 	if (error)
 		return error;
 
-	error = reject_firmware(&fw, IMS_PCU_FIRMWARE_NAME, pcu->dev);
+	error = request_ihex_firmware(&fw, IMS_PCU_FIRMWARE_NAME, pcu->dev);
 	if (error) {
 		dev_err(pcu->dev, "Failed to request firmware %s, error: %d\n",
 			IMS_PCU_FIRMWARE_NAME, error);
@@ -1963,7 +1963,7 @@ static int ims_pcu_init_bootloader_mode(struct ims_pcu *pcu)
 		 "Device is in bootloader mode (addr 0x%08x-0x%08x), requesting firmware\n",
 		 pcu->fw_start_addr, pcu->fw_end_addr);
 
-	error = reject_firmware_nowait(THIS_MODULE, true,
+	error = request_firmware_nowait(THIS_MODULE, true,
 					IMS_PCU_FIRMWARE_NAME,
 					pcu->dev, GFP_KERNEL, pcu,
 					ims_pcu_process_async_firmware);

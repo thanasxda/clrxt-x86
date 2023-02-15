@@ -80,7 +80,7 @@ sdma@83fb0000 {
 	reg = <0x83fb0000 0x4000>;
 	interrupts = <6>;
 	#dma-cells = <3>;
-	fsl,sdma-ram-script-name = "/*(DEBLOBBED)*/";
+	fsl,sdma-ram-script-name = "sdma-imx51.bin";
 };
 
 DMA clients connected to the i.MX SDMA controller must use the format

@@ -128,7 +128,7 @@ static int cnl_load_base_firmware(struct sst_dsp *ctx)
 	int ret, i;
 
 	if (!ctx->fw) {
-		ret = reject_firmware(&ctx->fw, ctx->fw_name, ctx->dev);
+		ret = request_firmware(&ctx->fw, ctx->fw_name, ctx->dev);
 		if (ret < 0) {
 			dev_err(ctx->dev, "request firmware failed: %d\n", ret);
 			goto cnl_load_base_firmware_failed;

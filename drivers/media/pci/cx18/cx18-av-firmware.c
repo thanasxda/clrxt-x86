@@ -17,7 +17,7 @@
 #define CX18_AI1_MUX_843_I2S 0x20
 #define CX18_AI1_MUX_INVALID 0x30
 
-#define FWFILE "/*(DEBLOBBED)*/"
+#define FWFILE "v4l-cx23418-dig.fw"
 
 static int cx18_av_verifyfw(struct cx18 *cx, const struct firmware *fw)
 {
@@ -70,7 +70,7 @@ int cx18_av_loadfw(struct cx18 *cx)
 	int i;
 	int retries1 = 0;
 
-	if (reject_firmware(&fw, FWFILE, &cx->pci_dev->dev) != 0) {
+	if (request_firmware(&fw, FWFILE, &cx->pci_dev->dev) != 0) {
 		CX18_ERR_DEV(sd, "unable to open firmware %s\n", FWFILE);
 		return -EINVAL;
 	}
@@ -207,4 +207,4 @@ int cx18_av_loadfw(struct cx18 *cx)
 	return 0;
 }
 
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(FWFILE);

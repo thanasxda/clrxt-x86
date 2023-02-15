@@ -70,8 +70,8 @@
  *
  */
 
-#define GOYA_BOOT_FIT_FILE	"/*(DEBLOBBED)*/"
-#define GOYA_LINUX_FW_FILE	"/*(DEBLOBBED)*/"
+#define GOYA_BOOT_FIT_FILE	"habanalabs/goya/goya-boot-fit.itb"
+#define GOYA_LINUX_FW_FILE	"habanalabs/goya/goya-fit.itb"
 
 #define GOYA_MMU_REGS_NUM		63
 

@@ -63,7 +63,7 @@ static void rtl92se_fw_cb(const struct firmware *firmware, void *context)
 	struct ieee80211_hw *hw = context;
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rt_firmware *pfirmware = NULL;
-	char *fw_name = "/*(DEBLOBBED)*/";
+	char *fw_name = "rtlwifi/rtl8192sefw.bin";
 
 	rtl_dbg(rtlpriv, COMP_ERR, DBG_LOUD,
 		"Firmware callback routine entered!\n");
@@ -91,7 +91,7 @@ static int rtl92s_init_sw_vars(struct ieee80211_hw *hw)
 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
 	int err = 0;
 	u16 earlyrxthreshold = 7;
-	char *fw_name = "/*(DEBLOBBED)*/";
+	char *fw_name = "rtlwifi/rtl8192sefw.bin";
 
 	rtlpriv->dm.dm_initialgain_enable = true;
 	rtlpriv->dm.dm_flag = 0;
@@ -187,7 +187,7 @@ static int rtl92s_init_sw_vars(struct ieee80211_hw *hw)
 	pr_info("Driver for Realtek RTL8192SE/RTL8191SE\n"
 		"Loading firmware %s\n", fw_name);
 	/* request fw */
-	err = reject_firmware_nowait(THIS_MODULE, 1, fw_name,
+	err = request_firmware_nowait(THIS_MODULE, 1, fw_name,
 				      rtlpriv->io.dev, GFP_KERNEL, hw,
 				      rtl92se_fw_cb);
 	if (err) {
@@ -391,7 +391,7 @@ MODULE_AUTHOR("Realtek WlanFAE	<wlanfae@realtek.com>");
 MODULE_AUTHOR("Larry Finger	<Larry.Finger@lwfinger.net>");
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Realtek 8192S/8191S 802.11n PCI wireless");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE("rtlwifi/rtl8192sefw.bin");
 
 module_param_named(swenc, rtl92se_mod_params.sw_crypto, bool, 0444);
 module_param_named(debug_level, rtl92se_mod_params.debug_level, int, 0644);

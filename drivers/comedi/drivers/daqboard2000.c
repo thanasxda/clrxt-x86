@@ -101,7 +101,7 @@
 
 #include "plx9080.h"
 
-#define DB2K_FIRMWARE		"/*(DEBLOBBED)*/"
+#define DB2K_FIRMWARE		"daqboard2000_firmware.bin"
 
 static const struct comedi_lrange db2k_ai_range = {
 	13, {
@@ -783,4 +783,4 @@ module_comedi_pci_driver(db2k_driver, db2k_pci_driver);
 MODULE_AUTHOR("Comedi https://www.comedi.org");
 MODULE_DESCRIPTION("Comedi low-level driver");
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(DB2K_FIRMWARE);

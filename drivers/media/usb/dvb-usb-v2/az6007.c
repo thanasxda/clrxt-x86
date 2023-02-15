@@ -19,7 +19,7 @@
 #include "dvb_usb.h"
 #include "cypress_firmware.h"
 
-#define AZ6007_FIRMWARE "/*(DEBLOBBED)*/"
+#define AZ6007_FIRMWARE "dvb-usb-terratec-h7-az6007.fw"
 
 static int az6007_xfer_debug;
 module_param_named(xfer_debug, az6007_xfer_debug, int, 0644);
@@ -57,7 +57,7 @@ static struct drxk_config terratec_h7_drxk = {
 	.chunk_size = 64,
 	.mpeg_out_clk_strength = 0x02,
 	.qam_demod_parameter_count = 2,
-	.microcode_name = "/*(DEBLOBBED)*/",
+	.microcode_name = "dvb-usb-terratec-h7-drxk.fw",
 };
 
 static struct drxk_config cablestar_hdci_drxk = {
@@ -70,7 +70,7 @@ static struct drxk_config cablestar_hdci_drxk = {
 	.chunk_size = 64,
 	.mpeg_out_clk_strength = 0x02,
 	.qam_demod_parameter_count = 2,
-	.microcode_name = "/*(DEBLOBBED)*/",
+	.microcode_name = "dvb-usb-technisat-cablestar-hdci-drxk.fw",
 };
 
 static int drxk_gate_ctrl(struct dvb_frontend *fe, int enable)
@@ -980,4 +980,4 @@ MODULE_AUTHOR("Mauro Carvalho Chehab");
 MODULE_DESCRIPTION("Driver for AzureWave 6007 DVB-C/T USB2.0 and clones");
 MODULE_VERSION("2.0");
 MODULE_LICENSE("GPL");
-/*(DEBLOBBED)*/
+MODULE_FIRMWARE(AZ6007_FIRMWARE);
