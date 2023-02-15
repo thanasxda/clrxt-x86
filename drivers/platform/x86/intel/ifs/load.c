@@ -263,7 +263,8 @@ int ifs_load_firmware(struct device *dev)
 	int ret = -EINVAL;
 
 	snprintf(scan_path, sizeof(scan_path), "/*(DEBLOBBED)*/",
-		 boot_cpu_data.x86, boot_cpu_data.x86_model, boot_cpu_data.x86_stepping);
+		 ifsd->test_num, boot_cpu_data.x86, boot_cpu_data.x86_model,
+		 boot_cpu_data.x86_stepping, ifsd->cur_batch);
 
 	ret = reject_firmware_direct(&fw, scan_path, dev);
 	if (ret) {

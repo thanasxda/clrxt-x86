@@ -544,7 +544,7 @@ static int try_firmware_load(struct intel_uc_fw *uc_fw, const struct firmware **
 	struct device *dev = gt->i915->drm.dev;
 	int err;
 
-	err = firmware_request_nowarn(fw, uc_fw->file_selected.path, dev);
+	err = firmware_reject_nowarn(fw, uc_fw->file_selected.path, dev);
 
 	if (err)
 		return err;

@@ -88,8 +88,8 @@ enum mtk_wed_dummy_cr_idx {
 	MTK_WED_DUMMY_CR_WO_STATUS,
 };
 
-#define MT7986_FIRMWARE_WO0	"mediatek/mt7986_wo_0.bin"
-#define MT7986_FIRMWARE_WO1	"mediatek/mt7986_wo_1.bin"
+#define MT7986_FIRMWARE_WO0	"/*(DEBLOBBED)*/"
+#define MT7986_FIRMWARE_WO1	"/*(DEBLOBBED)*/"
 
 #define MTK_WO_MCU_CFG_LS_BASE				0
 #define MTK_WO_MCU_CFG_LS_HW_VER_ADDR			(MTK_WO_MCU_CFG_LS_BASE + 0x000)

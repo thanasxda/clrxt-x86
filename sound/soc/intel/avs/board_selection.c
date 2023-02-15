@@ -133,7 +133,7 @@ static struct snd_soc_acpi_mach avs_kbl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(0),
 		},
-		.tplg_filename = "max98927-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "MX98373",
@@ -149,7 +149,7 @@ static struct snd_soc_acpi_mach avs_kbl_i2s_machines[] = {
 		.mach_params = {
 			.i2s_link_mask = AVS_SSP(0),
 		},
-		.tplg_filename = "max98357a-tplg.bin",
+		.tplg_filename = "/*(DEBLOBBED)*/",
 	},
 	{
 		.id = "DLGS7219",

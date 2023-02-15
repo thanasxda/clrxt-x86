@@ -756,7 +756,7 @@ static int rtl8188fu_load_firmware(struct rtl8xxxu_priv *priv)
 	char *fw_name;
 	int ret;
 
-	fw_name = "rtlwifi/rtl8188fufw.bin";
+	fw_name = "/*(DEBLOBBED)*/";
 
 	ret = rtl8xxxu_load_firmware(priv, fw_name);
 

@@ -101,11 +101,7 @@ tu102_acr_unload_fwif[] = {
 	{}
 };
 
-static int
-tu102_acr_asb_load(struct nvkm_acr *acr, struct nvkm_acr_hsfw *hsfw)
-{
-	return gm200_acr_hsfw_load(acr, hsfw, &acr->subdev.device->gsp->falcon);
-}
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_func
 tu102_acr_asb_0 = {
@@ -121,13 +117,6 @@ tu102_acr_asb_fwif[] = {
 	{  0, gm200_acr_hsfw_ctor, &gp108_acr_hsfw_0, NVKM_ACR_HSF_GSP, 0, 0x00000000 },
 	{ -1, tu102_acr_hsfw_nofw },
 	{}
-};
-
-static const struct nvkm_acr_hsf_func
-tu102_acr_ahesasc_0 = {
-	.load = gp102_acr_load_load,
-	.boot = tu102_acr_hsfw_boot,
-	.bld = gp108_acr_hsfw_bld,
 };
 
 /*(DEBLOBBED)*/

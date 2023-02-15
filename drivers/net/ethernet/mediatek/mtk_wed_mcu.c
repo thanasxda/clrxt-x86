@@ -327,7 +327,7 @@ mtk_wed_mcu_load_firmware(struct mtk_wed_wo *wo)
 
 	/* load firmware */
 	fw_name = wo->hw->index ? MT7986_FIRMWARE_WO1 : MT7986_FIRMWARE_WO0;
-	ret = request_firmware(&fw, fw_name, wo->hw->dev);
+	ret = reject_firmware(&fw, fw_name, wo->hw->dev);
 	if (ret)
 		return ret;
 
@@ -386,5 +386,4 @@ int mtk_wed_mcu_init(struct mtk_wed_wo *wo)
 				  100, MTK_FW_DL_TIMEOUT);
 }
 
-MODULE_FIRMWARE(MT7986_FIRMWARE_WO0);
-MODULE_FIRMWARE(MT7986_FIRMWARE_WO1);
+/*(DEBLOBBED)*/

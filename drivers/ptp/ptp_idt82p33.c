@@ -1290,6 +1290,8 @@ static int idt82p33_load_firmware(struct idt82p33 *idt82p33)
 
 	err = reject_firmware(&fw, FW_FILENAME, idt82p33->dev);
 
+	err = reject_firmware(&fw, fname, idt82p33->dev);
+
 	if (err) {
 		dev_err(idt82p33->dev,
 			"Failed in %s with err %d!\n", __func__, err);

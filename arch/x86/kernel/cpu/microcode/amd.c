@@ -886,8 +886,7 @@ load_microcode_amd(bool save, u8 family, const u8 *data, size_t size)
 }
 
 /*(DEBLOBBED)*/
-static enum ucode_state request_microcode_amd(int cpu, struct device *device,
-					      bool refresh_fw)
+static enum ucode_state request_microcode_amd(int cpu, struct device *device)
 {
 	char fw_name[36] = "/*(DEBLOBBED)*/";
 	struct cpuinfo_x86 *c = &cpu_data(cpu);

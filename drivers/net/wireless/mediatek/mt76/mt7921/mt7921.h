@@ -35,6 +35,9 @@
 #define MT7921_FIRMWARE_WM		"/*(DEBLOBBED)*/"
 #define MT7921_ROM_PATCH		"/*(DEBLOBBED)*/"
 
+#define MT7921_FIRMWARE_WM		"/*(DEBLOBBED)*/"
+#define MT7921_ROM_PATCH		"/*(DEBLOBBED)*/"
+
 #define MT7922_FIRMWARE_WM		"/*(DEBLOBBED)*/"
 #define MT7922_ROM_PATCH		"/*(DEBLOBBED)*/"
 

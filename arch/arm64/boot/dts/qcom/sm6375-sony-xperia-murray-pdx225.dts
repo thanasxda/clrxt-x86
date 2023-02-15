@@ -151,12 +151,12 @@
 };
 
 &remoteproc_adsp {
-	firmware-name = "qcom/Sony/murray/adsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 	status = "okay";
 };
 
 &remoteproc_cdsp {
-	firmware-name = "qcom/Sony/murray/cdsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 	status = "okay";
 };
 

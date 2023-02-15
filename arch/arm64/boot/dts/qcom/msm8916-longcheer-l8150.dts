@@ -22,7 +22,7 @@
 	};
 
 	reserved-memory {
-		// /*(DEBLOBBED)*/ is not relocatable, so it must be loaded at 0x8b600000
+		/* /*(DEBLOBBED)*/
 		/delete-node/ wcnss@89300000;
 
 		wcnss_mem: wcnss@8b600000 {

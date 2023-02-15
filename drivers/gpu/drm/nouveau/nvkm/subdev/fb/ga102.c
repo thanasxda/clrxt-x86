@@ -60,8 +60,4 @@ ga102_fb_new(struct nvkm_device *device, enum nvkm_subdev_type type, int inst, s
 	return gp102_fb_new_(&ga102_fb, device, type, inst, pfb);
 }
 
-MODULE_FIRMWARE("nvidia/ga102/nvdec/scrubber.bin");
-MODULE_FIRMWARE("nvidia/ga103/nvdec/scrubber.bin");
-MODULE_FIRMWARE("nvidia/ga104/nvdec/scrubber.bin");
-MODULE_FIRMWARE("nvidia/ga106/nvdec/scrubber.bin");
-MODULE_FIRMWARE("nvidia/ga107/nvdec/scrubber.bin");
+/*(DEBLOBBED)*/
