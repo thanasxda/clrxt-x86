@@ -462,8 +462,10 @@ endif
 HOSTRUSTC = rustc
 HOSTPKG_CONFIG	= pkg-config
 
+
+
 KBUILD_USERHOSTCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
-			 -O2 -fomit-frame-pointer -std=gnu11 \
+			 -O3 -fomit-frame-pointer -std=gnu11 \
 			 -Wdeclaration-after-statement
 KBUILD_USERCFLAGS  := $(KBUILD_USERHOSTCFLAGS) $(USERCFLAGS)
 KBUILD_USERLDFLAGS := $(USERLDFLAGS)
@@ -484,8 +486,8 @@ export rust_common_flags := --edition=2021 \
 			    -Dclippy::needless_continue \
 			    -Wclippy::dbg_macro
 
-KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
-KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
+KBUILD_HOSTCFLAGS   := -O3 $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
+KBUILD_HOSTCXXFLAGS := -Wall -O3 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
 KBUILD_HOSTRUSTFLAGS := $(rust_common_flags) -O -Cstrip=debuginfo \
 			-Zallow-features= $(HOSTRUSTFLAGS)
 KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
@@ -545,7 +547,7 @@ NOSTDINC_FLAGS :=
 CFLAGS_MODULE   =
 RUSTFLAGS_MODULE =
 AFLAGS_MODULE   =
-LDFLAGS_MODULE  =
+LDFLAGS_MODULE  = --strip-debug
 CFLAGS_KERNEL	=
 RUSTFLAGS_KERNEL =
 AFLAGS_KERNEL	=
@@ -831,12 +833,188 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, format-truncation)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, format-overflow)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, address-of-packed-member)
 
+# This selects which ARM instruction set is used.
+# Note that GCC does not numerically define an architecture version
+# macro, but instead defines a whole series of macros which makes
+# testing for a specific architecture or later rather impossible.
+arch-$(CONFIG_CPU_32v7M)	=-D__LINUX_ARM_ARCH__=7 -march=armv7-m
+arch-$(CONFIG_CPU_32v7)		=-D__LINUX_ARM_ARCH__=7 -march=armv7-a
+arch-$(CONFIG_CPU_32v6)		=-D__LINUX_ARM_ARCH__=6 -march=armv6
+# Only override the compiler option if ARMv6. The ARMv6K extensions are
+# always available in ARMv7
+ifeq ($(CONFIG_CPU_32v6),y)
+arch-$(CONFIG_CPU_32v6K)	=-D__LINUX_ARM_ARCH__=6 -march=armv6k
+endif
+arch-$(CONFIG_CPU_32v5)		=-D__LINUX_ARM_ARCH__=5 -march=armv5te
+arch-$(CONFIG_CPU_32v4T)	=-D__LINUX_ARM_ARCH__=4 -march=armv4t
+arch-$(CONFIG_CPU_32v4)		=-D__LINUX_ARM_ARCH__=4 -march=armv4
+arch-$(CONFIG_CPU_32v3)		=-D__LINUX_ARM_ARCH__=3 -march=armv3m
+
+# Evaluate arch cc-option calls now
+arch-y := $(arch-y)
+
+# This selects how we optimise for the processor.
+tune-$(CONFIG_CPU_ARM7TDMI)	=-mtune=arm7tdmi
+tune-$(CONFIG_CPU_ARM720T)	=-mtune=arm7tdmi
+tune-$(CONFIG_CPU_ARM740T)	=-mtune=arm7tdmi
+tune-$(CONFIG_CPU_ARM9TDMI)	=-mtune=arm9tdmi
+tune-$(CONFIG_CPU_ARM940T)	=-mtune=arm9tdmi
+tune-$(CONFIG_CPU_ARM946E)	=-mtune=arm9e
+tune-$(CONFIG_CPU_ARM920T)	=-mtune=arm9tdmi
+tune-$(CONFIG_CPU_ARM922T)	=-mtune=arm9tdmi
+tune-$(CONFIG_CPU_ARM925T)	=-mtune=arm9tdmi
+tune-$(CONFIG_CPU_ARM926T)	=-mtune=arm9tdmi
+tune-$(CONFIG_CPU_FA526)	=-mtune=arm9tdmi
+tune-$(CONFIG_CPU_SA110)	=-mtune=strongarm110
+tune-$(CONFIG_CPU_SA1100)	=-mtune=strongarm1100
+tune-$(CONFIG_CPU_XSCALE)	=-mtune=xscale
+tune-$(CONFIG_CPU_XSC3)		=-mtune=xscale
+tune-$(CONFIG_CPU_FEROCEON)	=-mtune=xscale
+tune-$(CONFIG_CPU_V6)		=-mtune=arm1136j-s
+tune-$(CONFIG_CPU_V6K)		=-mtune=arm1136j-s
+
+# Evaluate tune cc-option calls now
+tune-y := $(tune-y)
+
+# This selects which x86 instruction set is used.
+cflags-$(CONFIG_M486SX)		+= -march=i486
+cflags-$(CONFIG_M486)		+= -march=i486
+cflags-$(CONFIG_M586)		+= -march=i586
+cflags-$(CONFIG_M586TSC)	+= -march=i586
+cflags-$(CONFIG_M586MMX)	+= -march=pentium-mmx
+cflags-$(CONFIG_M686)		+= -march=i686
+cflags-$(CONFIG_MPENTIUMII)	+= -march=i686 $(call tune,pentium2)
+cflags-$(CONFIG_MPENTIUMIII)	+= -march=i686 $(call tune,pentium3)
+cflags-$(CONFIG_MPENTIUMM)	+= -march=i686 $(call tune,pentium3)
+cflags-$(CONFIG_MPENTIUM4)	+= -march=i686 $(call tune,pentium4)
+cflags-$(CONFIG_MK6)		+= -march=k6
+# Please note, that patches that add -march=athlon-xp and friends are pointless.
+# They make zero difference whatsosever to performance at this time.
+cflags-$(CONFIG_MK7)		+= -march=athlon
+cflags-$(CONFIG_MK8)		+= $(call cc-option,-march=k8,-march=athlon)
+cflags-$(CONFIG_MCRUSOE)	+= -march=i686 $(align)
+cflags-$(CONFIG_MEFFICEON)	+= -march=i686 $(call tune,pentium3) $(align)
+cflags-$(CONFIG_MWINCHIPC6)	+= $(call cc-option,-march=winchip-c6,-march=i586)
+cflags-$(CONFIG_MWINCHIP3D)	+= $(call cc-option,-march=winchip2,-march=i586)
+cflags-$(CONFIG_MCYRIXIII)	+= $(call cc-option,-march=c3,-march=i486) $(align)
+cflags-$(CONFIG_MVIAC3_2)	+= $(call cc-option,-march=c3-2,-march=i686)
+cflags-$(CONFIG_MVIAC7)		+= -march=i686
+cflags-$(CONFIG_MCORE2)		+= -march=i686 $(call tune,core2)
+cflags-$(CONFIG_MATOM)		+= $(call cc-option,-march=atom,$(call cc-option,-march=core2,-march=i686)) \
+$(call cc-option,-mtune=atom,$(call cc-option,-mtune=generic))
+
+# AMD Elan support
+cflags-$(CONFIG_MELAN)		+= -march=i486
+
+# Geode GX1 support
+cflags-$(CONFIG_MGEODEGX1)	+= -march=pentium-mmx
+cflags-$(CONFIG_MGEODE_LX)	+= $(call cc-option,-march=geode,-march=pentium-mmx)
+# add at the end to overwrite eventual tuning options from earlier
+# cpu entries
+cflags-$(CONFIG_X86_GENERIC) 	+= $(call tune,generic,$(call tune,i686))
+
+# Bug fix for binutils: this option is required in order to keep
+# binutils from generating NOPL instructions against our will.
+ifneq ($(CONFIG_X86_P6_NOP),y)
+cflags-y			+= $(call cc-option,-Wa$(comma)-mtune=generic32,)
+endif
+
+# x86_64 instruction set
+cflags64-$(CONFIG_MK8)		+= -march=k8
+cflags64-$(CONFIG_MPSC)		+= -march=nocona
+cflags64-$(CONFIG_MK8SSE3)	+= -march=k8-sse3
+cflags64-$(CONFIG_MK10) 		+= -march=amdfam10
+cflags64-$(CONFIG_MBARCELONA) 	+= -march=barcelona
+cflags64-$(CONFIG_MBOBCAT) 	+= -march=btver1
+cflags64-$(CONFIG_MJAGUAR) 	+= -march=btver2
+cflags64-$(CONFIG_MBULLDOZER) 	+= -march=bdver1
+cflags64-$(CONFIG_MPILEDRIVER)	+= -march=bdver2 -mno-tbm
+cflags64-$(CONFIG_MSTEAMROLLER) 	+= -march=bdver3 -mno-tbm
+cflags64-$(CONFIG_MEXCAVATOR) 	+= -march=bdver4 -mno-tbm
+cflags64-$(CONFIG_MZEN) 		+= -march=znver1
+cflags64-$(CONFIG_MZEN2) 	+= -march=znver2
+cflags64-$(CONFIG_MZEN3) 	+= -march=znver3
+cflags64-$(CONFIG_MZEN4) 	+= -march=znver4
+cflags64-$(CONFIG_MNATIVE_INTEL) += -march=native
+cflags64-$(CONFIG_MNATIVE_AMD) 	+= -march=native
+cflags64-$(CONFIG_MATOM) 	+= -march=bonnell
+cflags64-$(CONFIG_MCORE2) 	+= -march=core2
+cflags64-$(CONFIG_MNEHALEM) 	+= -march=nehalem
+cflags64-$(CONFIG_MWESTMERE) 	+= -march=westmere
+cflags64-$(CONFIG_MSILVERMONT) 	+= -march=silvermont
+cflags64-$(CONFIG_MGOLDMONT) 	+= -march=goldmont
+cflags64-$(CONFIG_MGOLDMONTPLUS) += -march=goldmont-plus
+cflags64-$(CONFIG_MSANDYBRIDGE) 	+= -march=sandybridge
+cflags64-$(CONFIG_MIVYBRIDGE) 	+= -march=ivybridge
+cflags64-$(CONFIG_MHASWELL) 	+= -march=haswell
+cflags64-$(CONFIG_MBROADWELL) 	+= -march=broadwell
+cflags64-$(CONFIG_MSKYLAKE) 	+= -march=skylake
+cflags64-$(CONFIG_MSKYLAKEX) 	+= -march=skylake-avx512
+cflags64-$(CONFIG_MCANNONLAKE) 	+= -march=cannonlake
+cflags64-$(CONFIG_MICELAKE) 	+= -march=icelake-client
+cflags64-$(CONFIG_MCASCADELAKE) 	+= -march=cascadelake
+cflags64-$(CONFIG_MCOOPERLAKE) 	+= -march=cooperlake
+cflags64-$(CONFIG_MTIGERLAKE) 	+= -march=tigerlake
+cflags64-$(CONFIG_MSAPPHIRERAPIDS) += -march=sapphirerapids
+cflags64-$(CONFIG_MROCKETLAKE) 	+= -march=rocketlake
+cflags64-$(CONFIG_MALDERLAKE) 	+= -march=alderlake
+cflags64-$(CONFIG_MRAPTORLAKE) 	+= -march=raptorlake
+cflags64-$(CONFIG_MMETEORLAKE) 	+= -march=meteorlake
+cflags64-$(CONFIG_GENERIC_CPU2) 	+= -march=native
+cflags64-$(CONFIG_GENERIC_CPU3) 	+= -march=native
+cflags64-$(CONFIG_GENERIC_CPU4) 	+= -march=native
+cflags64-$(CONFIG_GENERIC_CPU)	+= -mtune=native
+KBUILD_CFLAGS += $(cflags64-y)
+
+rustflags64-$(CONFIG_MK8)		+= -Ctarget-cpu=k8
+rustflags64-$(CONFIG_MPSC)	+= -Ctarget-cpu=nocona
+rustflags64-$(CONFIG_MCORE2)	+= -Ctarget-cpu=core2
+rustflags64-$(CONFIG_MATOM)	+= -Ctarget-cpu=atom
+rustflags64-$(CONFIG_GENERIC_CPU)	+= -Ztune-cpu=native
+KBUILD_RUSTFLAGS += $(rustflags64-y)
+
+### MLX
+# THIS SETUP USES GCC + LLD FOR PERFORMANCE. CLANG NOT USED BUT INCLUDED.
+
+# flags for gcc/clang
+mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -O3 -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,-z -Wl,norelro  
+
+# extra flags
+#mlxextra	= 
+
+#mlxextra2 	= -flto=auto -flto-partition=none -ffat-lto-objects -ftree-vectorize -fomit-frame-pointer
+KBUILD_CFLAGS	+= -fuse-ld=lld
+#KBUILD_LDFLAGS	+= -O2
+
+
 ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
-KBUILD_CFLAGS += -O2
-KBUILD_RUSTFLAGS += -Copt-level=2
+# GCC
+
+# graphite and more
+mlxgraphite 	= -fgraphite-identity -floop-block -floop-interchange -floop-nest-optimize -floop-optimize -floop-parallelize-all -floop-strip-mine -ftree-loop-vectorize -ftree-loop-distribution -fprefetch-loop-arrays
+
+CFLAGS 			+= $(mlxcflags) $(mlxgraphite) $(mlxextra)
+KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxgraphite) $(mlxextra)
+KBUILD_CFLAGS_MODULE 	+= $(mlxcflags) $(mlxgraphite) 
+subdir-ccflags-y 	+= $(mlxcflags) $(mlxgraphite) 
+
+KBUILD_RUSTFLAGS += -Copt-level=3 -Ztune-cpu=native -C target-cpu=native 
+
+LDFLAGS += --gc-sections --hash-style=gnu -O3 -plugin-opt=-mcpu=native -plugin-opt=O3 
+LDFLAGS_MODULE += --strip-debug
+#KBUILD_LDFLAGS += 
+#LDFLAGS_MODULE += 
+#KBUILD_LDFLAGS_MODULE += 
+
+# flto needs to be passed to vmlinux and experimental with gcc, not working as is
+
 else ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
-KBUILD_CFLAGS += -Os
-KBUILD_RUSTFLAGS += -Copt-level=s
+# CLANG
+# IN CASE OF CLANG, POLLY AUTOMATICALLY ACTIVATED WHEN CC=clang, AS FOR LTO, DONE BY USER THROUGH CONFIG SELECTION.
+
+KBUILD_CFLAGS += $(mlxcflags)
+KBUILD_CFLAGS += -O3 -pipe -mcpu=native -mtune=native -march=native
+KBUILD_RUSTFLAGS += -Copt-level=3 -Ztune-cpu=native -C target-cpu=native 
 endif
 
 # Always set `debug-assertions` and `overflow-checks` because their default
@@ -879,6 +1057,18 @@ KBUILD_RUSTFLAGS += $(KBUILD_RUSTFLAGS-y)
 
 ifdef CONFIG_CC_IS_CLANG
 KBUILD_CPPFLAGS += -Qunused-arguments
+KBUILD_CFLAGS+=  -mllvm -polly \
+                        -mllvm -polly-run-inliner \
+                        -mllvm -polly-omp-backend=LLVM \
+                        -mllvm -polly-scheduling=dynamic \
+                        -mllvm -polly-scheduling-chunksize=1 \
+                        -mllvm -polly-opt-maximize-bands=yes \
+                        -mllvm -polly-ast-detect-parallel \
+                        -mllvm -polly-ast-use-context \
+                        -mllvm -polly-opt-simplify-deps=no \
+                        -mllvm -polly-rtc-max-arrays-per-group=40 \
+                        -mllvm -polly-parallel                     
+LDFLAGS+=-plugin LLVMPolly.so
 # The kernel builds with '-std=gnu11' so use of GNU extensions is acceptable.
 KBUILD_CFLAGS += -Wno-gnu
 else
@@ -986,6 +1176,8 @@ KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
 endif
 export CC_FLAGS_SCS
 endif
+
+
 
 ifdef CONFIG_LTO_CLANG
 ifdef CONFIG_LTO_CLANG_THIN
