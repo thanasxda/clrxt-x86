@@ -140,6 +140,14 @@ __read_mostly int sysctl_resched_latency_warn_once = 1;
 #endif /* CONFIG_SCHED_DEBUG */
 
 /*
+ * Choose the yield level that will perform.
+ * 0: No yield.
+ * 1: Yield only to better priority/deadline tasks.
+ * 2: Re-queue current tasks. (default CFS)
+ */
+__read_mostly int sysctl_sched_yield_type = 0;
+
+/*
  * Number of tasks to iterate in a single balance run.
  * Limited because this is done with IRQs disabled.
  */
@@ -7174,6 +7182,7 @@ int can_nice(const struct task_struct *p, const int nice)
 {
 	return is_nice_reduction(p, nice) || capable(CAP_SYS_NICE);
 }
+EXPORT_SYMBOL(can_nice);
 
 #ifdef __ARCH_WANT_SYS_NICE
 
@@ -8420,10 +8429,15 @@ static void do_sched_yield(void)
 	struct rq_flags rf;
 	struct rq *rq;
 
+	if (!sysctl_sched_yield_type)
+		return;
+
 	rq = this_rq_lock_irq(&rf);
 
 	schedstat_inc(rq->yld_count);
-	current->sched_class->yield_task(rq);
+
+	if (sysctl_sched_yield_type > 1)
+		current->sched_class->yield_task(rq);
 
 	preempt_disable();
 	rq_unlock_irq(rq, &rf);
