@@ -14,6 +14,8 @@
 # at least as far as hackbench latency goes.
 # tests were done outside of the variables of makefile, havent checked if optimize for size has more hardcoded features
 # use this source with gcc or put your own flags in makefile instead of this hasty solution.
+# also from my experience either custom settings or defaults building with ccache substantially increases
+# compilation time even if i have many GB ccache. just some personal notes from my experience. you be the judge.
 
 DATE_START=$(date +"%s")
 yellow="\033[1;93m"
