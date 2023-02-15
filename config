@@ -400,7 +400,7 @@ CONFIG_INTEL_TDX_GUEST=y
 # CONFIG_MRAPTORLAKE is not set
 # CONFIG_MMETEORLAKE is not set
 # CONFIG_GENERIC_CPU is not set
-CONFIG_GENERIC_CPU2=y
+# CONFIG_GENERIC_CPU2 is not set
 # CONFIG_GENERIC_CPU3 is not set
 # CONFIG_GENERIC_CPU4 is not set
 # CONFIG_MNATIVE_INTEL is not set
@@ -531,8 +531,8 @@ CONFIG_HOTPLUG_CPU=y
 # CONFIG_COMPAT_VDSO is not set
 # CONFIG_LEGACY_VSYSCALL_XONLY is not set
 CONFIG_LEGACY_VSYSCALL_NONE=y
-# CONFIG_CMDLINE_BOOL is not set
-# CONFIG_CMDLINE is not set
+CONFIG_CMDLINE_BOOL=y
+CONFIG_CMDLINE="cgroup_disable=io,perf_event,rdma,cpu,cpuacct,cpuset,net_prio,hugetlb,blkio,memory,devices,freezer,net_cls,pids,misc noautogroup numa=off rcu_nocbs=0 slub_merge align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all cryptomgr.notests irqaffinity=0 forcepae iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 highres=on hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm"
 # CONFIG_CMDLINE_OVERRIDE is not set
 
 CONFIG_STRICT_SIGALTSTACK_SIZE=y
