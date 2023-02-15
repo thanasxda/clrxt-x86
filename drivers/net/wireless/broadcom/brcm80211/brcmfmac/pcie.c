@@ -46,29 +46,27 @@ enum brcmf_pcie_state {
 	BRCMFMAC_PCIE_STATE_UP
 };
 
-BRCMF_FW_DEF(43602, "brcmfmac43602-pcie");
-BRCMF_FW_DEF(4350, "brcmfmac4350-pcie");
-BRCMF_FW_DEF(4350C, "brcmfmac4350c2-pcie");
-BRCMF_FW_CLM_DEF(4356, "brcmfmac4356-pcie");
-BRCMF_FW_CLM_DEF(43570, "brcmfmac43570-pcie");
-BRCMF_FW_DEF(4358, "brcmfmac4358-pcie");
-BRCMF_FW_DEF(4359, "brcmfmac4359-pcie");
-BRCMF_FW_DEF(4364, "brcmfmac4364-pcie");
-BRCMF_FW_DEF(4365B, "brcmfmac4365b-pcie");
-BRCMF_FW_DEF(4365C, "brcmfmac4365c-pcie");
-BRCMF_FW_DEF(4366B, "brcmfmac4366b-pcie");
-BRCMF_FW_DEF(4366C, "brcmfmac4366c-pcie");
-BRCMF_FW_DEF(4371, "brcmfmac4371-pcie");
-BRCMF_FW_CLM_DEF(4378B1, "brcmfmac4378b1-pcie");
+BRCMF_FW_DEF(43602, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4350, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4350C, "/*(DEBLOBBED)*/");
+BRCMF_FW_CLM_DEF(4356, "/*(DEBLOBBED)*/");
+BRCMF_FW_CLM_DEF(43570, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4358, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4359, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4364, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4365B, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4365C, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4366B, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4366C, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4371, "/*(DEBLOBBED)*/");
+BRCMF_FW_CLM_DEF(4378B1, "/*(DEBLOBBED)*/");
 BRCMF_FW_DEF(4355, "brcmfmac89459-pcie");
 
 /* firmware config files */
-MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-pcie.txt");
-MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-pcie.*.txt");
+/*(DEBLOBBED)*/
 
 /* per-board firmware binaries */
-MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-pcie.*.bin");
-MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-pcie.*.clm_blob");
+/*(DEBLOBBED)*/
 
 static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
 	BRCMF_FW_ENTRY(BRCM_CC_43602_CHIP_ID, 0xFFFFFFFF, 43602),

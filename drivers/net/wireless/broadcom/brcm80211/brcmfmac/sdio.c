@@ -603,36 +603,36 @@ static const struct sdiod_drive_str sdiod_drvstr_tab2_3v3[] = {
 	{4,  0x1}
 };
 
-BRCMF_FW_DEF(43143, "brcmfmac43143-sdio");
-BRCMF_FW_DEF(43241B0, "brcmfmac43241b0-sdio");
-BRCMF_FW_DEF(43241B4, "brcmfmac43241b4-sdio");
-BRCMF_FW_DEF(43241B5, "brcmfmac43241b5-sdio");
-BRCMF_FW_DEF(4329, "brcmfmac4329-sdio");
-BRCMF_FW_DEF(4330, "brcmfmac4330-sdio");
-BRCMF_FW_DEF(4334, "brcmfmac4334-sdio");
-BRCMF_FW_DEF(43340, "brcmfmac43340-sdio");
-BRCMF_FW_DEF(4335, "brcmfmac4335-sdio");
-BRCMF_FW_DEF(43362, "brcmfmac43362-sdio");
-BRCMF_FW_DEF(4339, "brcmfmac4339-sdio");
-BRCMF_FW_DEF(43430A0, "brcmfmac43430a0-sdio");
+BRCMF_FW_DEF(43143, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(43241B0, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(43241B4, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(43241B5, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4329, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4330, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4334, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(43340, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4335, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(43362, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4339, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(43430A0, "/*(DEBLOBBED)*/");
 /* Note the names are not postfixed with a1 for backward compatibility */
-BRCMF_FW_CLM_DEF(43430A1, "brcmfmac43430-sdio");
-BRCMF_FW_DEF(43430B0, "brcmfmac43430b0-sdio");
-BRCMF_FW_CLM_DEF(43439, "brcmfmac43439-sdio");
-BRCMF_FW_CLM_DEF(43455, "brcmfmac43455-sdio");
-BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");
-BRCMF_FW_CLM_DEF(4354, "brcmfmac4354-sdio");
-BRCMF_FW_CLM_DEF(4356, "brcmfmac4356-sdio");
-BRCMF_FW_DEF(4359, "brcmfmac4359-sdio");
-BRCMF_FW_CLM_DEF(4373, "brcmfmac4373-sdio");
-BRCMF_FW_CLM_DEF(43012, "brcmfmac43012-sdio");
-BRCMF_FW_CLM_DEF(43752, "brcmfmac43752-sdio");
+BRCMF_FW_CLM_DEF(43430A1, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(43430B0, "/*(DEBLOBBED)*/");
+BRCMF_FW_CLM_DEF(43439, "/*(DEBLOBBED)*/");
+BRCMF_FW_CLM_DEF(43455, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(43456, "/*(DEBLOBBED)*/");
+BRCMF_FW_CLM_DEF(4354, "/*(DEBLOBBED)*/");
+BRCMF_FW_CLM_DEF(4356, "/*(DEBLOBBED)*/");
+BRCMF_FW_DEF(4359, "/*(DEBLOBBED)*/");
+BRCMF_FW_CLM_DEF(4373, "/*(DEBLOBBED)*/");
+BRCMF_FW_CLM_DEF(43012, "/*(DEBLOBBED)*/");
+BRCMF_FW_CLM_DEF(43752, "/*(DEBLOBBED)*/");
 
 /* firmware config files */
-MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-sdio.*.txt");
+/*(DEBLOBBED)*/
 
 /* per-board firmware binaries */
-MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-sdio.*.bin");
+/*(DEBLOBBED)*/
 
 static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
 	BRCMF_FW_ENTRY(BRCM_CC_43143_CHIP_ID, 0xFFFFFFFF, 43143),

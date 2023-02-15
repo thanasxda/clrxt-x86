@@ -1760,7 +1760,7 @@ static int rtw_load_firmware(struct rtw_dev *rtwdev, enum rtw_fw_type type)
 	fw->rtwdev = rtwdev;
 	init_completion(&fw->completion);
 
-	ret = request_firmware_nowait(THIS_MODULE, true, fw_name, rtwdev->dev,
+	ret = reject_firmware_nowait(THIS_MODULE, true, fw_name, rtwdev->dev,
 				      GFP_KERNEL, fw, rtw_load_firmware_cb);
 	if (ret) {
 		rtw_err(rtwdev, "failed to async firmware request\n");

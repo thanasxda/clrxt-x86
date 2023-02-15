@@ -25,7 +25,7 @@ MODULE_DESCRIPTION("Driver for IDT 82p33xxx clock devices");
 MODULE_AUTHOR("IDT support-1588 <IDT-support-1588@lm.renesas.com>");
 MODULE_VERSION("1.0");
 MODULE_LICENSE("GPL");
-MODULE_FIRMWARE(FW_FILENAME);
+/*(DEBLOBBED)*/
 
 /* Module Parameters */
 static u32 phase_snap_threshold = SNAP_THRESHOLD_NS;
@@ -815,7 +815,7 @@ static int idt82p33_load_firmware(struct idt82p33 *idt82p33)
 
 	dev_dbg(idt82p33->dev, "requesting firmware '%s'\n", FW_FILENAME);
 
-	err = request_firmware(&fw, FW_FILENAME, idt82p33->dev);
+	err = reject_firmware(&fw, FW_FILENAME, idt82p33->dev);
 
 	if (err) {
 		dev_err(idt82p33->dev,

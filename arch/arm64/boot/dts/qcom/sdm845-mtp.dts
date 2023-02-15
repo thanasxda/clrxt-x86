@@ -113,7 +113,7 @@
 
 &adsp_pas {
 	status = "okay";
-	firmware-name = "qcom/sdm845/adsp.mdt";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &apps_rsc {
@@ -414,7 +414,7 @@
 
 &cdsp_pas {
 	status = "okay";
-	firmware-name = "qcom/sdm845/cdsp.mdt";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &dsi0 {
@@ -508,7 +508,7 @@
 
 	zap-shader {
 		memory-region = <&gpu_mem>;
-		firmware-name = "qcom/sdm845/a630_zap.mbn";
+		firmware-name = "/*(DEBLOBBED)*/";
 	};
 };
 
@@ -528,7 +528,7 @@
 
 &mss_pil {
 	status = "okay";
-	firmware-name = "qcom/sdm845/mba.mbn", "qcom/sdm845/modem.mbn";
+	firmware-name = "/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/";
 };
 
 &pm8998_adc {

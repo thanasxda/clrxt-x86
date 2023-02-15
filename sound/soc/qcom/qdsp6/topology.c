@@ -1088,11 +1088,11 @@ int audioreach_tplg_init(struct snd_soc_component *component)
 	int ret;
 
 	/* Inline with Qualcomm UCM configs and linux-firmware path */
-	tplg_fw_name = kasprintf(GFP_KERNEL, "qcom/%s/%s-tplg.bin", card->driver_name, card->name);
+	tplg_fw_name = kasprintf(GFP_KERNEL, "/*(DEBLOBBED)*/", card->driver_name, card->name);
 	if (!tplg_fw_name)
 		return -ENOMEM;
 
-	ret = request_firmware(&fw, tplg_fw_name, dev);
+	ret = reject_firmware(&fw, tplg_fw_name, dev);
 	if (ret < 0) {
 		dev_err(dev, "tplg firmware loading %s failed %d \n", tplg_fw_name, ret);
 		goto err;

@@ -13,7 +13,7 @@
 #include <linux/ptp_clock.h>
 #include <linux/regmap.h>
 
-#define FW_FILENAME	"idtcm.bin"
+#define FW_FILENAME	"/*(DEBLOBBED)*/"
 #define MAX_TOD		(4)
 #define MAX_PLL		(8)
 #define MAX_REF_CLK	(16)

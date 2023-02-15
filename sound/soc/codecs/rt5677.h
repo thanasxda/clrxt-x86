@@ -1704,8 +1704,8 @@
 #define RT5677_GPIO5_FUNC_GPIO			(0x0 << 9)
 #define RT5677_GPIO5_FUNC_DMIC			(0x1 << 9)
 
-#define RT5677_FIRMWARE1	"rt5677_dsp_fw1.bin"
-#define RT5677_FIRMWARE2	"rt5677_dsp_fw2.bin"
+#define RT5677_FIRMWARE1	"/*(DEBLOBBED)*/"
+#define RT5677_FIRMWARE2	"/*(DEBLOBBED)*/"
 
 #define RT5677_DRV_NAME		"rt5677"
 

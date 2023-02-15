@@ -17,7 +17,7 @@ struct drm_i915_private;
 struct intel_gt;
 
 /* Home of GuC, HuC and DMC firmwares */
-#define INTEL_UC_FIRMWARE_URL "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/i915"
+#define INTEL_UC_FIRMWARE_URL "/*(DEBLOBBED)*/"
 
 /*
  * +------------+---------------------------------------------------+

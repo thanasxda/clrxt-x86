@@ -40,13 +40,13 @@ EXCLUDES="$RCS_TAR_IGNORE --exclude=*vmlinux* --exclude=*.mod \
 #  $M: this line is enabled only when CONFIG_MODULES is enabled
 sed -e '/^DEL/d' -e 's/^\t*//' <<EOF
 	Name: kernel
-	Summary: The Linux Kernel
+	Summary: The GNU Linux-libre Kernel
 	Version: $__KERNELRELEASE
 	Release: $(cat .version 2>/dev/null || echo 1)
 	License: GPL
 	Group: System Environment/Kernel
-	Vendor: The Linux Community
-	URL: https://www.kernel.org
+	Vendor: The GNU Linux-libre Community
+	URL: https://linux-libre.fsfla.org
 $S	Source: kernel-$__KERNELRELEASE.tar.gz
 	Provides: $PROVIDES
 	# $UTS_MACHINE as a fallback of _arch in case
@@ -56,16 +56,16 @@ $S	Source: kernel-$__KERNELRELEASE.tar.gz
 	%define debug_package %{nil}
 
 	%description
-	The Linux Kernel, the operating system core itself
+	The GNU Linux-libre Kernel, the operating system core itself
 
 	%package headers
-	Summary: Header files for the Linux kernel for use by glibc
+	Summary: Header files for the GNU Linux-libre for use by glibc
 	Group: Development/System
 	Obsoletes: kernel-headers
 	Provides: kernel-headers = %{version}
 	%description headers
 	Kernel-headers includes the C header files that specify the interface
-	between the Linux kernel and userspace libraries and programs.  The
+	between the GNU Linux-libre and userspace libraries and programs.  The
 	header files define structures and constants that are needed for
 	building most standard programs and are also needed for rebuilding the
 	glibc package.

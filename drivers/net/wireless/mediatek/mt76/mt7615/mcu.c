@@ -1223,7 +1223,7 @@ static int mt7615_load_patch(struct mt7615_dev *dev, u32 addr, const char *name)
 	const struct firmware *fw = NULL;
 	int len, ret, sem;
 
-	ret = firmware_request_nowarn(&fw, name, dev->mt76.dev);
+	ret = firmware_reject_nowarn(&fw, name, dev->mt76.dev);
 	if (ret)
 		return ret;
 
@@ -1328,7 +1328,7 @@ static int mt7615_load_n9(struct mt7615_dev *dev, const char *name)
 	const struct firmware *fw;
 	int ret;
 
-	ret = request_firmware(&fw, name, dev->mt76.dev);
+	ret = reject_firmware(&fw, name, dev->mt76.dev);
 	if (ret)
 		return ret;
 
@@ -1379,7 +1379,7 @@ static int mt7615_load_cr4(struct mt7615_dev *dev, const char *name)
 	const struct firmware *fw;
 	int ret;
 
-	ret = request_firmware(&fw, name, dev->mt76.dev);
+	ret = reject_firmware(&fw, name, dev->mt76.dev);
 	if (ret)
 		return ret;
 
@@ -1521,7 +1521,7 @@ static int mt7663_load_n9(struct mt7615_dev *dev, const char *name)
 	const u8 *base_addr;
 	int i, ret;
 
-	ret = request_firmware(&fw, name, dev->mt76.dev);
+	ret = reject_firmware(&fw, name, dev->mt76.dev);
 	if (ret)
 		return ret;
 

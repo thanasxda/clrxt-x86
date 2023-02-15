@@ -107,39 +107,39 @@
 #include "modules/power/power_helpers.h"
 #include "modules/inc/mod_info_packet.h"
 
-#define FIRMWARE_RENOIR_DMUB "amdgpu/renoir_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_RENOIR_DMUB);
-#define FIRMWARE_SIENNA_CICHLID_DMUB "amdgpu/sienna_cichlid_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_SIENNA_CICHLID_DMUB);
-#define FIRMWARE_NAVY_FLOUNDER_DMUB "amdgpu/navy_flounder_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_NAVY_FLOUNDER_DMUB);
-#define FIRMWARE_GREEN_SARDINE_DMUB "amdgpu/green_sardine_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_GREEN_SARDINE_DMUB);
-#define FIRMWARE_VANGOGH_DMUB "amdgpu/vangogh_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_VANGOGH_DMUB);
-#define FIRMWARE_DIMGREY_CAVEFISH_DMUB "amdgpu/dimgrey_cavefish_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_DIMGREY_CAVEFISH_DMUB);
-#define FIRMWARE_BEIGE_GOBY_DMUB "amdgpu/beige_goby_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_BEIGE_GOBY_DMUB);
-#define FIRMWARE_YELLOW_CARP_DMUB "amdgpu/yellow_carp_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_YELLOW_CARP_DMUB);
-#define FIRMWARE_DCN_314_DMUB "amdgpu/dcn_3_1_4_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_DCN_314_DMUB);
-#define FIRMWARE_DCN_315_DMUB "amdgpu/dcn_3_1_5_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_DCN_315_DMUB);
-#define FIRMWARE_DCN316_DMUB "amdgpu/dcn_3_1_6_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_DCN316_DMUB);
+#define FIRMWARE_RENOIR_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_SIENNA_CICHLID_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_NAVY_FLOUNDER_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_GREEN_SARDINE_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_VANGOGH_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_DIMGREY_CAVEFISH_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_BEIGE_GOBY_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_YELLOW_CARP_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_DCN_314_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_DCN_315_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_DCN316_DMUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
 
-#define FIRMWARE_DCN_V3_2_0_DMCUB "amdgpu/dcn_3_2_0_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_DCN_V3_2_0_DMCUB);
-#define FIRMWARE_DCN_V3_2_1_DMCUB "amdgpu/dcn_3_2_1_dmcub.bin"
-MODULE_FIRMWARE(FIRMWARE_DCN_V3_2_1_DMCUB);
+#define FIRMWARE_DCN_V3_2_0_DMCUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
+#define FIRMWARE_DCN_V3_2_1_DMCUB "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
 
-#define FIRMWARE_RAVEN_DMCU		"amdgpu/raven_dmcu.bin"
-MODULE_FIRMWARE(FIRMWARE_RAVEN_DMCU);
+#define FIRMWARE_RAVEN_DMCU		"/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
 
-#define FIRMWARE_NAVI12_DMCU            "amdgpu/navi12_dmcu.bin"
-MODULE_FIRMWARE(FIRMWARE_NAVI12_DMCU);
+#define FIRMWARE_NAVI12_DMCU            "/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
 
 /* Number of bytes in PSP header for firmware. */
 #define PSP_HEADER_BYTES 0x100
@@ -1479,8 +1479,8 @@ static int amdgpu_dm_init(struct amdgpu_device *adev)
 	case IP_VERSION(2, 1, 0):
 		switch (adev->dm.dmcub_fw_version) {
 		case 0: /* development */
-		case 0x1: /* linux-firmware.git hash 6d9f399 */
-		case 0x01000000: /* linux-firmware.git hash 9a0b0f4 */
+		case 0x1: /*(DEBLOBBED)*/
+		case 0x01000000: /*(DEBLOBBED)*/
 			init_data.flags.disable_dmcu = false;
 			break;
 		default:
@@ -1877,7 +1877,7 @@ static int load_dmcu_fw(struct amdgpu_device *adev)
 		return 0;
 	}
 
-	r = request_firmware_direct(&adev->dm.fw_dmcu, fw_name_dmcu, adev->dev);
+	r = reject_firmware_direct(&adev->dm.fw_dmcu, fw_name_dmcu, adev->dev);
 	if (r == -ENOENT) {
 		/* DMCU firmware is not necessary, so don't raise a fuss if it's missing */
 		DRM_DEBUG_KMS("dm: DMCU firmware not found\n");
@@ -2004,7 +2004,7 @@ static int dm_dmub_sw_init(struct amdgpu_device *adev)
 		return 0;
 	}
 
-	r = request_firmware_direct(&adev->dm.dmub_fw, fw_name_dmub, adev->dev);
+	r = reject_firmware_direct(&adev->dm.dmub_fw, fw_name_dmub, adev->dev);
 	if (r) {
 		DRM_ERROR("DMUB firmware loading failed: %d\n", r);
 		return 0;

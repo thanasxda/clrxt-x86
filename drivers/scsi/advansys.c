@@ -4029,7 +4029,7 @@ err_dma_map:
 static int AscInitAsc1000Driver(ASC_DVC_VAR *asc_dvc)
 {
 	const struct firmware *fw;
-	const char fwname[] = "advansys/mcode.bin";
+	const char fwname[] = "/*(DEBLOBBED)*/";
 	int err;
 	unsigned long chksum;
 	int warn_code;
@@ -4052,7 +4052,7 @@ static int AscInitAsc1000Driver(ASC_DVC_VAR *asc_dvc)
 	AscDisableInterrupt(iop_base);
 	AscInitLram(asc_dvc);
 
-	err = request_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
+	err = reject_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
 	if (err) {
 		printk(KERN_ERR "Failed to load image \"%s\" err %d\n",
 		       fwname, err);
@@ -4350,7 +4350,7 @@ static int AdvResetSB(ADV_DVC_VAR *asc_dvc)
 static int AdvInitAsc3550Driver(ADV_DVC_VAR *asc_dvc)
 {
 	const struct firmware *fw;
-	const char fwname[] = "advansys/3550.bin";
+	const char fwname[] = "/*(DEBLOBBED)*/";
 	AdvPortAddr iop_base;
 	ushort warn_code;
 	int begin_addr;
@@ -4418,7 +4418,7 @@ static int AdvInitAsc3550Driver(ADV_DVC_VAR *asc_dvc)
 				max_cmd[tid]);
 	}
 
-	err = request_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
+	err = reject_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
 	if (err) {
 		printk(KERN_ERR "Failed to load image \"%s\" err %d\n",
 		       fwname, err);
@@ -4793,7 +4793,7 @@ static int AdvInitAsc3550Driver(ADV_DVC_VAR *asc_dvc)
 static int AdvInitAsc38C0800Driver(ADV_DVC_VAR *asc_dvc)
 {
 	const struct firmware *fw;
-	const char fwname[] = "advansys/38C0800.bin";
+	const char fwname[] = "/*(DEBLOBBED)*/";
 	AdvPortAddr iop_base;
 	ushort warn_code;
 	int begin_addr;
@@ -4918,7 +4918,7 @@ static int AdvInitAsc38C0800Driver(ADV_DVC_VAR *asc_dvc)
 	/* We need to reset back to normal mode after LRAM test passes. */
 	AdvWriteByteRegister(iop_base, IOPB_RAM_BIST, NORMAL_MODE);
 
-	err = request_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
+	err = reject_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
 	if (err) {
 		printk(KERN_ERR "Failed to load image \"%s\" err %d\n",
 		       fwname, err);
@@ -5279,7 +5279,7 @@ static int AdvInitAsc38C0800Driver(ADV_DVC_VAR *asc_dvc)
 static int AdvInitAsc38C1600Driver(ADV_DVC_VAR *asc_dvc)
 {
 	const struct firmware *fw;
-	const char fwname[] = "advansys/38C1600.bin";
+	const char fwname[] = "/*(DEBLOBBED)*/";
 	AdvPortAddr iop_base;
 	ushort warn_code;
 	int begin_addr;
@@ -5406,7 +5406,7 @@ static int AdvInitAsc38C1600Driver(ADV_DVC_VAR *asc_dvc)
 	/* We need to reset back to normal mode after LRAM test passes. */
 	AdvWriteByteRegister(iop_base, IOPB_RAM_BIST, NORMAL_MODE);
 
-	err = request_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
+	err = reject_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
 	if (err) {
 		printk(KERN_ERR "Failed to load image \"%s\" err %d\n",
 		       fwname, err);
@@ -11546,7 +11546,4 @@ module_init(advansys_init);
 module_exit(advansys_exit);
 
 MODULE_LICENSE("GPL");
-MODULE_FIRMWARE("advansys/mcode.bin");
-MODULE_FIRMWARE("advansys/3550.bin");
-MODULE_FIRMWARE("advansys/38C0800.bin");
-MODULE_FIRMWARE("advansys/38C1600.bin");
+/*(DEBLOBBED)*/

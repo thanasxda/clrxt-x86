@@ -70,7 +70,7 @@
  */
 
 /* The name of the GSI firmware file relative to /lib/firmware */
-#define IPA_FW_PATH_DEFAULT	"ipa_fws.mdt"
+#define IPA_FW_PATH_DEFAULT	"/*(DEBLOBBED)*/"
 #define IPA_PAS_ID		15
 
 /* Shift of 19.2 MHz timestamp to achieve lower resolution timestamps */
@@ -600,7 +600,7 @@ static int ipa_firmware_load(struct device *dev)
 		path = IPA_FW_PATH_DEFAULT;
 	}
 
-	ret = request_firmware(&fw, path, dev);
+	ret = reject_firmware(&fw, path, dev);
 	if (ret) {
 		dev_err(dev, "error %d requesting \"%s\"\n", ret, path);
 		return ret;

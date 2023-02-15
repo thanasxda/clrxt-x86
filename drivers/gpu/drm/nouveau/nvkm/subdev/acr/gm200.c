@@ -377,10 +377,7 @@ gm200_acr_unload_0 = {
 	.bld = gm200_acr_hsfw_bld,
 };
 
-MODULE_FIRMWARE("nvidia/gm200/acr/ucode_unload.bin");
-MODULE_FIRMWARE("nvidia/gm204/acr/ucode_unload.bin");
-MODULE_FIRMWARE("nvidia/gm206/acr/ucode_unload.bin");
-MODULE_FIRMWARE("nvidia/gp100/acr/ucode_unload.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 gm200_acr_unload_fwif[] = {
@@ -419,17 +416,7 @@ gm200_acr_load_0 = {
 	.bld = gm200_acr_hsfw_bld,
 };
 
-MODULE_FIRMWARE("nvidia/gm200/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gm200/acr/ucode_load.bin");
-
-MODULE_FIRMWARE("nvidia/gm204/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gm204/acr/ucode_load.bin");
-
-MODULE_FIRMWARE("nvidia/gm206/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gm206/acr/ucode_load.bin");
-
-MODULE_FIRMWARE("nvidia/gp100/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gp100/acr/ucode_load.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 gm200_acr_load_fwif[] = {

@@ -860,13 +860,13 @@ static int rt5677_load_dsp_from_file(struct rt5677_priv *rt5677)
 	struct device *dev = rt5677->component->dev;
 	int ret = 0;
 
-	/* Load dsp firmware from rt5677_elf_vad file */
-	ret = request_firmware(&fwp, "rt5677_elf_vad", dev);
+	/* Load dsp firmware from /*(DEBLOBBED)*/
+	ret = reject_firmware(&fwp, "/*(DEBLOBBED)*/", dev);
 	if (ret) {
-		dev_err(dev, "Request rt5677_elf_vad failed %d\n", ret);
+		dev_err(dev, "Request /*(DEBLOBBED)*/ failed %d\n", ret);
 		return ret;
 	}
-	dev_info(dev, "Requested rt5677_elf_vad (%zu)\n", fwp->size);
+	dev_info(dev, "Requested /*(DEBLOBBED)*/ (%zu)\n", fwp->size);
 
 	ret = rt5677_parse_and_load_dsp(rt5677, fwp->data, fwp->size);
 	release_firmware(fwp);

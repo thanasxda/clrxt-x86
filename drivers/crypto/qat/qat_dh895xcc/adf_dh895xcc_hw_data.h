@@ -31,8 +31,8 @@
 #define ADF_DH895XCC_AE2FUNC_MAP_GRP_B_NUM_REGS 12
 
 /* FW names */
-#define ADF_DH895XCC_FW "qat_895xcc.bin"
-#define ADF_DH895XCC_MMP "qat_895xcc_mmp.bin"
+#define ADF_DH895XCC_FW "/*(DEBLOBBED)*/"
+#define ADF_DH895XCC_MMP "/*(DEBLOBBED)*/"
 
 void adf_init_hw_data_dh895xcc(struct adf_hw_device_data *hw_data);
 void adf_clean_hw_data_dh895xcc(struct adf_hw_device_data *hw_data);

@@ -42,17 +42,7 @@
 #include "sdma_common.h"
 #include "sdma_v5_0.h"
 
-MODULE_FIRMWARE("amdgpu/navi10_sdma.bin");
-MODULE_FIRMWARE("amdgpu/navi10_sdma1.bin");
-
-MODULE_FIRMWARE("amdgpu/navi14_sdma.bin");
-MODULE_FIRMWARE("amdgpu/navi14_sdma1.bin");
-
-MODULE_FIRMWARE("amdgpu/navi12_sdma.bin");
-MODULE_FIRMWARE("amdgpu/navi12_sdma1.bin");
-
-MODULE_FIRMWARE("amdgpu/cyan_skillfish2_sdma.bin");
-MODULE_FIRMWARE("amdgpu/cyan_skillfish2_sdma1.bin");
+/*(DEBLOBBED)*/
 
 #define SDMA1_REG_OFFSET 0x600
 #define SDMA0_HYP_DEC_REG_START 0x5880
@@ -266,9 +256,9 @@ static int sdma_v5_0_init_microcode(struct amdgpu_device *adev)
 
 	for (i = 0; i < adev->sdma.num_instances; i++) {
 		if (i == 0)
-			snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_sdma.bin", chip_name);
+			snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
 		else
-			snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_sdma1.bin", chip_name);
+			snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
 		ret = amdgpu_sdma_init_microcode(adev, fw_name, i, false);
 		if (ret)
 			return ret;

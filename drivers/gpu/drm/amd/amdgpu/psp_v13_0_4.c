@@ -29,8 +29,7 @@
 #include "mp/mp_13_0_4_offset.h"
 #include "mp/mp_13_0_4_sh_mask.h"
 
-MODULE_FIRMWARE("amdgpu/psp_13_0_4_toc.bin");
-MODULE_FIRMWARE("amdgpu/psp_13_0_4_ta.bin");
+/*(DEBLOBBED)*/
 
 static int psp_v13_0_4_init_microcode(struct psp_context *psp)
 {

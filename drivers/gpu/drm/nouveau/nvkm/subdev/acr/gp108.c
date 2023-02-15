@@ -54,11 +54,7 @@ gp108_acr_unload_0 = {
 	.bld = gp108_acr_hsfw_bld,
 };
 
-MODULE_FIRMWARE("nvidia/gp108/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/gp108/acr/ucode_unload.bin");
-
-MODULE_FIRMWARE("nvidia/gv100/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/gv100/acr/ucode_unload.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 gp108_acr_unload_fwif[] = {
@@ -73,11 +69,7 @@ gp108_acr_load_0 = {
 	.bld = gp108_acr_hsfw_bld,
 };
 
-MODULE_FIRMWARE("nvidia/gp108/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gp108/acr/ucode_load.bin");
-
-MODULE_FIRMWARE("nvidia/gv100/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gv100/acr/ucode_load.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 gp108_acr_load_fwif[] = {
