@@ -142,7 +142,6 @@ sudo sed -i 's/CONFIG_CMDLINE_BOOL=.*/# CONFIG_CMDLINE_BOOL is not set/g' $PWD/c
 sudo sed -i 's/CONFIG_CMDLINE=.*/# CONFIG_CMDLINE is not set/g' $PWD/config
 fi
 
-### KIND OF OBSOLETE SINCE OVERRIDEN IN MAKEFILE TO DEFAULT TO NATIVE
 grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
  x86="/lib/ld-linux-x86-64.so.2" 
  
@@ -245,7 +244,7 @@ sudo make $THREADS install
 sudo cp $PWD/arch/x86/boot/bzImage /boot/vmlinuz-"${KERNELVERSION}"
 sudo dracut -f -v /boot/initramfs-"${KERNELVERSION}".img "${KERNELVERSION}"
 #sudo kernel-install add /boot/initramfs-"${KERNELVERSION}".img /boot/vmlinuz-"${KERNELVERSION}"
-sudo dracut --regenerate-all --lz4 --uefi --early-microcode -f 
+sudo dracut --regenerate-all --lz4 --uefi -f 
 #sudo refind-install ; sudo refind-mkdefault
 sudo sed -i 's/timeout .*/timeout 1/g' /boot/EFI/refind/refind.conf
 #sudo bootctl install

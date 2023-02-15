@@ -960,9 +960,9 @@ cflags64-$(CONFIG_MROCKETLAKE) 	+= -march=rocketlake
 cflags64-$(CONFIG_MALDERLAKE) 	+= -march=alderlake
 cflags64-$(CONFIG_MRAPTORLAKE) 	+= -march=raptorlake
 cflags64-$(CONFIG_MMETEORLAKE) 	+= -march=meteorlake
-cflags64-$(CONFIG_GENERIC_CPU2) 	+= -march=native
-cflags64-$(CONFIG_GENERIC_CPU3) 	+= -march=native
-cflags64-$(CONFIG_GENERIC_CPU4) 	+= -march=native
+cflags64-$(CONFIG_GENERIC_CPU2) 	+= -march=x86-64-v2
+cflags64-$(CONFIG_GENERIC_CPU3) 	+= -march=x86-64-v3
+cflags64-$(CONFIG_GENERIC_CPU4) 	+= -march=x86-64-v4
 cflags64-$(CONFIG_GENERIC_CPU)	+= -mtune=native
 KBUILD_CFLAGS += $(cflags64-y)
 
@@ -977,12 +977,12 @@ KBUILD_RUSTFLAGS += $(rustflags64-y)
 # THIS SETUP USES GCC + LLD FOR PERFORMANCE. CLANG NOT USED BUT INCLUDED.
 
 # flags for gcc/clang
-mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -O3 -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,-z -Wl,norelro  
+mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -O3 -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,-z -Wl,norelro -fno-tree-vectorize 
 
 # extra flags
 #mlxextra	= 
 
-#mlxextra2 	= -flto=auto -flto-partition=none -ffat-lto-objects -ftree-vectorize -fomit-frame-pointer
+#mlxextra2 	= -flto=auto -flto-partition=none -ffat-lto-objects 
 KBUILD_CFLAGS	+= -fuse-ld=lld
 #KBUILD_LDFLAGS	+= -O2
 
@@ -993,8 +993,8 @@ ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
 # graphite and more
 mlxgraphite 	= -fgraphite-identity -floop-block -floop-interchange -floop-nest-optimize -floop-optimize -floop-parallelize-all -floop-strip-mine -ftree-loop-vectorize -ftree-loop-distribution -fprefetch-loop-arrays
 
-CFLAGS 			+= $(mlxcflags) $(mlxgraphite) $(mlxextra)
-KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxgraphite) $(mlxextra)
+CFLAGS 			+= $(mlxcflags) $(mlxgraphite) $(mlxextra) -Wl,--hash-style-gnu -fomit-frame-pointer
+KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxgraphite) $(mlxextra) -Wl,--hash-style-gnu -fomit-frame-pointer
 KBUILD_CFLAGS_MODULE 	+= $(mlxcflags) $(mlxgraphite) 
 subdir-ccflags-y 	+= $(mlxcflags) $(mlxgraphite) 
 
