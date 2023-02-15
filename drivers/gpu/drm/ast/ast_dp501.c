@@ -6,7 +6,7 @@
 
 #include "ast_drv.h"
 
-MODULE_FIRMWARE("ast_dp501_fw.bin");
+/*(DEBLOBBED)*/
 
 static void ast_release_firmware(void *data)
 {
@@ -21,7 +21,7 @@ static int ast_load_dp501_microcode(struct drm_device *dev)
 	struct ast_private *ast = to_ast_private(dev);
 	int ret;
 
-	ret = request_firmware(&ast->dp501_fw, "ast_dp501_fw.bin", dev->dev);
+	ret = reject_firmware(&ast->dp501_fw, "/*(DEBLOBBED)*/", dev->dev);
 	if (ret)
 		return ret;
 

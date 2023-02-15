@@ -20,8 +20,8 @@
 #define ADF_C3XXX_AE2FUNC_MAP_GRP_B_NUM_REGS 6
 
 /* Firmware Binary */
-#define ADF_C3XXX_FW "qat_c3xxx.bin"
-#define ADF_C3XXX_MMP "qat_c3xxx_mmp.bin"
+#define ADF_C3XXX_FW "/*(DEBLOBBED)*/"
+#define ADF_C3XXX_MMP "/*(DEBLOBBED)*/"
 
 void adf_init_hw_data_c3xxx(struct adf_hw_device_data *hw_data);
 void adf_clean_hw_data_c3xxx(struct adf_hw_device_data *hw_data);

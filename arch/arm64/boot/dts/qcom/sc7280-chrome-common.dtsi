@@ -75,7 +75,7 @@
 
 &remoteproc_wpss {
 	status = "okay";
-	firmware-name = "ath11k/WCN6750/hw1.0/wpss.mdt";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &wifi {

@@ -35,11 +35,11 @@
 #define MT7921_FW_TAG_FEATURE		4
 #define MT7921_FW_CAP_CNM		BIT(7)
 
-#define MT7921_FIRMWARE_WM		"mediatek/WIFI_RAM_CODE_MT7961_1.bin"
-#define MT7921_ROM_PATCH		"mediatek/WIFI_MT7961_patch_mcu_1_2_hdr.bin"
+#define MT7921_FIRMWARE_WM		"/*(DEBLOBBED)*/"
+#define MT7921_ROM_PATCH		"/*(DEBLOBBED)*/"
 
-#define MT7922_FIRMWARE_WM		"mediatek/WIFI_RAM_CODE_MT7922_1.bin"
-#define MT7922_ROM_PATCH		"mediatek/WIFI_MT7922_patch_mcu_1_1_hdr.bin"
+#define MT7922_FIRMWARE_WM		"/*(DEBLOBBED)*/"
+#define MT7922_ROM_PATCH		"/*(DEBLOBBED)*/"
 
 #define MT7921_EEPROM_SIZE		3584
 #define MT7921_TOKEN_SIZE		8192

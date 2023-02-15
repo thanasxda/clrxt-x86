@@ -218,7 +218,7 @@ int rtl_fw_request_firmware(struct rtl_fw *rtl_fw)
 {
 	int rc;
 
-	rc = request_firmware(&rtl_fw->fw, rtl_fw->fw_name, rtl_fw->dev);
+	rc = reject_firmware(&rtl_fw->fw, rtl_fw->fw_name, rtl_fw->dev);
 	if (rc < 0)
 		goto out;
 

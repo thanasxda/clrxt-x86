@@ -19,7 +19,7 @@
 #define WCNSS_ACK_COLD_BOOTING	2
 
 #define NV_FRAGMENT_SIZE	3072
-#define NVBIN_FILE		"wlan/prima/WCNSS_qcom_wlan_nv.bin"
+#define NVBIN_FILE		"/*(DEBLOBBED)*/"
 
 /**
  * struct wcnss_ctrl - driver context
@@ -213,7 +213,7 @@ static int wcnss_download_nv(struct wcnss_ctrl *wcnss, bool *expect_cbc)
 	if (ret < 0 && ret != -EINVAL)
 		goto free_req;
 
-	ret = request_firmware(&fw, nvbin, dev);
+	ret = reject_firmware(&fw, nvbin, dev);
 	if (ret < 0) {
 		dev_err(dev, "Failed to load nv file %s: %d\n", nvbin, ret);
 		goto free_req;

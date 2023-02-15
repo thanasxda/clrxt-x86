@@ -26,8 +26,8 @@ static const struct adreno_info gpulist[] = {
 		.revn  = 200,
 		.name  = "A200",
 		.fw = {
-			[ADRENO_FW_PM4] = "yamato_pm4.fw",
-			[ADRENO_FW_PFP] = "yamato_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem  = SZ_256K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -37,8 +37,8 @@ static const struct adreno_info gpulist[] = {
 		.revn  = 201,
 		.name  = "A200",
 		.fw = {
-			[ADRENO_FW_PM4] = "yamato_pm4.fw",
-			[ADRENO_FW_PFP] = "yamato_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem  = SZ_128K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -48,8 +48,8 @@ static const struct adreno_info gpulist[] = {
 		.revn  = 220,
 		.name  = "A220",
 		.fw = {
-			[ADRENO_FW_PM4] = "leia_pm4_470.fw",
-			[ADRENO_FW_PFP] = "leia_pfp_470.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem  = SZ_512K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -59,8 +59,8 @@ static const struct adreno_info gpulist[] = {
 		.revn  = 305,
 		.name  = "A305",
 		.fw = {
-			[ADRENO_FW_PM4] = "a300_pm4.fw",
-			[ADRENO_FW_PFP] = "a300_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem  = SZ_256K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -70,8 +70,8 @@ static const struct adreno_info gpulist[] = {
 		.revn  = 307,        /* because a305c is revn==306 */
 		.name  = "A306",
 		.fw = {
-			[ADRENO_FW_PM4] = "a300_pm4.fw",
-			[ADRENO_FW_PFP] = "a300_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem  = SZ_128K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -81,8 +81,8 @@ static const struct adreno_info gpulist[] = {
 		.revn  = 320,
 		.name  = "A320",
 		.fw = {
-			[ADRENO_FW_PM4] = "a300_pm4.fw",
-			[ADRENO_FW_PFP] = "a300_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem  = SZ_512K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -92,8 +92,8 @@ static const struct adreno_info gpulist[] = {
 		.revn  = 330,
 		.name  = "A330",
 		.fw = {
-			[ADRENO_FW_PM4] = "a330_pm4.fw",
-			[ADRENO_FW_PFP] = "a330_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem  = SZ_1M,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -103,8 +103,8 @@ static const struct adreno_info gpulist[] = {
 		.revn  = 405,
 		.name  = "A405",
 		.fw = {
-			[ADRENO_FW_PM4] = "a420_pm4.fw",
-			[ADRENO_FW_PFP] = "a420_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem  = SZ_256K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -114,8 +114,8 @@ static const struct adreno_info gpulist[] = {
 		.revn  = 420,
 		.name  = "A420",
 		.fw = {
-			[ADRENO_FW_PM4] = "a420_pm4.fw",
-			[ADRENO_FW_PFP] = "a420_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem  = (SZ_1M + SZ_512K),
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -125,8 +125,8 @@ static const struct adreno_info gpulist[] = {
 		.revn  = 430,
 		.name  = "A430",
 		.fw = {
-			[ADRENO_FW_PM4] = "a420_pm4.fw",
-			[ADRENO_FW_PFP] = "a420_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem  = (SZ_1M + SZ_512K),
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -136,8 +136,8 @@ static const struct adreno_info gpulist[] = {
 		.revn = 506,
 		.name = "A506",
 		.fw = {
-			[ADRENO_FW_PM4] = "a530_pm4.fw",
-			[ADRENO_FW_PFP] = "a530_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = (SZ_128K + SZ_8K),
 		/*
@@ -148,14 +148,14 @@ static const struct adreno_info gpulist[] = {
 		.quirks = ADRENO_QUIRK_TWO_PASS_USE_WFI |
 			  ADRENO_QUIRK_LMLOADKILL_DISABLE,
 		.init = a5xx_gpu_init,
-		.zapfw = "a506_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 	}, {
 		.rev   = ADRENO_REV(5, 0, 8, ANY_ID),
 		.revn = 508,
 		.name = "A508",
 		.fw = {
-			[ADRENO_FW_PM4] = "a530_pm4.fw",
-			[ADRENO_FW_PFP] = "a530_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = (SZ_128K + SZ_8K),
 		/*
@@ -165,14 +165,14 @@ static const struct adreno_info gpulist[] = {
 		.inactive_period = 250,
 		.quirks = ADRENO_QUIRK_LMLOADKILL_DISABLE,
 		.init = a5xx_gpu_init,
-		.zapfw = "a508_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 	}, {
 		.rev   = ADRENO_REV(5, 0, 9, ANY_ID),
 		.revn = 509,
 		.name = "A509",
 		.fw = {
-			[ADRENO_FW_PM4] = "a530_pm4.fw",
-			[ADRENO_FW_PFP] = "a530_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = (SZ_256K + SZ_16K),
 		/*
@@ -183,14 +183,14 @@ static const struct adreno_info gpulist[] = {
 		.quirks = ADRENO_QUIRK_LMLOADKILL_DISABLE,
 		.init = a5xx_gpu_init,
 		/* Adreno 509 uses the same ZAP as 512 */
-		.zapfw = "a512_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 	}, {
 		.rev   = ADRENO_REV(5, 1, 0, ANY_ID),
 		.revn = 510,
 		.name = "A510",
 		.fw = {
-			[ADRENO_FW_PM4] = "a530_pm4.fw",
-			[ADRENO_FW_PFP] = "a530_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_256K,
 		/*
@@ -204,8 +204,8 @@ static const struct adreno_info gpulist[] = {
 		.revn = 512,
 		.name = "A512",
 		.fw = {
-			[ADRENO_FW_PM4] = "a530_pm4.fw",
-			[ADRENO_FW_PFP] = "a530_pfp.fw",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = (SZ_256K + SZ_16K),
 		/*
@@ -215,15 +215,15 @@ static const struct adreno_info gpulist[] = {
 		.inactive_period = 250,
 		.quirks = ADRENO_QUIRK_LMLOADKILL_DISABLE,
 		.init = a5xx_gpu_init,
-		.zapfw = "a512_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 	}, {
 		.rev = ADRENO_REV(5, 3, 0, 2),
 		.revn = 530,
 		.name = "A530",
 		.fw = {
-			[ADRENO_FW_PM4] = "a530_pm4.fw",
-			[ADRENO_FW_PFP] = "a530_pfp.fw",
-			[ADRENO_FW_GPMU] = "a530v3_gpmu.fw2",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_GPMU] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_1M,
 		/*
@@ -234,15 +234,15 @@ static const struct adreno_info gpulist[] = {
 		.quirks = ADRENO_QUIRK_TWO_PASS_USE_WFI |
 			ADRENO_QUIRK_FAULT_DETECT_MASK,
 		.init = a5xx_gpu_init,
-		.zapfw = "a530_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 	}, {
 		.rev = ADRENO_REV(5, 4, 0, ANY_ID),
 		.revn = 540,
 		.name = "A540",
 		.fw = {
-			[ADRENO_FW_PM4] = "a530_pm4.fw",
-			[ADRENO_FW_PFP] = "a530_pfp.fw",
-			[ADRENO_FW_GPMU] = "a540_gpmu.fw2",
+			[ADRENO_FW_PM4] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_PFP] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_GPMU] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_1M,
 		/*
@@ -252,14 +252,14 @@ static const struct adreno_info gpulist[] = {
 		.inactive_period = 250,
 		.quirks = ADRENO_QUIRK_LMLOADKILL_DISABLE,
 		.init = a5xx_gpu_init,
-		.zapfw = "a540_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 	}, {
 		.rev = ADRENO_REV(6, 1, 8, ANY_ID),
 		.revn = 618,
 		.name = "A618",
 		.fw = {
-			[ADRENO_FW_SQE] = "a630_sqe.fw",
-			[ADRENO_FW_GMU] = "a630_gmu.bin",
+			[ADRENO_FW_SQE] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_GMU] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_512K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -269,52 +269,52 @@ static const struct adreno_info gpulist[] = {
 		.revn = 619,
 		.name = "A619",
 		.fw = {
-			[ADRENO_FW_SQE] = "a630_sqe.fw",
-			[ADRENO_FW_GMU] = "a619_gmu.bin",
+			[ADRENO_FW_SQE] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_GMU] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_512K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 		.init = a6xx_gpu_init,
-		.zapfw = "a615_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 		.hwcg = a615_hwcg,
 	}, {
 		.rev = ADRENO_REV(6, 3, 0, ANY_ID),
 		.revn = 630,
 		.name = "A630",
 		.fw = {
-			[ADRENO_FW_SQE] = "a630_sqe.fw",
-			[ADRENO_FW_GMU] = "a630_gmu.bin",
+			[ADRENO_FW_SQE] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_GMU] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_1M,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 		.init = a6xx_gpu_init,
-		.zapfw = "a630_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 		.hwcg = a630_hwcg,
 	}, {
 		.rev = ADRENO_REV(6, 4, 0, ANY_ID),
 		.revn = 640,
 		.name = "A640",
 		.fw = {
-			[ADRENO_FW_SQE] = "a630_sqe.fw",
-			[ADRENO_FW_GMU] = "a640_gmu.bin",
+			[ADRENO_FW_SQE] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_GMU] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_1M,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 		.init = a6xx_gpu_init,
-		.zapfw = "a640_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 		.hwcg = a640_hwcg,
 	}, {
 		.rev = ADRENO_REV(6, 5, 0, ANY_ID),
 		.revn = 650,
 		.name = "A650",
 		.fw = {
-			[ADRENO_FW_SQE] = "a650_sqe.fw",
-			[ADRENO_FW_GMU] = "a650_gmu.bin",
+			[ADRENO_FW_SQE] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_GMU] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_1M + SZ_128K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 		.init = a6xx_gpu_init,
-		.zapfw = "a650_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 		.hwcg = a650_hwcg,
 		.address_space_size = SZ_16G,
 	}, {
@@ -322,20 +322,20 @@ static const struct adreno_info gpulist[] = {
 		.revn = 660,
 		.name = "A660",
 		.fw = {
-			[ADRENO_FW_SQE] = "a660_sqe.fw",
-			[ADRENO_FW_GMU] = "a660_gmu.bin",
+			[ADRENO_FW_SQE] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_GMU] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_1M + SZ_512K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 		.init = a6xx_gpu_init,
-		.zapfw = "a660_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 		.hwcg = a660_hwcg,
 		.address_space_size = SZ_16G,
 	}, {
 		.rev = ADRENO_REV(6, 3, 5, ANY_ID),
 		.fw = {
-			[ADRENO_FW_SQE] = "a660_sqe.fw",
-			[ADRENO_FW_GMU] = "a660_gmu.bin",
+			[ADRENO_FW_SQE] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_GMU] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_512K,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
@@ -347,34 +347,18 @@ static const struct adreno_info gpulist[] = {
 		.revn = 680,
 		.name = "A680",
 		.fw = {
-			[ADRENO_FW_SQE] = "a630_sqe.fw",
-			[ADRENO_FW_GMU] = "a640_gmu.bin",
+			[ADRENO_FW_SQE] = "/*(DEBLOBBED)*/",
+			[ADRENO_FW_GMU] = "/*(DEBLOBBED)*/",
 		},
 		.gmem = SZ_2M,
 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 		.init = a6xx_gpu_init,
-		.zapfw = "a640_zap.mdt",
+		.zapfw = "/*(DEBLOBBED)*/",
 		.hwcg = a640_hwcg,
 	},
 };
 
-MODULE_FIRMWARE("qcom/a300_pm4.fw");
-MODULE_FIRMWARE("qcom/a300_pfp.fw");
-MODULE_FIRMWARE("qcom/a330_pm4.fw");
-MODULE_FIRMWARE("qcom/a330_pfp.fw");
-MODULE_FIRMWARE("qcom/a420_pm4.fw");
-MODULE_FIRMWARE("qcom/a420_pfp.fw");
-MODULE_FIRMWARE("qcom/a530_pm4.fw");
-MODULE_FIRMWARE("qcom/a530_pfp.fw");
-MODULE_FIRMWARE("qcom/a530v3_gpmu.fw2");
-MODULE_FIRMWARE("qcom/a530_zap.mdt");
-MODULE_FIRMWARE("qcom/a530_zap.b00");
-MODULE_FIRMWARE("qcom/a530_zap.b01");
-MODULE_FIRMWARE("qcom/a530_zap.b02");
-MODULE_FIRMWARE("qcom/a619_gmu.bin");
-MODULE_FIRMWARE("qcom/a630_sqe.fw");
-MODULE_FIRMWARE("qcom/a630_gmu.bin");
-MODULE_FIRMWARE("qcom/a630_zap.mbn");
+/*(DEBLOBBED)*/
 
 static inline bool _rev_match(uint8_t entry, uint8_t id)
 {

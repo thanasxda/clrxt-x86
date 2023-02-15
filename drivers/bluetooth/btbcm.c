@@ -608,11 +608,11 @@ int btbcm_initialize(struct hci_dev *hdev, bool *fw_load_done, bool use_autobaud
 	if (hw_name) {
 		if (board_name) {
 			snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
-				 "brcm/%s%s.%s.hcd", hw_name, postfix, board_name);
+				 "/*(DEBLOBBED)*/", hw_name, postfix, board_name);
 			fw_name_count++;
 		}
 		snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
-			 "brcm/%s%s.hcd", hw_name, postfix);
+			 "/*(DEBLOBBED)*/", hw_name, postfix);
 		fw_name_count++;
 	}
 
@@ -622,11 +622,11 @@ int btbcm_initialize(struct hci_dev *hdev, bool *fw_load_done, bool use_autobaud
 		fw_name_count++;
 	}
 	snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
-		 "brcm/BCM%s.hcd", postfix);
+		 "/*(DEBLOBBED)*/", postfix);
 	fw_name_count++;
 
 	for (i = 0; i < fw_name_count; i++) {
-		err = firmware_request_nowarn(&fw, fw_name[i], &hdev->dev);
+		err = firmware_reject_nowarn(&fw, fw_name[i], &hdev->dev);
 		if (err == 0) {
 			bt_dev_info(hdev, "%s '%s' Patch",
 				    hw_name ? hw_name : "BCM", fw_name[i]);

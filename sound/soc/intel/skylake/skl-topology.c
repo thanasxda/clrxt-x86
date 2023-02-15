@@ -3726,26 +3726,26 @@ int skl_tplg_init(struct snd_soc_component *component, struct hdac_bus *bus)
 	struct skl_dev *skl = bus_to_skl(bus);
 	struct skl_pipeline *ppl;
 
-	ret = request_firmware(&fw, skl->tplg_name, bus->dev);
+	ret = reject_firmware(&fw, skl->tplg_name, bus->dev);
 	if (ret < 0) {
 		char alt_tplg_name[64];
 
-		snprintf(alt_tplg_name, sizeof(alt_tplg_name), "%s-tplg.bin",
+		snprintf(alt_tplg_name, sizeof(alt_tplg_name), "/*(DEBLOBBED)*/",
 			 skl->mach->drv_name);
 		dev_info(bus->dev, "tplg fw %s load failed with %d, trying alternative tplg name %s",
 			 skl->tplg_name, ret, alt_tplg_name);
 
-		ret = request_firmware(&fw, alt_tplg_name, bus->dev);
+		ret = reject_firmware(&fw, alt_tplg_name, bus->dev);
 		if (!ret)
 			goto component_load;
 
-		dev_info(bus->dev, "tplg %s failed with %d, falling back to dfw_sst.bin",
+		dev_info(bus->dev, "tplg %s failed with %d, falling back to /*(DEBLOBBED)*/",
 			 alt_tplg_name, ret);
 
-		ret = request_firmware(&fw, "dfw_sst.bin", bus->dev);
+		ret = reject_firmware(&fw, "/*(DEBLOBBED)*/", bus->dev);
 		if (ret < 0) {
 			dev_err(bus->dev, "Fallback tplg fw %s load failed with %d\n",
-					"dfw_sst.bin", ret);
+					"/*(DEBLOBBED)*/", ret);
 			return ret;
 		}
 	}

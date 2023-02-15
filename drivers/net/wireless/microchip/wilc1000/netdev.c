@@ -19,8 +19,8 @@
 /* latest API version supported */
 #define WILC1000_API_VER		1
 
-#define WILC1000_FW_PREFIX		"atmel/wilc1000_wifi_firmware-"
-#define __WILC1000_FW(api)		WILC1000_FW_PREFIX #api ".bin"
+/*(DEBLOBBED)*/
+#define __WILC1000_FW(api)		"/*(DEBLOBBED)*/"
 #define WILC1000_FW(api)		__WILC1000_FW(api)
 
 static irqreturn_t isr_uh_routine(int irq, void *user_data)
@@ -189,7 +189,7 @@ static int wilc_wlan_get_firmware(struct net_device *dev)
 	netdev_info(dev, "ChipID [%x] loading firmware [%s]\n", chip_id,
 		    WILC1000_FW(WILC1000_API_VER));
 
-	ret = request_firmware(&wilc_fw, WILC1000_FW(WILC1000_API_VER),
+	ret = reject_firmware(&wilc_fw, WILC1000_FW(WILC1000_API_VER),
 			       wilc->dev);
 	if (ret != 0) {
 		netdev_err(dev, "%s - firmware not available\n",
@@ -1001,4 +1001,4 @@ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *wl, const char *name,
 }
 
 MODULE_LICENSE("GPL");
-MODULE_FIRMWARE(WILC1000_FW(WILC1000_API_VER));
+/*(DEBLOBBED)*/

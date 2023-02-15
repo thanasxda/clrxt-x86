@@ -34,7 +34,7 @@ static int vdec_hevc_load_firmware(struct amvdec_session *sess,
 	int ret;
 	u32 i = 100;
 
-	ret = request_firmware(&fw, fwname, dev);
+	ret = reject_firmware(&fw, fwname, dev);
 	if (ret < 0)  {
 		dev_err(dev, "Unable to request firmware %s\n", fwname);
 		return ret;

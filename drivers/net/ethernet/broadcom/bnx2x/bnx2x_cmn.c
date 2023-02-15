@@ -2378,10 +2378,7 @@ int bnx2x_compare_fw_ver(struct bnx2x *bp, u32 load_code, bool print_err)
 		   loaded_fw, loaded_fw_major, loaded_fw_minor, loaded_fw_rev, loaded_fw_eng);
 
 		/* abort nic load if version mismatch */
-		if (loaded_fw_major != BCM_5710_FW_MAJOR_VERSION ||
-		    loaded_fw_minor != BCM_5710_FW_MINOR_VERSION ||
-		    loaded_fw_eng != BCM_5710_FW_ENGINEERING_VERSION ||
-		    loaded_fw_rev < BCM_5710_FW_REVISION_VERSION_V15) {
+		/*(DEBLOBBED)*/ {
 			if (print_err)
 				BNX2X_ERR("loaded FW incompatible. Aborting\n");
 			else

@@ -134,7 +134,7 @@ static int mt7603_load_firmware(struct mt7603_dev *dev)
 			firmware = MT7603_FIRMWARE_E2;
 	}
 
-	ret = request_firmware(&fw, firmware, dev->mt76.dev);
+	ret = reject_firmware(&fw, firmware, dev->mt76.dev);
 	if (ret)
 		return ret;
 

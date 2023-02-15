@@ -3845,5 +3845,4 @@ module_exit(bnad_module_exit);
 MODULE_AUTHOR("Brocade");
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("QLogic BR-series 10G PCIe Ethernet driver");
-MODULE_FIRMWARE(CNA_FW_FILE_CT);
-MODULE_FIRMWARE(CNA_FW_FILE_CT2);
+/*(DEBLOBBED)*/

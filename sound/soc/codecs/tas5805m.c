@@ -507,9 +507,9 @@ static int tas5805m_i2c_probe(struct i2c_client *i2c)
 					&config_name))
 		config_name = "default";
 
-	snprintf(filename, sizeof(filename), "tas5805m_dsp_%s.bin",
+	snprintf(filename, sizeof(filename), "/*(DEBLOBBED)*/",
 		 config_name);
-	ret = request_firmware(&fw, filename, dev);
+	ret = reject_firmware(&fw, filename, dev);
 	if (ret)
 		return ret;
 

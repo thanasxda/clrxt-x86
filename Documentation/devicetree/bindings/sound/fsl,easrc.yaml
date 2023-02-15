@@ -46,7 +46,7 @@ properties:
 
   firmware-name:
     $ref: /schemas/types.yaml#/definitions/string
-    const: imx/easrc/easrc-imx8mn.bin
+    const: /*(DEBLOBBED)*/
     description: The coefficient table for the filters
 
   fsl,asrc-rate:
@@ -94,7 +94,7 @@ examples:
                        "ctx1_rx", "ctx1_tx",
                        "ctx2_rx", "ctx2_tx",
                        "ctx3_rx", "ctx3_tx";
-           firmware-name = "imx/easrc/easrc-imx8mn.bin";
+           firmware-name = "/*(DEBLOBBED)*/";
            fsl,asrc-rate  = <8000>;
            fsl,asrc-format = <2>;
     };

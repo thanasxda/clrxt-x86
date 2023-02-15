@@ -5157,7 +5157,7 @@ static int rtl8152_request_firmware(struct r8152 *tp)
 		goto result;
 	}
 
-	rc = request_firmware(&rtl_fw->fw, rtl_fw->fw_name, &tp->intf->dev);
+	rc = reject_firmware(&rtl_fw->fw, rtl_fw->fw_name, &tp->intf->dev);
 	if (rc < 0)
 		goto result;
 
@@ -6728,7 +6728,7 @@ static void rtl_hw_phy_work_func_t(struct work_struct *work)
 		tp->rtl_fw.retry = false;
 		tp->rtl_fw.fw = NULL;
 
-		/* Delay execution in case request_firmware() is not ready yet.
+		/* Delay execution in case reject_firmware() is not ready yet.
 		 */
 		queue_delayed_work(system_long_wq, &tp->hw_phy_work, HZ * 10);
 		goto ignore_once;
@@ -9440,21 +9440,15 @@ static int rtl_ops_init(struct r8152 *tp)
 	return ret;
 }
 
-#define FIRMWARE_8153A_2	"rtl_nic/rtl8153a-2.fw"
-#define FIRMWARE_8153A_3	"rtl_nic/rtl8153a-3.fw"
-#define FIRMWARE_8153A_4	"rtl_nic/rtl8153a-4.fw"
-#define FIRMWARE_8153B_2	"rtl_nic/rtl8153b-2.fw"
-#define FIRMWARE_8153C_1	"rtl_nic/rtl8153c-1.fw"
-#define FIRMWARE_8156A_2	"rtl_nic/rtl8156a-2.fw"
-#define FIRMWARE_8156B_2	"rtl_nic/rtl8156b-2.fw"
+#define FIRMWARE_8153A_2	"/*(DEBLOBBED)*/"
+#define FIRMWARE_8153A_3	"/*(DEBLOBBED)*/"
+#define FIRMWARE_8153A_4	"/*(DEBLOBBED)*/"
+#define FIRMWARE_8153B_2	"/*(DEBLOBBED)*/"
+#define FIRMWARE_8153C_1	"/*(DEBLOBBED)*/"
+#define FIRMWARE_8156A_2	"/*(DEBLOBBED)*/"
+#define FIRMWARE_8156B_2	"/*(DEBLOBBED)*/"
 
-MODULE_FIRMWARE(FIRMWARE_8153A_2);
-MODULE_FIRMWARE(FIRMWARE_8153A_3);
-MODULE_FIRMWARE(FIRMWARE_8153A_4);
-MODULE_FIRMWARE(FIRMWARE_8153B_2);
-MODULE_FIRMWARE(FIRMWARE_8153C_1);
-MODULE_FIRMWARE(FIRMWARE_8156A_2);
-MODULE_FIRMWARE(FIRMWARE_8156B_2);
+/*(DEBLOBBED)*/
 
 static int rtl_fw_init(struct r8152 *tp)
 {
@@ -9762,7 +9756,7 @@ static int rtl8152_probe(struct usb_interface *intf,
 
 	tp->rtl_ops.init(tp);
 #if IS_BUILTIN(CONFIG_USB_RTL8152)
-	/* Retry in case request_firmware() is not ready yet. */
+	/* Retry in case reject_firmware() is not ready yet. */
 	tp->rtl_fw.retry = true;
 #endif
 	queue_delayed_work(system_long_wq, &tp->hw_phy_work, 0);

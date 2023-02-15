@@ -177,35 +177,7 @@ ga102_gr = {
 	}
 };
 
-MODULE_FIRMWARE("nvidia/ga102/gr/fecs_bl.bin");
-MODULE_FIRMWARE("nvidia/ga102/gr/fecs_sig.bin");
-MODULE_FIRMWARE("nvidia/ga102/gr/gpccs_bl.bin");
-MODULE_FIRMWARE("nvidia/ga102/gr/gpccs_sig.bin");
-MODULE_FIRMWARE("nvidia/ga102/gr/NET_img.bin");
-
-MODULE_FIRMWARE("nvidia/ga103/gr/fecs_bl.bin");
-MODULE_FIRMWARE("nvidia/ga103/gr/fecs_sig.bin");
-MODULE_FIRMWARE("nvidia/ga103/gr/gpccs_bl.bin");
-MODULE_FIRMWARE("nvidia/ga103/gr/gpccs_sig.bin");
-MODULE_FIRMWARE("nvidia/ga103/gr/NET_img.bin");
-
-MODULE_FIRMWARE("nvidia/ga104/gr/fecs_bl.bin");
-MODULE_FIRMWARE("nvidia/ga104/gr/fecs_sig.bin");
-MODULE_FIRMWARE("nvidia/ga104/gr/gpccs_bl.bin");
-MODULE_FIRMWARE("nvidia/ga104/gr/gpccs_sig.bin");
-MODULE_FIRMWARE("nvidia/ga104/gr/NET_img.bin");
-
-MODULE_FIRMWARE("nvidia/ga106/gr/fecs_bl.bin");
-MODULE_FIRMWARE("nvidia/ga106/gr/fecs_sig.bin");
-MODULE_FIRMWARE("nvidia/ga106/gr/gpccs_bl.bin");
-MODULE_FIRMWARE("nvidia/ga106/gr/gpccs_sig.bin");
-MODULE_FIRMWARE("nvidia/ga106/gr/NET_img.bin");
-
-MODULE_FIRMWARE("nvidia/ga107/gr/fecs_bl.bin");
-MODULE_FIRMWARE("nvidia/ga107/gr/fecs_sig.bin");
-MODULE_FIRMWARE("nvidia/ga107/gr/gpccs_bl.bin");
-MODULE_FIRMWARE("nvidia/ga107/gr/gpccs_sig.bin");
-MODULE_FIRMWARE("nvidia/ga107/gr/NET_img.bin");
+/*(DEBLOBBED)*/
 
 struct netlist_region {
 	u32 region_id;

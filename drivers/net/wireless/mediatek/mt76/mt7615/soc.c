@@ -68,5 +68,4 @@ struct platform_driver mt7622_wmac_driver = {
 	.remove = mt7622_wmac_remove,
 };
 
-MODULE_FIRMWARE(MT7622_FIRMWARE_N9);
-MODULE_FIRMWARE(MT7622_ROM_PATCH);
+/*(DEBLOBBED)*/

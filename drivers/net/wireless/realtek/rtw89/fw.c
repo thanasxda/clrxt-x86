@@ -293,9 +293,9 @@ rtw89_early_fw_feature_recognize(struct device *device,
 		full_req = true;
 
 	if (full_req)
-		ret = request_firmware(&firmware, chip->fw_name, device);
+		ret = reject_firmware(&firmware, chip->fw_name, device);
 	else
-		ret = request_partial_firmware_into_buf(&firmware, chip->fw_name,
+		ret = reject_partial_firmware_into_buf(&firmware, chip->fw_name,
 							device, &buf, sizeof(buf),
 							0);
 
@@ -641,7 +641,7 @@ int rtw89_load_firmware(struct rtw89_dev *rtwdev)
 		return 0;
 	}
 
-	ret = request_firmware_nowait(THIS_MODULE, true, fw_name, rtwdev->dev,
+	ret = reject_firmware_nowait(THIS_MODULE, true, fw_name, rtwdev->dev,
 				      GFP_KERNEL, fw, rtw89_load_firmware_cb);
 	if (ret) {
 		rtw89_err(rtwdev, "failed to async firmware request\n");

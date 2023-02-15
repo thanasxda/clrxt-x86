@@ -548,7 +548,7 @@ static int catpt_load_image(struct catpt_dev *cdev, struct dma_chan *chan,
 	void *vaddr;
 	int ret;
 
-	ret = request_firmware((const struct firmware **)&img, name, cdev->dev);
+	ret = reject_firmware((const struct firmware **)&img, name, cdev->dev);
 	if (ret)
 		return ret;
 
@@ -581,8 +581,8 @@ release_fw:
 static int catpt_load_images(struct catpt_dev *cdev, bool restore)
 {
 	static const char *const names[] = {
-		"intel/IntcSST1.bin",
-		"intel/IntcSST2.bin",
+		"/*(DEBLOBBED)*/",
+		"/*(DEBLOBBED)*/",
 	};
 	struct dma_chan *chan;
 	int ret;

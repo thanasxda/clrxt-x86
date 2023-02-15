@@ -155,8 +155,7 @@ static inline int rt2800pci_read_eeprom_efuse(struct rt2x00_dev *rt2x00dev)
 static char *rt2800pci_get_firmware_name(struct rt2x00_dev *rt2x00dev)
 {
 	/*
-	 * Chip rt3290 use specific 4KB firmware named rt3290.bin.
-	 */
+	 * Chip rt3290 use specific 4KB firmware named /*(DEBLOBBED)*/
 	if (rt2x00_rt(rt2x00dev, RT3290))
 		return FIRMWARE_RT3290;
 	else
@@ -440,7 +439,7 @@ static const struct pci_device_id rt2800pci_device_table[] = {
 MODULE_AUTHOR(DRV_PROJECT);
 MODULE_VERSION(DRV_VERSION);
 MODULE_DESCRIPTION("Ralink RT2800 PCI & PCMCIA Wireless LAN driver.");
-MODULE_FIRMWARE(FIRMWARE_RT2860);
+/*(DEBLOBBED)*/
 MODULE_DEVICE_TABLE(pci, rt2800pci_device_table);
 MODULE_LICENSE("GPL");
 

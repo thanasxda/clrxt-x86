@@ -17,7 +17,7 @@
 };
 
 &adsp_pil {
-	firmware-name = "qcom/msm8996/oneplus3t/adsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &battery {
@@ -27,19 +27,19 @@
 
 &gpu {
 	zap-shader {
-		firmware-name = "qcom/msm8996/oneplus3t/a530_zap.mbn";
+		firmware-name = "/*(DEBLOBBED)*/";
 	};
 };
 
 &mss_pil {
-	firmware-name = "qcom/msm8996/oneplus3t/mba.mbn",
-			"qcom/msm8996/oneplus3t/modem.mbn";
+	firmware-name = "/*(DEBLOBBED)*/",
+			"/*(DEBLOBBED)*/";
 };
 
 &slpi_pil {
-	firmware-name = "qcom/msm8996/oneplus3t/slpi.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &venus {
-	firmware-name = "qcom/msm8996/oneplus3t/venus.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };

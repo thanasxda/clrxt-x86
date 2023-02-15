@@ -374,12 +374,12 @@
 
 &remoteproc_adsp {
 	status = "okay";
-	firmware-name = "qcom/sa8155p/adsp.mdt";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &remoteproc_cdsp {
 	status = "okay";
-	firmware-name = "qcom/sa8155p/cdsp.mdt";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &sdhc_2 {

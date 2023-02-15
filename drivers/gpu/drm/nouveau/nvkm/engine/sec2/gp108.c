@@ -22,12 +22,7 @@
 #include "priv.h"
 #include <subdev/acr.h>
 
-MODULE_FIRMWARE("nvidia/gp108/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/gp108/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/gp108/sec2/sig.bin");
-MODULE_FIRMWARE("nvidia/gv100/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/gv100/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/gv100/sec2/sig.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_sec2_fwif
 gp108_sec2_fwif[] = {

@@ -42,14 +42,14 @@ int plfxlc_download_fpga(struct usb_interface *intf)
 				PURELIFI_X_VENDOR_ID_0) &&
 	    (le16_to_cpu(udev->descriptor.idProduct) ==
 				PURELIFI_X_PRODUCT_ID_0)) {
-		fw_name = "plfxlc/lifi-x.bin";
+		fw_name = "/*(DEBLOBBED)*/";
 		dev_dbg(&intf->dev, "bin file for X selected\n");
 
 	} else if ((le16_to_cpu(udev->descriptor.idVendor)) ==
 					PURELIFI_XC_VENDOR_ID_0 &&
 		   (le16_to_cpu(udev->descriptor.idProduct) ==
 					PURELIFI_XC_PRODUCT_ID_0)) {
-		fw_name = "plfxlc/lifi-xc.bin";
+		fw_name = "/*(DEBLOBBED)*/";
 		dev_dbg(&intf->dev, "bin file for XC selected\n");
 
 	} else {
@@ -57,7 +57,7 @@ int plfxlc_download_fpga(struct usb_interface *intf)
 		goto error;
 	}
 
-	r = request_firmware(&fw, fw_name, &intf->dev);
+	r = reject_firmware(&fw, fw_name, &intf->dev);
 	if (r) {
 		dev_err(&intf->dev, "request_firmware failed (%d)\n", r);
 		goto error;
@@ -159,9 +159,9 @@ int plfxlc_download_xl_firmware(struct usb_interface *intf)
 	}
 	/* Code for single pack file download */
 
-	fw_pack = "plfxlc/lifi-xl.bin";
+	fw_pack = "/*(DEBLOBBED)*/";
 
-	r = request_firmware(&fwp, fw_pack, &intf->dev);
+	r = reject_firmware(&fwp, fw_pack, &intf->dev);
 	if (r) {
 		dev_err(&intf->dev, "Request_firmware failed (%d)\n", r);
 		return -EINVAL;
