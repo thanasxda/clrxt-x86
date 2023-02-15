@@ -410,7 +410,7 @@ static bool eip197_start_firmware(struct safexcel_crypto_priv *priv,
 
 static int eip197_load_firmwares(struct safexcel_crypto_priv *priv)
 {
-	const char *fw_name[] = {"ifpp.bin", "ipue.bin"};
+	const char *fw_name[] = {"/*(DEBLOBBED)*/", "/*(DEBLOBBED)*/"};
 	const struct firmware *fw[FW_NB];
 	char fw_path[37], *dir = NULL;
 	int i, j, ret = 0, pe;
@@ -428,8 +428,8 @@ static int eip197_load_firmwares(struct safexcel_crypto_priv *priv)
 
 retry_fw:
 	for (i = 0; i < FW_NB; i++) {
-		snprintf(fw_path, 37, "inside-secure/%s/%s", dir, fw_name[i]);
-		ret = firmware_request_nowarn(&fw[i], fw_path, priv->dev);
+		snprintf(fw_path, 37, "/*(DEBLOBBED)*/", dir, fw_name[i]);
+		ret = firmware_reject_nowarn(&fw[i], fw_path, priv->dev);
 		if (ret) {
 			if (minifw || priv->data->version != EIP197B_MRVL)
 				goto release_fw;
@@ -437,7 +437,7 @@ retry_fw:
 			/* Fallback to the old firmware location for the
 			 * EIP197b.
 			 */
-			ret = firmware_request_nowarn(&fw[i], fw_name[i],
+			ret = firmware_reject_nowarn(&fw[i], fw_name[i],
 						      priv->dev);
 			if (ret)
 				goto release_fw;
@@ -2033,11 +2033,4 @@ MODULE_DESCRIPTION("Support for SafeXcel cryptographic engines: EIP97 & EIP197")
 MODULE_LICENSE("GPL v2");
 MODULE_IMPORT_NS(CRYPTO_INTERNAL);
 
-MODULE_FIRMWARE("ifpp.bin");
-MODULE_FIRMWARE("ipue.bin");
-MODULE_FIRMWARE("inside-secure/eip197b/ifpp.bin");
-MODULE_FIRMWARE("inside-secure/eip197b/ipue.bin");
-MODULE_FIRMWARE("inside-secure/eip197d/ifpp.bin");
-MODULE_FIRMWARE("inside-secure/eip197d/ipue.bin");
-MODULE_FIRMWARE("inside-secure/eip197_minifw/ifpp.bin");
-MODULE_FIRMWARE("inside-secure/eip197_minifw/ipue.bin");
+/*(DEBLOBBED)*/

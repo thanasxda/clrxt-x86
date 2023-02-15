@@ -60,9 +60,7 @@ static const struct mlxsw_fw_rev mlxsw_sp1_fw_rev = {
 };
 
 #define MLXSW_SP1_FW_FILENAME \
-	"mellanox/mlxsw_spectrum-" __stringify(MLXSW_SP1_FWREV_MAJOR) \
-	"." __stringify(MLXSW_SP_FWREV_MINOR) \
-	"." __stringify(MLXSW_SP_FWREV_SUBMINOR) ".mfa2"
+	"/*(DEBLOBBED)*/"
 
 #define MLXSW_SP2_FWREV_MAJOR 29
 
@@ -73,9 +71,7 @@ static const struct mlxsw_fw_rev mlxsw_sp2_fw_rev = {
 };
 
 #define MLXSW_SP2_FW_FILENAME \
-	"mellanox/mlxsw_spectrum2-" __stringify(MLXSW_SP2_FWREV_MAJOR) \
-	"." __stringify(MLXSW_SP_FWREV_MINOR) \
-	"." __stringify(MLXSW_SP_FWREV_SUBMINOR) ".mfa2"
+	"/*(DEBLOBBED)*/"
 
 #define MLXSW_SP3_FWREV_MAJOR 30
 
@@ -86,14 +82,10 @@ static const struct mlxsw_fw_rev mlxsw_sp3_fw_rev = {
 };
 
 #define MLXSW_SP3_FW_FILENAME \
-	"mellanox/mlxsw_spectrum3-" __stringify(MLXSW_SP3_FWREV_MAJOR) \
-	"." __stringify(MLXSW_SP_FWREV_MINOR) \
-	"." __stringify(MLXSW_SP_FWREV_SUBMINOR) ".mfa2"
+	"/*(DEBLOBBED)*/"
 
 #define MLXSW_SP_LINECARDS_INI_BUNDLE_FILENAME \
-	"mellanox/lc_ini_bundle_" \
-	__stringify(MLXSW_SP_FWREV_MINOR) "_" \
-	__stringify(MLXSW_SP_FWREV_SUBMINOR) ".bin"
+	"/*(DEBLOBBED)*/"
 
 static const char mlxsw_sp1_driver_name[] = "mlxsw_spectrum";
 static const char mlxsw_sp2_driver_name[] = "mlxsw_spectrum2";
@@ -5333,7 +5325,4 @@ MODULE_DEVICE_TABLE(pci, mlxsw_sp1_pci_id_table);
 MODULE_DEVICE_TABLE(pci, mlxsw_sp2_pci_id_table);
 MODULE_DEVICE_TABLE(pci, mlxsw_sp3_pci_id_table);
 MODULE_DEVICE_TABLE(pci, mlxsw_sp4_pci_id_table);
-MODULE_FIRMWARE(MLXSW_SP1_FW_FILENAME);
-MODULE_FIRMWARE(MLXSW_SP2_FW_FILENAME);
-MODULE_FIRMWARE(MLXSW_SP3_FW_FILENAME);
-MODULE_FIRMWARE(MLXSW_SP_LINECARDS_INI_BUNDLE_FILENAME);
+/*(DEBLOBBED)*/

@@ -25,7 +25,7 @@ MODULE_DESCRIPTION("Driver for IDT 82p33xxx clock devices");
 MODULE_AUTHOR("IDT support-1588 <IDT-support-1588@lm.renesas.com>");
 MODULE_VERSION("1.0");
 MODULE_LICENSE("GPL");
-MODULE_FIRMWARE(FW_FILENAME);
+/*(DEBLOBBED)*/
 
 #define EXTTS_PERIOD_MS (95)
 
@@ -1288,9 +1288,7 @@ static int idt82p33_load_firmware(struct idt82p33 *idt82p33)
 	if (firmware) /* module parameter */
 		snprintf(fname, sizeof(fname), "%s", firmware);
 
-	dev_info(idt82p33->dev, "requesting firmware '%s'\n", fname);
-
-	err = request_firmware(&fw, fname, idt82p33->dev);
+	err = reject_firmware(&fw, FW_FILENAME, idt82p33->dev);
 
 	if (err) {
 		dev_err(idt82p33->dev,

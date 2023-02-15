@@ -37,9 +37,7 @@
 #define mmRLC_CP_SCHEDULERS_Sienna_Cichlid		0x4ca1
 #define mmRLC_CP_SCHEDULERS_Sienna_Cichlid_BASE_IDX	1
 
-MODULE_FIRMWARE("amdgpu/navi10_mes.bin");
-MODULE_FIRMWARE("amdgpu/sienna_cichlid_mes.bin");
-MODULE_FIRMWARE("amdgpu/sienna_cichlid_mes1.bin");
+/*(DEBLOBBED)*/
 
 static int mes_v10_1_hw_fini(void *handle);
 static int mes_v10_1_kiq_hw_init(struct amdgpu_device *adev);
@@ -400,13 +398,13 @@ static int mes_v10_1_init_microcode(struct amdgpu_device *adev,
 	}
 
 	if (pipe == AMDGPU_MES_SCHED_PIPE)
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes.bin",
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/",
 			 chip_name);
 	else
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mes1.bin",
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/",
 			 chip_name);
 
-	err = request_firmware(&adev->mes.fw[pipe], fw_name, adev->dev);
+	err = reject_firmware(&adev->mes.fw[pipe], fw_name, adev->dev);
 	if (err)
 		return err;
 

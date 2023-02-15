@@ -44,10 +44,7 @@
 #include "sdma_v6_0.h"
 #include "v11_structs.h"
 
-MODULE_FIRMWARE("amdgpu/sdma_6_0_0.bin");
-MODULE_FIRMWARE("amdgpu/sdma_6_0_1.bin");
-MODULE_FIRMWARE("amdgpu/sdma_6_0_2.bin");
-MODULE_FIRMWARE("amdgpu/sdma_6_0_3.bin");
+/*(DEBLOBBED)*/
 
 #define SDMA1_REG_OFFSET 0x600
 #define SDMA0_HYP_DEC_REG_START 0x5880
@@ -96,7 +93,7 @@ static int sdma_v6_0_init_microcode(struct amdgpu_device *adev)
 
 	amdgpu_ucode_ip_version_decode(adev, SDMA0_HWIP, ucode_prefix, sizeof(ucode_prefix));
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s.bin", ucode_prefix);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", ucode_prefix);
 
 	return amdgpu_sdma_init_microcode(adev, fw_name, 0, true);
 }

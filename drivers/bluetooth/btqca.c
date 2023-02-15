@@ -454,7 +454,7 @@ static int qca_download_firmware(struct hci_dev *hdev,
 
 	bt_dev_info(hdev, "QCA Downloading %s", config->fwname);
 
-	ret = request_firmware(&fw, config->fwname, &hdev->dev);
+	ret = reject_firmware(&fw, config->fwname, &hdev->dev);
 	if (ret) {
 		/* For WCN6750, if mbn file is not present then check for
 		 * tlv file.
@@ -464,9 +464,9 @@ static int qca_download_firmware(struct hci_dev *hdev,
 				   config->fwname, ret);
 			config->type = TLV_TYPE_PATCH;
 			snprintf(config->fwname, sizeof(config->fwname),
-				 "qca/msbtfw%02x.tlv", rom_ver);
+				 "/*(DEBLOBBED)*/", rom_ver);
 			bt_dev_info(hdev, "QCA Downloading %s", config->fwname);
-			ret = request_firmware(&fw, config->fwname, &hdev->dev);
+			ret = reject_firmware(&fw, config->fwname, &hdev->dev);
 			if (ret) {
 				bt_dev_err(hdev, "QCA Failed to request file: %s (%d)",
 					   config->fwname, ret);
@@ -603,20 +603,20 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
 	config.type = TLV_TYPE_PATCH;
 	if (qca_is_wcn399x(soc_type)) {
 		snprintf(config.fwname, sizeof(config.fwname),
-			 "qca/crbtfw%02x.tlv", rom_ver);
+			 "/*(DEBLOBBED)*/", rom_ver);
 	} else if (soc_type == QCA_QCA6390) {
 		snprintf(config.fwname, sizeof(config.fwname),
-			 "qca/htbtfw%02x.tlv", rom_ver);
+			 "/*(DEBLOBBED)*/", rom_ver);
 	} else if (soc_type == QCA_WCN6750) {
 		/* Choose mbn file by default.If mbn file is not found
 		 * then choose tlv file
 		 */
 		config.type = ELF_TYPE_PATCH;
 		snprintf(config.fwname, sizeof(config.fwname),
-			 "qca/msbtfw%02x.mbn", rom_ver);
+			 "/*(DEBLOBBED)*/", rom_ver);
 	} else {
 		snprintf(config.fwname, sizeof(config.fwname),
-			 "qca/rampatch_%08x.bin", soc_ver);
+			 "/*(DEBLOBBED)*/", soc_ver);
 	}
 
 	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
@@ -632,25 +632,25 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
 	config.type = TLV_TYPE_NVM;
 	if (firmware_name)
 		snprintf(config.fwname, sizeof(config.fwname),
-			 "qca/%s", firmware_name);
+			 "/*(DEBLOBBED)*/", firmware_name);
 	else if (qca_is_wcn399x(soc_type)) {
 		if (ver.soc_id == QCA_WCN3991_SOC_ID) {
 			snprintf(config.fwname, sizeof(config.fwname),
-				 "qca/crnv%02xu.bin", rom_ver);
+				 "/*(DEBLOBBED)*/", rom_ver);
 		} else {
 			snprintf(config.fwname, sizeof(config.fwname),
-				 "qca/crnv%02x.bin", rom_ver);
+				 "/*(DEBLOBBED)*/", rom_ver);
 		}
 	}
 	else if (soc_type == QCA_QCA6390)
 		snprintf(config.fwname, sizeof(config.fwname),
-			 "qca/htnv%02x.bin", rom_ver);
+			 "/*(DEBLOBBED)*/", rom_ver);
 	else if (soc_type == QCA_WCN6750)
 		snprintf(config.fwname, sizeof(config.fwname),
-			 "qca/msnv%02x.bin", rom_ver);
+			 "/*(DEBLOBBED)*/", rom_ver);
 	else
 		snprintf(config.fwname, sizeof(config.fwname),
-			 "qca/nvm_%08x.bin", soc_ver);
+			 "/*(DEBLOBBED)*/", soc_ver);
 
 	err = qca_download_firmware(hdev, &config, soc_type, rom_ver);
 	if (err < 0) {

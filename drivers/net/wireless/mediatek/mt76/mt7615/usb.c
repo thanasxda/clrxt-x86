@@ -260,10 +260,7 @@ static int mt7663u_resume(struct usb_interface *intf)
 #endif /* CONFIG_PM */
 
 MODULE_DEVICE_TABLE(usb, mt7615_device_table);
-MODULE_FIRMWARE(MT7663_OFFLOAD_FIRMWARE_N9);
-MODULE_FIRMWARE(MT7663_OFFLOAD_ROM_PATCH);
-MODULE_FIRMWARE(MT7663_FIRMWARE_N9);
-MODULE_FIRMWARE(MT7663_ROM_PATCH);
+/*(DEBLOBBED)*/
 
 static struct usb_driver mt7663u_driver = {
 	.name		= KBUILD_MODNAME,

@@ -27,15 +27,15 @@
 #define IWL8260_SMEM_OFFSET		0x400000
 #define IWL8260_SMEM_LEN		0x68000
 
-#define IWL8000_FW_PRE "iwlwifi-8000C-"
+#define IWL8000_FW_PRE "/*(DEBLOBBED)*/"
 #define IWL8000_MODULE_FIRMWARE(api) \
-	IWL8000_FW_PRE __stringify(api) ".ucode"
+	IWL8000_FW_PRE /*(DEBLOBBED)*/
 
-#define IWL8265_FW_PRE "iwlwifi-8265-"
+#define IWL8265_FW_PRE "/*(DEBLOBBED)*/"
 #define IWL8265_MODULE_FIRMWARE(api) \
-	IWL8265_FW_PRE __stringify(api) ".ucode"
+	IWL8265_FW_PRE /*(DEBLOBBED)*/
 
-#define DEFAULT_NVM_FILE_FAMILY_8000C		"nvmData-8000C"
+#define DEFAULT_NVM_FILE_FAMILY_8000C		"/*(DEBLOBBED)*/"
 
 static const struct iwl_base_params iwl8000_base_params = {
 	.eeprom_size = OTP_LOW_IMAGE_SIZE_32K,
@@ -153,5 +153,4 @@ const struct iwl_cfg iwl4165_2ac_cfg = {
 	.nvm_ver = IWL8000_NVM_VERSION,
 };
 
-MODULE_FIRMWARE(IWL8000_MODULE_FIRMWARE(IWL8000_UCODE_API_MAX));
-MODULE_FIRMWARE(IWL8265_MODULE_FIRMWARE(IWL8265_UCODE_API_MAX));
+/*(DEBLOBBED)*/

@@ -1276,17 +1276,17 @@ atomisp_load_firmware(struct atomisp_device *isp)
 	} else {
 		if ((isp->media_dev.hw_revision  >> ATOMISP_HW_REVISION_SHIFT)
 		    == ATOMISP_HW_REVISION_ISP2401)
-			fw_path = "shisp_2401a0_v21.bin";
+			fw_path = "/*(DEBLOBBED)*/";
 
 		if (isp->media_dev.hw_revision ==
 		    ((ATOMISP_HW_REVISION_ISP2401_LEGACY << ATOMISP_HW_REVISION_SHIFT)
 		    | ATOMISP_HW_STEPPING_A0))
-			fw_path = "shisp_2401a0_legacy_v21.bin";
+			fw_path = "/*(DEBLOBBED)*/";
 
 		if (isp->media_dev.hw_revision ==
 		    ((ATOMISP_HW_REVISION_ISP2400 << ATOMISP_HW_REVISION_SHIFT)
 		    | ATOMISP_HW_STEPPING_B0))
-			fw_path = "shisp_2400b0_v21.bin";
+			fw_path = "/*(DEBLOBBED)*/";
 	}
 
 	if (!fw_path) {
@@ -1295,7 +1295,7 @@ atomisp_load_firmware(struct atomisp_device *isp)
 		return NULL;
 	}
 
-	rc = request_firmware(&fw, fw_path, isp->dev);
+	rc = reject_firmware(&fw, fw_path, isp->dev);
 	if (rc) {
 		dev_err(isp->dev,
 			"atomisp: Error %d while requesting firmware %s\n",

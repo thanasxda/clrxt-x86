@@ -89,8 +89,7 @@ gm20b_acr_load_0 = {
 };
 
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC)
-MODULE_FIRMWARE("nvidia/gm20b/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gm20b/acr/ucode_load.bin");
+/*(DEBLOBBED)*/
 #endif
 
 static const struct nvkm_acr_hsf_fwif

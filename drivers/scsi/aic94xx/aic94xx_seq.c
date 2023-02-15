@@ -1229,7 +1229,7 @@ static int asd_request_firmware(struct asd_ha_struct *asd_ha)
 		/* already loaded */
 		return 0;
 
-	err = request_firmware(&sequencer_fw,
+	err = reject_firmware(&sequencer_fw,
 			       SAS_RAZOR_SEQUENCER_FW_FILE,
 			       &asd_ha->pcidev->dev);
 	if (err)
@@ -1398,4 +1398,4 @@ void asd_update_port_links(struct asd_ha_struct *asd_ha, struct asd_phy *phy)
 		asd_printk("couldn't update DDB 0:error:%d\n", err);
 }
 
-MODULE_FIRMWARE(SAS_RAZOR_SEQUENCER_FW_FILE);
+/*(DEBLOBBED)*/

@@ -47,8 +47,8 @@ static inline struct cdn_dp_device *encoder_to_dp(struct drm_encoder *encoder)
 
 #define CDN_FW_TIMEOUT_MS	(64 * 1000)
 #define CDN_DPCD_TIMEOUT_MS	5000
-#define CDN_DP_FIRMWARE		"rockchip/dptx.bin"
-MODULE_FIRMWARE(CDN_DP_FIRMWARE);
+#define CDN_DP_FIRMWARE		"/*(DEBLOBBED)*/"
+/*(DEBLOBBED)*/
 
 struct cdn_dp_data {
 	u8 max_phy;
@@ -921,7 +921,7 @@ static int cdn_dp_request_firmware(struct cdn_dp_device *dp)
 	mutex_unlock(&dp->lock);
 
 	while (time_before(jiffies, timeout)) {
-		ret = request_firmware(&dp->fw, CDN_DP_FIRMWARE, dp->dev);
+		ret = reject_firmware(&dp->fw, CDN_DP_FIRMWARE, dp->dev);
 		if (ret == -ENOENT) {
 			msleep(sleep);
 			sleep *= 2;

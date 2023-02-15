@@ -143,7 +143,7 @@ examples:
             compatible = "qcom,qca6174-bt";
             enable-gpios = <&pm8994_gpios 19 GPIO_ACTIVE_HIGH>;
             clocks = <&divclk4>;
-            firmware-name = "nvm_00440302.bin";
+            firmware-name = "/*(DEBLOBBED)*/";
         };
     };
   - |
@@ -156,7 +156,7 @@ examples:
             vddrf-supply = <&vreg_l17a_1p3>;
             vddch0-supply = <&vreg_l25a_3p3>;
             max-speed = <3200000>;
-            firmware-name = "crnv21.bin";
+            firmware-name = "/*(DEBLOBBED)*/";
         };
     };
   - |
@@ -178,6 +178,6 @@ examples:
             vddrfa2p2-supply = <&vreg_s1c_2p2>;
             vddasd-supply = <&vreg_l11c_2p8>;
             max-speed = <3200000>;
-            firmware-name = "msnv11.bin";
+            firmware-name = "/*(DEBLOBBED)*/";
         };
     };

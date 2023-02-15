@@ -127,7 +127,7 @@ examples:
            ti,rproc = <&wkup_m3>;
            mboxes = <&am335x_mailbox &mbox_wkupm3>;
            ti,vtt-gpio-pin = <7>;
-           firmware-name = "am335x-evm-scale-data.bin";
+           firmware-name = "/*(DEBLOBBED)*/";
         };
     };
 
@@ -168,7 +168,7 @@ examples:
            ti,rproc = <&wkup_m3>;
            mboxes = <&am437x_mailbox &mbox_wkupm3>;
            ti,set-io-isolation;
-           firmware-name = "am43x-evm-scale-data.bin";
+           firmware-name = "/*(DEBLOBBED)*/";
         };
     };
 

@@ -48,4 +48,4 @@ gv100_fb_new(struct nvkm_device *device, enum nvkm_subdev_type type, int inst, s
 	return gp102_fb_new_(&gv100_fb, device, type, inst, pfb);
 }
 
-MODULE_FIRMWARE("nvidia/gv100/nvdec/scrubber.bin");
+/*(DEBLOBBED)*/

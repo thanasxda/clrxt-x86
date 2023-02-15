@@ -91,10 +91,7 @@ static void rtw8822b_phy_rfe_init(struct rtw_dev *rtwdev)
 
 #define RTW_TXSCALE_SIZE 37
 static const u32 rtw8822b_txscale_tbl[RTW_TXSCALE_SIZE] = {
-	0x081, 0x088, 0x090, 0x099, 0x0a2, 0x0ac, 0x0b6, 0x0c0, 0x0cc, 0x0d8,
-	0x0e5, 0x0f2, 0x101, 0x110, 0x120, 0x131, 0x143, 0x156, 0x16a, 0x180,
-	0x197, 0x1af, 0x1c8, 0x1e3, 0x200, 0x21e, 0x23e, 0x261, 0x285, 0x2ab,
-	0x2d3, 0x2fe, 0x32b, 0x35c, 0x38e, 0x3c4, 0x3fe
+	/*(DEBLOBBED)*/
 };
 
 static u8 rtw8822b_get_swing_index(struct rtw_dev *rtwdev)
@@ -2519,7 +2516,7 @@ static struct rtw_hw_reg_offset rtw8822b_edcca_th[] = {
 const struct rtw_chip_info rtw8822b_hw_spec = {
 	.ops = &rtw8822b_ops,
 	.id = RTW_CHIP_TYPE_8822B,
-	.fw_name = "rtw88/rtw8822b_fw.bin",
+	.fw_name = "/*(DEBLOBBED)*/",
 	.wlan_cpu = RTW_WCPU_11AC,
 	.tx_pkt_desc_sz = 48,
 	.tx_buf_desc_sz = 16,
@@ -2605,7 +2602,7 @@ const struct rtw_chip_info rtw8822b_hw_spec = {
 };
 EXPORT_SYMBOL(rtw8822b_hw_spec);
 
-MODULE_FIRMWARE("rtw88/rtw8822b_fw.bin");
+/*(DEBLOBBED)*/
 
 MODULE_AUTHOR("Realtek Corporation");
 MODULE_DESCRIPTION("Realtek 802.11ac wireless 8822b driver");

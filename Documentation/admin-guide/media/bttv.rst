@@ -51,12 +51,7 @@ distribution)::
 	options i2c-algo-bit bit_test=1
 
 Some cards may require an extra firmware file to work. For example,
-for the WinTV/PVR you need one firmware file from its driver CD,
-called: ``hcwamc.rbf``. It is inside a self-extracting zip file
-called ``pvr45xxx.exe``.  Just placing it at the ``/etc/firmware``
-directory should be enough for it to be autoload during the driver's
-probing mode (e. g. when the Kernel boots or when the driver is
-manually loaded via ``modprobe`` command).
+/*(DEBLOBBED)*/
 
 If your card isn't listed in Documentation/admin-guide/media/bttv-cardlist.rst
 or if you have trouble making audio work, please read :ref:`still_doesnt_work`.

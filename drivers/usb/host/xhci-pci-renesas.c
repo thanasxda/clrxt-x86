@@ -603,7 +603,7 @@ int renesas_xhci_check_request_fw(struct pci_dev *pdev,
 		return has_rom ? 0 : err;
 
 	pci_dev_get(pdev);
-	err = firmware_request_nowarn(&fw, fw_name, &pdev->dev);
+	err = firmware_reject_nowarn(&fw, fw_name, &pdev->dev);
 	pci_dev_put(pdev);
 	if (err) {
 		if (has_rom) {

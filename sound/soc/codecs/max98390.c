@@ -804,19 +804,19 @@ static int max98390_dsm_init(struct snd_soc_component *component)
 	if (!strcmp(max98390->dsm_param_name, "default")) {
 		if (vendor && product) {
 			snprintf(filename, sizeof(filename),
-				"dsm_param_%s_%s.bin", vendor, product);
+				"/*(DEBLOBBED)*/", vendor, product);
 		} else {
-			sprintf(filename, "dsm_param.bin");
+			sprintf(filename, "/*(DEBLOBBED)*/");
 		}
 	} else {
 		snprintf(filename, sizeof(filename), "%s",
 			max98390->dsm_param_name);
 	}
-	ret = request_firmware(&fw, filename, component->dev);
+	ret = reject_firmware(&fw, filename, component->dev);
 	if (ret) {
-		ret = request_firmware(&fw, "dsm_param.bin", component->dev);
+		ret = reject_firmware(&fw, "/*(DEBLOBBED)*/", component->dev);
 		if (ret) {
-			ret = request_firmware(&fw, "dsmparam.bin",
+			ret = reject_firmware(&fw, "dsmpa/*(DEBLOBBED)*/",
 				component->dev);
 			if (ret)
 				goto err;

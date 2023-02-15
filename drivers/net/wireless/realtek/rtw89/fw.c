@@ -285,20 +285,8 @@ rtw89_early_fw_feature_recognize(struct device *device,
 	int ret;
 	int i;
 
-	/* If SECURITY_LOADPIN_ENFORCE is enabled, reading partial files will
-	 * be denied (-EPERM). Then, we don't get right firmware things as
-	 * expected. So, in this case, we have to request full firmware here.
-	 */
-	if (IS_ENABLED(CONFIG_SECURITY_LOADPIN_ENFORCE))
-		full_req = true;
-
-	if (full_req)
-		ret = request_firmware(&firmware, chip->fw_name, device);
-	else
-		ret = request_partial_firmware_into_buf(&firmware, chip->fw_name,
-							device, &buf, sizeof(buf),
-							0);
-
+	ret = reject_partial_firmware_into_buf(&firmware, chip->fw_name,
+						device, &buf, sizeof(buf), 0);
 	if (ret) {
 		dev_err(device, "failed to early request firmware: %d\n", ret);
 		return NULL;
@@ -634,14 +622,7 @@ int rtw89_load_firmware(struct rtw89_dev *rtwdev)
 	fw->rtwdev = rtwdev;
 	init_completion(&fw->completion);
 
-	if (fw->firmware) {
-		rtw89_debug(rtwdev, RTW89_DBG_FW,
-			    "full firmware has been early requested\n");
-		complete_all(&fw->completion);
-		return 0;
-	}
-
-	ret = request_firmware_nowait(THIS_MODULE, true, fw_name, rtwdev->dev,
+	ret = reject_firmware_nowait(THIS_MODULE, true, fw_name, rtwdev->dev,
 				      GFP_KERNEL, fw, rtw89_load_firmware_cb);
 	if (ret) {
 		rtw89_err(rtwdev, "failed to async firmware request\n");

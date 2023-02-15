@@ -92,20 +92,7 @@ tu102_acr_hsfw_nofw(struct nvkm_acr *acr, const char *bl, const char *fw,
 	return 0;
 }
 
-MODULE_FIRMWARE("nvidia/tu102/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/tu102/acr/ucode_unload.bin");
-
-MODULE_FIRMWARE("nvidia/tu104/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/tu104/acr/ucode_unload.bin");
-
-MODULE_FIRMWARE("nvidia/tu106/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/tu106/acr/ucode_unload.bin");
-
-MODULE_FIRMWARE("nvidia/tu116/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/tu116/acr/ucode_unload.bin");
-
-MODULE_FIRMWARE("nvidia/tu117/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/tu117/acr/ucode_unload.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 tu102_acr_unload_fwif[] = {
@@ -114,11 +101,20 @@ tu102_acr_unload_fwif[] = {
 	{}
 };
 
-MODULE_FIRMWARE("nvidia/tu102/acr/ucode_asb.bin");
-MODULE_FIRMWARE("nvidia/tu104/acr/ucode_asb.bin");
-MODULE_FIRMWARE("nvidia/tu106/acr/ucode_asb.bin");
-MODULE_FIRMWARE("nvidia/tu116/acr/ucode_asb.bin");
-MODULE_FIRMWARE("nvidia/tu117/acr/ucode_asb.bin");
+static int
+tu102_acr_asb_load(struct nvkm_acr *acr, struct nvkm_acr_hsfw *hsfw)
+{
+	return gm200_acr_hsfw_load(acr, hsfw, &acr->subdev.device->gsp->falcon);
+}
+
+static const struct nvkm_acr_hsf_func
+tu102_acr_asb_0 = {
+	.load = tu102_acr_asb_load,
+	.boot = tu102_acr_hsfw_boot,
+	.bld = gp108_acr_hsfw_bld,
+};
+
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 tu102_acr_asb_fwif[] = {
@@ -127,20 +123,14 @@ tu102_acr_asb_fwif[] = {
 	{}
 };
 
-MODULE_FIRMWARE("nvidia/tu102/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/tu102/acr/ucode_ahesasc.bin");
+static const struct nvkm_acr_hsf_func
+tu102_acr_ahesasc_0 = {
+	.load = gp102_acr_load_load,
+	.boot = tu102_acr_hsfw_boot,
+	.bld = gp108_acr_hsfw_bld,
+};
 
-MODULE_FIRMWARE("nvidia/tu104/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/tu104/acr/ucode_ahesasc.bin");
-
-MODULE_FIRMWARE("nvidia/tu106/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/tu106/acr/ucode_ahesasc.bin");
-
-MODULE_FIRMWARE("nvidia/tu116/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/tu116/acr/ucode_ahesasc.bin");
-
-MODULE_FIRMWARE("nvidia/tu117/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/tu117/acr/ucode_ahesasc.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 tu102_acr_ahesasc_fwif[] = {

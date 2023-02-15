@@ -531,7 +531,7 @@
 					 <&clk IMX8MM_CLK_SDMA2_ROOT>;
 				clock-names = "ipg", "ahb";
 				#dma-cells = <3>;
-				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
+				fsl,sdma-ram-script-name = "/*(DEBLOBBED)*/";
 			};
 
 			sdma3: dma-controller@302b0000 {
@@ -542,7 +542,7 @@
 				 <&clk IMX8MM_CLK_SDMA3_ROOT>;
 				clock-names = "ipg", "ahb";
 				#dma-cells = <3>;
-				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
+				fsl,sdma-ram-script-name = "/*(DEBLOBBED)*/";
 			};
 
 			iomuxc: pinctrl@30330000 {
@@ -1057,7 +1057,7 @@
 					 <&clk IMX8MM_CLK_AHB>;
 				clock-names = "ipg", "ahb";
 				#dma-cells = <3>;
-				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx7d.bin";
+				fsl,sdma-ram-script-name = "/*(DEBLOBBED)*/";
 			};
 
 			fec1: ethernet@30be0000 {

@@ -163,8 +163,7 @@ mt76x2e_resume(struct pci_dev *pdev)
 }
 
 MODULE_DEVICE_TABLE(pci, mt76x2e_device_table);
-MODULE_FIRMWARE(MT7662_FIRMWARE);
-MODULE_FIRMWARE(MT7662_ROM_PATCH);
+/*(DEBLOBBED)*/
 MODULE_LICENSE("Dual BSD/GPL");
 
 static struct pci_driver mt76pci_driver = {

@@ -52,7 +52,7 @@
 				reg-names = "umem", "dmem";
 				resets = <&prm_wkup 3>;
 				reset-names = "rstctrl";
-				ti,pm-firmware = "am335x-pm-firmware.elf";
+				ti,pm-firmware = "/*(DEBLOBBED)*/";
 			};
 		};
 

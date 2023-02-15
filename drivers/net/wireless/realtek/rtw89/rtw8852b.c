@@ -2531,7 +2531,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
 };
 EXPORT_SYMBOL(rtw8852b_chip_info);
 
-MODULE_FIRMWARE("rtw89/rtw8852b_fw.bin");
+/*(DEBLOBBED)*/
 MODULE_AUTHOR("Realtek Corporation");
 MODULE_DESCRIPTION("Realtek 802.11ax wireless 8852B driver");
 MODULE_LICENSE("Dual BSD/GPL");

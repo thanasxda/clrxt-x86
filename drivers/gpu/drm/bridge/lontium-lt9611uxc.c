@@ -754,7 +754,7 @@ static int lt9611uxc_firmware_update(struct lt9611uxc *lt9611uxc)
 		REG_SEQ0(0x805a, 0x00),
 	};
 
-	ret = request_firmware(&fw, "lt9611uxc_fw.bin", lt9611uxc->dev);
+	ret = reject_firmware(&fw, "/*(DEBLOBBED)*/", lt9611uxc->dev);
 	if (ret < 0)
 		return ret;
 

@@ -31,11 +31,7 @@
 #include "gc/gc_11_0_0_offset.h"
 #include "gc/gc_11_0_0_sh_mask.h"
 
-MODULE_FIRMWARE("amdgpu/gc_11_0_0_imu.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_1_imu.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_2_imu.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_3_imu.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_4_imu.bin");
+/*(DEBLOBBED)*/
 
 static int imu_v11_0_init_microcode(struct amdgpu_device *adev)
 {
@@ -49,8 +45,8 @@ static int imu_v11_0_init_microcode(struct amdgpu_device *adev)
 
 	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_imu.bin", ucode_prefix);
-	err = request_firmware(&adev->gfx.imu_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", ucode_prefix);
+	err = reject_firmware(&adev->gfx.imu_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gfx.imu_fw);
