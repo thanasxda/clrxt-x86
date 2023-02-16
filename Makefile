@@ -977,7 +977,7 @@ KBUILD_RUSTFLAGS += $(rustflags64-y)
 # THIS SETUP USES GCC + LLD FOR PERFORMANCE. CLANG NOT USED BUT INCLUDED.
 
 # flags for gcc/clang
-mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -O3 -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,-z -Wl,norelro -fno-tree-vectorize 
+mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -O3 -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,-z -Wl,norelro -fno-tree-vectorize -falign-functions=32
 
 # extra flags
 #mlxextra	= 
@@ -993,8 +993,8 @@ ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
 # graphite and more
 mlxgraphite 	= -fgraphite-identity -floop-block -floop-interchange -floop-nest-optimize -floop-optimize -floop-parallelize-all -floop-strip-mine -ftree-loop-vectorize -ftree-loop-distribution -fprefetch-loop-arrays
 
-CFLAGS 			+= $(mlxcflags) $(mlxgraphite) $(mlxextra) -Wl,--hash-style-gnu -fomit-frame-pointer
-KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxgraphite) $(mlxextra) -Wl,--hash-style-gnu -fomit-frame-pointer
+CFLAGS 			+= $(mlxcflags) $(mlxgraphite) $(mlxextra) -fomit-frame-pointer -fno-stack-protector -Wno-format-security -Wl,--hash-style-gnu 
+KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxgraphite) $(mlxextra) -fomit-frame-pointer -fno-stack-protector -Wno-format-security -Wl,--hash-style-gnu 
 KBUILD_CFLAGS_MODULE 	+= $(mlxcflags) $(mlxgraphite) 
 subdir-ccflags-y 	+= $(mlxcflags) $(mlxgraphite) 
 
