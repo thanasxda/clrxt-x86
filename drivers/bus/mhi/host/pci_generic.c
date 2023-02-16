@@ -263,8 +263,8 @@ static const struct mhi_controller_config modem_qcom_v1_mhiv_config = {
 
 static const struct mhi_pci_dev_info mhi_qcom_sdx65_info = {
 	.name = "qcom-sdx65m",
-	.fw = "qcom/sdx65m/xbl.elf",
-	.edl = "qcom/sdx65m/edl.mbn",
+	.fw = "/*(DEBLOBBED)*/",
+	.edl = "/*(DEBLOBBED)*/",
 	.config = &modem_qcom_v1_mhiv_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -273,8 +273,8 @@ static const struct mhi_pci_dev_info mhi_qcom_sdx65_info = {
 
 static const struct mhi_pci_dev_info mhi_qcom_sdx55_info = {
 	.name = "qcom-sdx55m",
-	.fw = "qcom/sdx55m/sbl1.mbn",
-	.edl = "qcom/sdx55m/edl.mbn",
+	.fw = "/*(DEBLOBBED)*/",
+	.edl = "/*(DEBLOBBED)*/",
 	.config = &modem_qcom_v1_mhiv_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -284,7 +284,7 @@ static const struct mhi_pci_dev_info mhi_qcom_sdx55_info = {
 
 static const struct mhi_pci_dev_info mhi_qcom_sdx24_info = {
 	.name = "qcom-sdx24",
-	.edl = "qcom/prog_firehose_sdx24.mbn",
+	.edl = "/*(DEBLOBBED)*/",
 	.config = &modem_qcom_v1_mhiv_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -327,7 +327,7 @@ static const struct mhi_controller_config modem_quectel_em1xx_config = {
 
 static const struct mhi_pci_dev_info mhi_quectel_em1xx_info = {
 	.name = "quectel-em1xx",
-	.edl = "qcom/prog_firehose_sdx24.mbn",
+	.edl = "/*(DEBLOBBED)*/",
 	.config = &modem_quectel_em1xx_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -368,8 +368,8 @@ static const struct mhi_controller_config modem_foxconn_sdx55_config = {
 
 static const struct mhi_pci_dev_info mhi_foxconn_sdx55_info = {
 	.name = "foxconn-sdx55",
-	.fw = "qcom/sdx55m/sbl1.mbn",
-	.edl = "qcom/sdx55m/edl.mbn",
+	.fw = "/*(DEBLOBBED)*/",
+	.edl = "/*(DEBLOBBED)*/",
 	.config = &modem_foxconn_sdx55_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,
@@ -495,8 +495,8 @@ static struct mhi_controller_config modem_telit_fn980_hw_v1_config = {
 
 static const struct mhi_pci_dev_info mhi_telit_fn980_hw_v1_info = {
 	.name = "telit-fn980-hwv1",
-	.fw = "qcom/sdx55m/sbl1.mbn",
-	.edl = "qcom/sdx55m/edl.mbn",
+	.fw = "/*(DEBLOBBED)*/",
+	.edl = "/*(DEBLOBBED)*/",
 	.config = &modem_telit_fn980_hw_v1_config,
 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 	.dma_data_width = 32,

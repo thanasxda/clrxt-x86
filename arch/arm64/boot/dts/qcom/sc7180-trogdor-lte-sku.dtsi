@@ -14,8 +14,8 @@
 };
 
 &remoteproc_mpss {
-	firmware-name = "qcom/sc7180-trogdor/modem/mba.mbn",
-			"qcom/sc7180-trogdor/modem/qdsp6sw.mbn";
+	firmware-name = "/*(DEBLOBBED)*/",
+			"/*(DEBLOBBED)*/";
 };
 
 &ipa {

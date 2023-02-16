@@ -196,17 +196,17 @@ static int iwl_request_firmware(struct iwl_drv *drv, bool first)
 		}
 
 		IWL_ERR(drv,
-			"check git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git\n");
+			"check /*(DEBLOBBED)*/\n");
 		return -ENOENT;
 	}
 
-	snprintf(drv->firmware_name, sizeof(drv->firmware_name), "%s%s.ucode",
+	snprintf(drv->firmware_name, sizeof(drv->firmware_name), "/*(DEBLOBBED)*/",
 		 cfg->fw_name_pre, tag);
 
 	IWL_DEBUG_FW_INFO(drv, "attempting to load firmware '%s'\n",
 			  drv->firmware_name);
 
-	return request_firmware_nowait(THIS_MODULE, 1, drv->firmware_name,
+	return reject_firmware_nowait(THIS_MODULE, 1, drv->firmware_name,
 				       drv->trans->dev,
 				       GFP_KERNEL, drv, iwl_req_fw_callback);
 }

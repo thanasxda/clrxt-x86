@@ -11,7 +11,7 @@
 #include <linux/mfd/idt82p33_reg.h>
 #include <linux/regmap.h>
 
-#define FW_FILENAME	"idt82p33xxx.bin"
+#define FW_FILENAME	"/*(DEBLOBBED)*/"
 #define MAX_PHC_PLL	(2)
 #define MAX_TRIG_CLK	(3)
 #define MAX_PER_OUT	(11)

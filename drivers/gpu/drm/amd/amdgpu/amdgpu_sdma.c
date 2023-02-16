@@ -214,7 +214,7 @@ int amdgpu_sdma_init_microcode(struct amdgpu_device *adev,
 	const struct sdma_firmware_header_v2_0 *sdma_hdr;
 	uint16_t version_major;
 
-	err = request_firmware(&adev->sdma.instance[instance].fw, fw_name, adev->dev);
+	err = reject_firmware(&adev->sdma.instance[instance].fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 

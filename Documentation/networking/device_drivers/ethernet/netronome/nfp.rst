@@ -37,7 +37,7 @@ config etc. They should be placed in `/lib/firmware/netronome` directory to
 load firmware from the host file system.
 
 Firmware for basic NIC operation is available in the upstream
-`linux-firmware.git` repository.
+`/*(DEBLOBBED)*/` repository.
 
 A more comprehensive list of firmware can be downloaded from the
 `Corigine Support site <https://www.corigine.com/DPUDownload.html>`_.
@@ -101,12 +101,12 @@ can use either the PCI bus address or serial number. The driver will
 print which files it's looking for when it recognizes a NFP device::
 
     nfp: Looking for firmware file in order of priority:
-    nfp:  netronome/serial-00-12-34-aa-bb-cc-10-ff.nffw: not found
-    nfp:  netronome/pci-0000:02:00.0.nffw: not found
-    nfp:  netronome/nic_AMDA0081-0001_1x40.nffw: found, loading...
+    nfp:  /*(DEBLOBBED)*/: not found
+    nfp:  /*(DEBLOBBED)*/: not found
+    nfp:  /*(DEBLOBBED)*/: found, loading...
 
-In this case if file (or link) called *serial-00-12-34-aa-bb-5d-10-ff.nffw*
-or *pci-0000:02:00.0.nffw* is present in `/lib/firmware/netronome` this
+In this case if file (or link) called */*(DEBLOBBED)*/*
+or */*(DEBLOBBED)*/* is present in `/lib/firmware/netronome` this
 firmware file will take precedence over `nic_AMDA*` files.
 
 Note that `serial-*` and `pci-*` files are **not** automatically included

@@ -370,13 +370,13 @@
 };
 
 &remoteproc_adsp {
-	firmware-name = "qcom/sc8280xp/qcadsp8280.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 
 	status = "okay";
 };
 
 &remoteproc_nsp0 {
-	firmware-name = "qcom/sc8280xp/qccdsp8280.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 
 	status = "okay";
 };

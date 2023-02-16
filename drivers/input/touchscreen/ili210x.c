@@ -39,7 +39,7 @@
 #define REG_READ_DATA_CRC	0xc7
 #define REG_CALIBRATE		0xcc
 
-#define ILI251X_FW_FILENAME	"ilitek/ili251x.bin"
+#define ILI251X_FW_FILENAME	"/*(DEBLOBBED)*/"
 
 struct ili2xxx_chip {
 	int (*read_reg)(struct i2c_client *client, u8 reg,
@@ -778,7 +778,7 @@ static ssize_t ili210x_firmware_update_store(struct device *dev,
 	int error;
 	int i;
 
-	error = request_ihex_firmware(&fw, fwname, dev);
+	error = reject_firmware(&fw, fwname, dev);
 	if (error) {
 		dev_err(dev, "Failed to request firmware %s, error=%d\n",
 			fwname, error);

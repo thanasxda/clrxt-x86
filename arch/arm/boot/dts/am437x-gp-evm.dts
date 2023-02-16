@@ -1129,7 +1129,7 @@
 
 &wkup_m3_ipc {
 	ti,set-io-isolation;
-	firmware-name = "am43x-evm-scale-data.bin";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &pruss1_mdio {

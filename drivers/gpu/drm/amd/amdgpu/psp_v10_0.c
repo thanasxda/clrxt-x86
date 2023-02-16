@@ -37,12 +37,7 @@
 #include "gc/gc_9_1_offset.h"
 #include "sdma0/sdma0_4_1_offset.h"
 
-MODULE_FIRMWARE("amdgpu/raven_asd.bin");
-MODULE_FIRMWARE("amdgpu/picasso_asd.bin");
-MODULE_FIRMWARE("amdgpu/raven2_asd.bin");
-MODULE_FIRMWARE("amdgpu/picasso_ta.bin");
-MODULE_FIRMWARE("amdgpu/raven2_ta.bin");
-MODULE_FIRMWARE("amdgpu/raven_ta.bin");
+/*(DEBLOBBED)*/
 
 static int psp_v10_0_init_microcode(struct psp_context *psp)
 {
@@ -69,8 +64,8 @@ static int psp_v10_0_init_microcode(struct psp_context *psp)
 	if (err)
 		goto out;
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_ta.bin", chip_name);
-	err = request_firmware(&adev->psp.ta_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", chip_name);
+	err = reject_firmware(&adev->psp.ta_fw, fw_name, adev->dev);
 	if (err) {
 		release_firmware(adev->psp.ta_fw);
 		adev->psp.ta_fw = NULL;

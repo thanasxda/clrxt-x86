@@ -45,7 +45,7 @@ properties:
     $ref: /schemas/types.yaml#/definitions/string
     description:
       string to uniquely identify variant of the calibration data in the
-      board-2.bin for designs with colliding bus and device specific ids
+      /*(DEBLOBBED)*/ for designs with colliding bus and device specific ids
 
   memory-region:
     minItems: 1

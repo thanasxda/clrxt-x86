@@ -856,7 +856,7 @@ static int tegra_xusb_request_firmware(struct tegra_xusb *tegra)
 	const struct firmware *fw;
 	int err;
 
-	err = request_firmware(&fw, tegra->soc->firmware, tegra->dev);
+	err = reject_firmware(&fw, tegra->soc->firmware, tegra->dev);
 	if (err < 0) {
 		dev_err(tegra->dev, "failed to request firmware: %d\n", err);
 		return err;
@@ -2272,7 +2272,7 @@ static const struct tegra_xusb_context_soc tegra124_xusb_context = {
 };
 
 static const struct tegra_xusb_soc tegra124_soc = {
-	.firmware = "nvidia/tegra124/xusb.bin",
+	.firmware = "/*(DEBLOBBED)*/",
 	.supply_names = tegra124_supply_names,
 	.num_supplies = ARRAY_SIZE(tegra124_supply_names),
 	.phy_types = tegra124_phy_types,
@@ -2293,7 +2293,7 @@ static const struct tegra_xusb_soc tegra124_soc = {
 		.owner = 0xf0,
 	},
 };
-MODULE_FIRMWARE("nvidia/tegra124/xusb.bin");
+/*(DEBLOBBED)*/
 
 static const char * const tegra210_supply_names[] = {
 	"dvddio-pex",
@@ -2308,7 +2308,7 @@ static const struct tegra_xusb_phy_type tegra210_phy_types[] = {
 };
 
 static const struct tegra_xusb_soc tegra210_soc = {
-	.firmware = "nvidia/tegra210/xusb.bin",
+	.firmware = "/*(DEBLOBBED)*/",
 	.supply_names = tegra210_supply_names,
 	.num_supplies = ARRAY_SIZE(tegra210_supply_names),
 	.phy_types = tegra210_phy_types,
@@ -2329,11 +2329,11 @@ static const struct tegra_xusb_soc tegra210_soc = {
 		.owner = 0xf0,
 	},
 };
-MODULE_FIRMWARE("nvidia/tegra210/xusb.bin");
+/*(DEBLOBBED)*/
 
 static const char * const tegra186_supply_names[] = {
 };
-MODULE_FIRMWARE("nvidia/tegra186/xusb.bin");
+/*(DEBLOBBED)*/
 
 static const struct tegra_xusb_phy_type tegra186_phy_types[] = {
 	{ .name = "usb3", .num = 3, },
@@ -2349,7 +2349,7 @@ static const struct tegra_xusb_context_soc tegra186_xusb_context = {
 };
 
 static const struct tegra_xusb_soc tegra186_soc = {
-	.firmware = "nvidia/tegra186/xusb.bin",
+	.firmware = "/*(DEBLOBBED)*/",
 	.supply_names = tegra186_supply_names,
 	.num_supplies = ARRAY_SIZE(tegra186_supply_names),
 	.phy_types = tegra186_phy_types,
@@ -2381,7 +2381,7 @@ static const struct tegra_xusb_phy_type tegra194_phy_types[] = {
 };
 
 static const struct tegra_xusb_soc tegra194_soc = {
-	.firmware = "nvidia/tegra194/xusb.bin",
+	.firmware = "/*(DEBLOBBED)*/",
 	.supply_names = tegra194_supply_names,
 	.num_supplies = ARRAY_SIZE(tegra194_supply_names),
 	.phy_types = tegra194_phy_types,
@@ -2402,7 +2402,7 @@ static const struct tegra_xusb_soc tegra194_soc = {
 	},
 	.lpm_support = true,
 };
-MODULE_FIRMWARE("nvidia/tegra194/xusb.bin");
+/*(DEBLOBBED)*/
 
 static const struct of_device_id tegra_xusb_of_match[] = {
 	{ .compatible = "nvidia,tegra124-xusb", .data = &tegra124_soc },

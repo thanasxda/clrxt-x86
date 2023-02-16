@@ -807,7 +807,7 @@ static const struct iqs62x_dev_desc iqs62x_devs[] = {
 		.temp_mask	= BIT(4),
 		.prox_settings	= IQS620_PROX_SETTINGS_4,
 		.hall_flags	= IQS620_HALL_FLAGS,
-		.fw_name	= "iqs620a.bin",
+		.fw_name	= "/*(DEBLOBBED)*/",
 		.event_regs	= &iqs620a_event_regs[IQS62X_UI_PROX],
 	},
 	{
@@ -823,7 +823,7 @@ static const struct iqs62x_dev_desc iqs62x_devs[] = {
 		.temp_mask	= BIT(4),
 		.prox_settings	= IQS620_PROX_SETTINGS_4,
 		.hall_flags	= IQS620_HALL_FLAGS,
-		.fw_name	= "iqs620a.bin",
+		.fw_name	= "/*(DEBLOBBED)*/",
 		.event_regs	= &iqs620a_event_regs[IQS62X_UI_PROX],
 	},
 	{
@@ -842,7 +842,7 @@ static const struct iqs62x_dev_desc iqs62x_devs[] = {
 		.als_flags	= IQS621_ALS_FLAGS,
 		.hall_flags	= IQS621_HALL_FLAGS,
 		.hyst_shift	= 5,
-		.fw_name	= "iqs621.bin",
+		.fw_name	= "/*(DEBLOBBED)*/",
 		.event_regs	= &iqs621_event_regs[IQS62X_UI_PROX],
 	},
 	{
@@ -859,7 +859,7 @@ static const struct iqs62x_dev_desc iqs62x_devs[] = {
 		.prox_settings	= IQS622_PROX_SETTINGS_4,
 		.als_flags	= IQS622_ALS_FLAGS,
 		.hall_flags	= IQS622_HALL_FLAGS,
-		.fw_name	= "iqs622.bin",
+		.fw_name	= "/*(DEBLOBBED)*/",
 		.event_regs	= &iqs622_event_regs[IQS62X_UI_PROX],
 	},
 	{
@@ -870,7 +870,7 @@ static const struct iqs62x_dev_desc iqs62x_devs[] = {
 		.sw_num		= 0x0B,
 		.interval	= IQS624_INTERVAL_NUM,
 		.interval_div	= 3,
-		.fw_name	= "iqs624.bin",
+		.fw_name	= "/*(DEBLOBBED)*/",
 		.event_regs	= &iqs624_event_regs[IQS62X_UI_PROX],
 	},
 	{
@@ -881,7 +881,7 @@ static const struct iqs62x_dev_desc iqs62x_devs[] = {
 		.sw_num		= 0x0B,
 		.interval	= IQS625_INTERVAL_NUM,
 		.interval_div	= 10,
-		.fw_name	= "iqs625.bin",
+		.fw_name	= "/*(DEBLOBBED)*/",
 		.event_regs	= &iqs625_event_regs[IQS62X_UI_PROX],
 	},
 };
@@ -998,7 +998,7 @@ static int iqs62x_probe(struct i2c_client *client)
 
 	device_property_read_string(&client->dev, "firmware-name", &fw_name);
 
-	ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+	ret = reject_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
 				      fw_name ? : iqs62x->dev_desc->fw_name,
 				      &client->dev, GFP_KERNEL, iqs62x,
 				      iqs62x_firmware_load);

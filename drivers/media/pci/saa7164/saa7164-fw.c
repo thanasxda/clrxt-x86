@@ -10,10 +10,10 @@
 
 #include "saa7164.h"
 
-#define SAA7164_REV2_FIRMWARE		"NXP7164-2010-03-10.1.fw"
+#define SAA7164_REV2_FIRMWARE		"/*(DEBLOBBED)*/"
 #define SAA7164_REV2_FIRMWARE_SIZE	4019072
 
-#define SAA7164_REV3_FIRMWARE		"NXP7164-2010-03-10.1.fw"
+#define SAA7164_REV3_FIRMWARE		"/*(DEBLOBBED)*/"
 #define SAA7164_REV3_FIRMWARE_SIZE	4019072
 
 struct fw_header {
@@ -405,7 +405,7 @@ int saa7164_downloadfirmware(struct saa7164_dev *dev)
 		printk(KERN_INFO "%s() Waiting for firmware upload (%s)\n",
 			__func__, fwname);
 
-		ret = request_firmware(&fw, fwname, &dev->pci->dev);
+		ret = reject_firmware(&fw, fwname, &dev->pci->dev);
 		if (ret) {
 			printk(KERN_ERR "%s() Upload failed. (file not found?)\n",
 			       __func__);

@@ -28,11 +28,11 @@
 #define MT7996_RX_RING_SIZE		1536
 #define MT7996_RX_MCU_RING_SIZE		512
 
-#define MT7996_FIRMWARE_WA		"mediatek/mt7996/mt7996_wa.bin"
-#define MT7996_FIRMWARE_WM		"mediatek/mt7996/mt7996_wm.bin"
-#define MT7996_ROM_PATCH		"mediatek/mt7996/mt7996_rom_patch.bin"
+#define MT7996_FIRMWARE_WA		"/*(DEBLOBBED)*/"
+#define MT7996_FIRMWARE_WM		"/*(DEBLOBBED)*/"
+#define MT7996_ROM_PATCH		"/*(DEBLOBBED)*/"
 
-#define MT7996_EEPROM_DEFAULT		"mediatek/mt7996/mt7996_eeprom.bin"
+#define MT7996_EEPROM_DEFAULT		"/*(DEBLOBBED)*/"
 #define MT7996_EEPROM_SIZE		7680
 #define MT7996_EEPROM_BLOCK_SIZE	16
 #define MT7996_TOKEN_SIZE		8192

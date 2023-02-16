@@ -33,7 +33,7 @@ mt7996_eeprom_load_default(struct mt7996_dev *dev)
 	const struct firmware *fw = NULL;
 	int ret;
 
-	ret = request_firmware(&fw, mt7996_eeprom_name(dev), dev->mt76.dev);
+	ret = reject_firmware(&fw, mt7996_eeprom_name(dev), dev->mt76.dev);
 	if (ret)
 		return ret;
 

@@ -128,7 +128,7 @@ static int i2c_slave_init_eeprom_data(struct eeprom_data *eeprom, struct i2c_cli
 	int ret = device_property_read_string(&client->dev, "firmware-name", &eeprom_data);
 
 	if (!ret) {
-		ret = request_firmware_into_buf(&fw, eeprom_data, &client->dev,
+		ret = reject_firmware_into_buf(&fw, eeprom_data, &client->dev,
 						eeprom->buffer, size);
 		if (ret)
 			return ret;

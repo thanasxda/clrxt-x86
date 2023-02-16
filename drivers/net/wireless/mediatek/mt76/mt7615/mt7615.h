@@ -34,21 +34,21 @@
 
 #define MT7615_DRV_OWN_RETRY_COUNT	10
 
-#define MT7615_FIRMWARE_CR4		"mediatek/mt7615_cr4.bin"
-#define MT7615_FIRMWARE_N9		"mediatek/mt7615_n9.bin"
-#define MT7615_ROM_PATCH		"mediatek/mt7615_rom_patch.bin"
+#define MT7615_FIRMWARE_CR4		"/*(DEBLOBBED)*/"
+#define MT7615_FIRMWARE_N9		"/*(DEBLOBBED)*/"
+#define MT7615_ROM_PATCH		"/*(DEBLOBBED)*/"
 
-#define MT7622_FIRMWARE_N9		"mediatek/mt7622_n9.bin"
-#define MT7622_ROM_PATCH		"mediatek/mt7622_rom_patch.bin"
+#define MT7622_FIRMWARE_N9		"/*(DEBLOBBED)*/"
+#define MT7622_ROM_PATCH		"/*(DEBLOBBED)*/"
 
 #define MT7615_FIRMWARE_V1		1
 #define MT7615_FIRMWARE_V2		2
 #define MT7615_FIRMWARE_V3		3
 
-#define MT7663_OFFLOAD_ROM_PATCH	"mediatek/mt7663pr2h.bin"
-#define MT7663_OFFLOAD_FIRMWARE_N9	"mediatek/mt7663_n9_v3.bin"
-#define MT7663_ROM_PATCH		"mediatek/mt7663pr2h_rebb.bin"
-#define MT7663_FIRMWARE_N9		"mediatek/mt7663_n9_rebb.bin"
+#define MT7663_OFFLOAD_ROM_PATCH	"/*(DEBLOBBED)*/"
+#define MT7663_OFFLOAD_FIRMWARE_N9	"/*(DEBLOBBED)*/"
+#define MT7663_ROM_PATCH		"/*(DEBLOBBED)*/"
+#define MT7663_FIRMWARE_N9		"/*(DEBLOBBED)*/"
 
 #define MT7615_EEPROM_SIZE		1024
 #define MT7615_TOKEN_SIZE		4096

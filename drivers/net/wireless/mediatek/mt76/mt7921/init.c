@@ -169,7 +169,7 @@ u8 mt7921_check_offload_capability(struct device *dev, const char *fw_wm)
 	int ret, i, offset = 0;
 	const u8 *data, *end;
 
-	ret = request_firmware(&fw, fw_wm, dev);
+	ret = reject_firmware(&fw, fw_wm, dev);
 	if (ret)
 		return ret;
 

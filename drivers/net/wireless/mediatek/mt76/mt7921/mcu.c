@@ -431,7 +431,7 @@ static int mt7921_load_clc(struct mt7921_dev *dev, const char *fw_name)
 		hw_encap = u8_get_bits(hw_encap, MT_EE_HW_TYPE_ENCAP);
 	}
 
-	ret = request_firmware(&fw, fw_name, mdev->dev);
+	ret = reject_firmware(&fw, fw_name, mdev->dev);
 	if (ret)
 		return ret;
 

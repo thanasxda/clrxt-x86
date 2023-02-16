@@ -62,31 +62,7 @@ gp104_gr = {
 	}
 };
 
-MODULE_FIRMWARE("nvidia/gp104/gr/fecs_bl.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/fecs_inst.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/fecs_data.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/fecs_sig.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/gpccs_bl.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/gpccs_inst.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/gpccs_data.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/gpccs_sig.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/sw_ctx.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/sw_nonctx.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/sw_bundle_init.bin");
-MODULE_FIRMWARE("nvidia/gp104/gr/sw_method_init.bin");
-
-MODULE_FIRMWARE("nvidia/gp106/gr/fecs_bl.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/fecs_inst.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/fecs_data.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/fecs_sig.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/gpccs_bl.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/gpccs_inst.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/gpccs_data.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/gpccs_sig.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/sw_ctx.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/sw_nonctx.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/sw_bundle_init.bin");
-MODULE_FIRMWARE("nvidia/gp106/gr/sw_method_init.bin");
+/*(DEBLOBBED)*/
 
 static const struct gf100_gr_fwif
 gp104_gr_fwif[] = {

@@ -2049,7 +2049,7 @@ static int mt7996_load_patch(struct mt7996_dev *dev)
 		return -EAGAIN;
 	}
 
-	ret = request_firmware(&fw, MT7996_ROM_PATCH, dev->mt76.dev);
+	ret = reject_firmware(&fw, MT7996_ROM_PATCH, dev->mt76.dev);
 	if (ret)
 		goto out;
 
@@ -2173,7 +2173,7 @@ static int mt7996_load_ram(struct mt7996_dev *dev)
 	const struct firmware *fw;
 	int ret;
 
-	ret = request_firmware(&fw, MT7996_FIRMWARE_WM, dev->mt76.dev);
+	ret = reject_firmware(&fw, MT7996_FIRMWARE_WM, dev->mt76.dev);
 	if (ret)
 		return ret;
 
@@ -2196,7 +2196,7 @@ static int mt7996_load_ram(struct mt7996_dev *dev)
 
 	release_firmware(fw);
 
-	ret = request_firmware(&fw, MT7996_FIRMWARE_WA, dev->mt76.dev);
+	ret = reject_firmware(&fw, MT7996_FIRMWARE_WA, dev->mt76.dev);
 	if (ret)
 		return ret;
 

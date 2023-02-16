@@ -680,7 +680,7 @@ static int adsp_remove(struct platform_device *pdev)
 
 static const struct adsp_pil_data adsp_resource_init = {
 	.crash_reason_smem = 423,
-	.firmware_name = "adsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.ssr_name = "lpass",
 	.sysmon_name = "adsp",
 	.ssctl_id = 0x14,
@@ -698,7 +698,7 @@ static const struct adsp_pil_data adsp_resource_init = {
 
 static const struct adsp_pil_data cdsp_resource_init = {
 	.crash_reason_smem = 601,
-	.firmware_name = "cdsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.ssr_name = "cdsp",
 	.sysmon_name = "cdsp",
 	.ssctl_id = 0x17,
@@ -716,7 +716,7 @@ static const struct adsp_pil_data cdsp_resource_init = {
 
 static const struct adsp_pil_data wpss_resource_init = {
 	.crash_reason_smem = 626,
-	.firmware_name = "wpss.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.ssr_name = "wpss",
 	.sysmon_name = "wpss",
 	.ssctl_id = 0x19,

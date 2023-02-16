@@ -21,8 +21,7 @@
  */
 #include "priv.h"
 
-MODULE_FIRMWARE("nvidia/gv100/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/gv100/acr/ucode_unload.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 gv100_acr_unload_fwif[] = {
@@ -30,8 +29,7 @@ gv100_acr_unload_fwif[] = {
 	{}
 };
 
-MODULE_FIRMWARE("nvidia/gv100/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gv100/acr/ucode_load.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 gv100_acr_load_fwif[] = {
