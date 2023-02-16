@@ -167,9 +167,9 @@ if grep -q "CONFIG_SND_HDA is not set" $PWD/.config  ; then sudo sed -i 's/# CON
 if grep -q "CONFIG_SND_USB is not set" $PWD/.config  ; then sudo sed -i 's/# CONFIG_SND_USB is not set/CONFIG_SND_USB=y/g' $PWD/.config ; fi
 if grep -q "CONFIG_SND_USB_AUDIO is not set" $PWD/.config  ; then sudo sed -i 's/# CONFIG_SND_USB_AUDIO is not set/CONFIG_SND_USB_AUDIO=y/g' $PWD/.config ; fi
 
-if [ -e /boot/EFI ] || [ -e /efi ] || [ -e /boot/efi/EFI ] ; then echo " no efi mixed stub needed" ; else 
-if grep -q "CONFIG_EFI_MIXED is not set" $PWD/.config ; then sudo sed -i 's/# CONFIG_EFI_MIXED is not set/CONFIG_EFI_MIXED=y/g' $PWD/.config ; else
-echo "CONFIG_EFI_MIXED=y" | sudo tee -a $PWD/.config ; fi ; fi
+#if [ -e /boot/EFI ] || [ -e /efi ] || [ -e /boot/efi/EFI ] ; then echo " " ; else 
+#if grep -q " is not set" $PWD/.config ; then sudo sed -i 's/#  is not =y/g' $PWD/.config ; else
+#echo "=y" | sudo tee -a $PWD/.config ; fi ; fi
 
 
 if grep -q "CONFIG_NFT_FLOW_OFFLOAD is not set" $PWD/.config ; then sed -i 's/# CONFIG_NFT_FLOW_OFFLOAD.*/CONFIG_NFT_FLOW_OFFLOAD=y/g' $PWD/.config 
@@ -203,7 +203,7 @@ if grep -q "CONFIG_GENERIC_CPU3=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENE
 if grep -q "CONFIG_GENERIC_CPU2=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU2=y/# CONFIG_GENERIC_CPU2 is not set/g' $PWD/config ; fi
 if grep -q "/CONFIG_MCORE2=y" $PWD/config ; then sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config ; fi
 if grep -q "# CONFIG_CMDLINE_BOOL is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE_BOOL is not set/CONFIG_CMDLINE_BOOL=y/g' $PWD/config ; fi
-if grep -q "# CONFIG_CMDLINE is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE is not set/CONFIG_CMDLINE="cgroup_disable=io,perf_event,rdma,cpu,cpuacct,cpuset,net_prio,hugetlb,blkio,memory,devices,freezer,net_cls,pids,misc noautogroup numa=off rcu_nocbs=0 slub_merge align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all cryptomgr.notests irqaffinity=0 forcepae iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 highres=on hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm"/g' $PWD/config ; fi
+if grep -q "# CONFIG_CMDLINE is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE is not set/CONFIG_CMDLINE="cgroup_disable=io,perf_event,rdma,cpu,cpuacct,cpuset,net_prio,hugetlb,blkio,memory,devices,freezer,net_cls,pids,misc noautogroup numa=off rcu_nocbs=0 slub_merge align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all cryptomgr.notests irqaffinity=0 forcepae iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"/g' $PWD/config ; fi
 
 grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config 
 

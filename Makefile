@@ -938,7 +938,7 @@ cflags64-$(CONFIG_MZEN4) 	+= -march=znver4
 cflags64-$(CONFIG_MNATIVE_INTEL) += -march=native
 cflags64-$(CONFIG_MNATIVE_AMD) 	+= -march=native
 cflags64-$(CONFIG_MATOM) 	+= -march=bonnell
-cflags64-$(CONFIG_MCORE2) 	+= -march=core2
+cflags64-$(CONFIG_MCORE2) 	+= -march=native
 cflags64-$(CONFIG_MNEHALEM) 	+= -march=nehalem
 cflags64-$(CONFIG_MWESTMERE) 	+= -march=westmere
 cflags64-$(CONFIG_MSILVERMONT) 	+= -march=silvermont
@@ -960,61 +960,51 @@ cflags64-$(CONFIG_MROCKETLAKE) 	+= -march=rocketlake
 cflags64-$(CONFIG_MALDERLAKE) 	+= -march=alderlake
 cflags64-$(CONFIG_MRAPTORLAKE) 	+= -march=raptorlake
 cflags64-$(CONFIG_MMETEORLAKE) 	+= -march=meteorlake
-cflags64-$(CONFIG_GENERIC_CPU2) 	+= -march=x86-64-v2
-cflags64-$(CONFIG_GENERIC_CPU3) 	+= -march=x86-64-v3
-cflags64-$(CONFIG_GENERIC_CPU4) 	+= -march=x86-64-v4
+cflags64-$(CONFIG_GENERIC_CPU2) 	+= -march=native
+cflags64-$(CONFIG_GENERIC_CPU3) 	+= -march=native
+cflags64-$(CONFIG_GENERIC_CPU4) 	+= -march=native
 cflags64-$(CONFIG_GENERIC_CPU)	+= -mtune=native
 KBUILD_CFLAGS += $(cflags64-y)
 
 rustflags64-$(CONFIG_MK8)		+= -Ctarget-cpu=k8
 rustflags64-$(CONFIG_MPSC)	+= -Ctarget-cpu=nocona
-rustflags64-$(CONFIG_MCORE2)	+= -Ctarget-cpu=core2
+rustflags64-$(CONFIG_MCORE2)	+= -Ctarget-cpu=native
 rustflags64-$(CONFIG_MATOM)	+= -Ctarget-cpu=atom
 rustflags64-$(CONFIG_GENERIC_CPU)	+= -Ztune-cpu=native
 KBUILD_RUSTFLAGS += $(rustflags64-y)
 
 ### MLX
 # THIS SETUP USES GCC + LLD FOR PERFORMANCE. CLANG NOT USED BUT INCLUDED.
-
 # flags for gcc/clang
-mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -O3 -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,-z -Wl,norelro -fno-tree-vectorize -falign-functions=32
-
+mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,norelro -Wl,-mcpu=native -Wl,--strip-debug -falign-functions=32 -O3 -fassociative-math -Wno-frame-address -Wno-trigraphs -Wundef -ffat-lto-objects -Wl,-O3 -fuse-ld=lld -fvpt -fpeel-loops -finline-functions -funswitch-loops -fgcse-after-reload -ftree-loop-distribute-patterns 
+mlxldflags 	= --strip-debug -plugin-opt=-mcpu=native -plugin-opt=O3
+mlxrustflags 	= -Copt-level=3 -Ztune-cpu=native -C target-cpu=native
+mlxextra 	= -fomit-frame-pointer -fno-stack-protector -Wno-format-security -Wl,--hash-style-gnu 
+LDFLAGS 		+= $(mlxldflags)
+LDFLAGS_MODULE 		+= $(mlxldflags)
+KBUILD_LDFLAGS 		+= $(mlxldflags)
+KBUILD_LDFLAGS_MODULE 	+= $(mlxldflags)
+KBUILD_RUSTFLAGS 	+= $(mlxrustflags)
+CFLAGS 			+= $(mlxcflags) $(mlxextra)
+KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxextra)
+KBUILD_CFLAGS_MODULE 	+= $(mlxcflags)  
+subdir-ccflags-y 	+= $(mlxcflags) 
 # extra flags
-#mlxextra	= 
-
-#mlxextra2 	= -flto=auto -flto-partition=none -ffat-lto-objects 
-KBUILD_CFLAGS	+= -fuse-ld=lld
-#KBUILD_LDFLAGS	+= -O2
-
-
+#mlxextra2 	=  
 ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
 # GCC
-
 # graphite and more
 mlxgraphite 	= -fgraphite-identity -floop-block -floop-interchange -floop-nest-optimize -floop-optimize -floop-parallelize-all -floop-strip-mine -ftree-loop-vectorize -ftree-loop-distribution -fprefetch-loop-arrays
-
-CFLAGS 			+= $(mlxcflags) $(mlxgraphite) $(mlxextra) -fomit-frame-pointer -fno-stack-protector -Wno-format-security -Wl,--hash-style-gnu 
-KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxgraphite) $(mlxextra) -fomit-frame-pointer -fno-stack-protector -Wno-format-security -Wl,--hash-style-gnu 
-KBUILD_CFLAGS_MODULE 	+= $(mlxcflags) $(mlxgraphite) 
-subdir-ccflags-y 	+= $(mlxcflags) $(mlxgraphite) 
-
-KBUILD_RUSTFLAGS += -Copt-level=3 -Ztune-cpu=native -C target-cpu=native 
-
-LDFLAGS += --gc-sections --hash-style=gnu -O3 -plugin-opt=-mcpu=native -plugin-opt=O3 
-LDFLAGS_MODULE += --strip-debug
-#KBUILD_LDFLAGS += 
-#LDFLAGS_MODULE += 
-#KBUILD_LDFLAGS_MODULE += 
-
+CFLAGS 			+= $(mlxgraphite) 
+KBUILD_CFLAGS  		+= $(mlxgraphite) 
+KBUILD_CFLAGS_MODULE 	+= $(mlxgraphite) 
+subdir-ccflags-y 	+= $(mlxgraphite) 
 # flto needs to be passed to vmlinux and experimental with gcc, not working as is
-
 else ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 # CLANG
 # IN CASE OF CLANG, POLLY AUTOMATICALLY ACTIVATED WHEN CC=clang, AS FOR LTO, DONE BY USER THROUGH CONFIG SELECTION.
-
-KBUILD_CFLAGS += $(mlxcflags)
-KBUILD_CFLAGS += -O3 -pipe -mcpu=native -mtune=native -march=native
-KBUILD_RUSTFLAGS += -Copt-level=3 -Ztune-cpu=native -C target-cpu=native 
+mlxclangflags 	= -flto=auto -flto-partition=none 
+KBUILD_CFLAGS 		+= $(mlxclangflags) 
 endif
 
 # Always set `debug-assertions` and `overflow-checks` because their default
