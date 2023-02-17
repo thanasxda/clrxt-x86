@@ -1083,6 +1083,78 @@ bool kvm_test_age_radix(struct kvm *kvm, struct kvm_memory_slot *memslot,
 	return ref;
 }
 
+bool kvmhv_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range,
+			    gfn_t lsb_gfn, unsigned long *bitmap)
+{
+	bool success;
+	gfn_t gfn = range->start;
+
+	if (WARN_ON_ONCE(!kvm_arch_has_test_clear_young()))
+		return false;
+
+	/*
+	 * This function relies on two techniques, RCU and cmpxchg, to safely
+	 * test and clear the accessed bit without taking the MMU lock. The
+	 * former protects KVM page tables from being freed while the latter
+	 * clears the accessed bit atomically against both the hardware and
+	 * other software page table walkers.
+	 */
+	rcu_read_lock();
+
+	success = kvm_is_radix(kvm);
+	if (!success)
+		goto unlock;
+
+	/*
+	 * case 1:  this function          kvmppc_switch_mmu_to_hpt()
+	 *
+	 *          rcu_read_lock()
+	 *          test kvm_is_radix()    kvm->arch.radix = 0
+	 *          use kvm->arch.pgtable
+	 *          rcu_read_unlock()
+	 *                                 synchronize_rcu()
+	 *                                 kvmppc_free_radix()
+	 *
+	 *
+	 * case 2:  this function          kvmppc_switch_mmu_to_radix()
+	 *
+	 *                                 kvmppc_init_vm_radix()
+	 *                                 smp_wmb()
+	 *          test kvm_is_radix()    kvm->arch.radix = 1
+	 *          smp_rmb()
+	 *          use kvm->arch.pgtable
+	 */
+	smp_rmb();
+
+	while (gfn < range->end) {
+		pte_t *ptep;
+		pte_t old, new;
+		unsigned int shift;
+
+		ptep = find_kvm_secondary_pte_unlocked(kvm, gfn * PAGE_SIZE, &shift);
+		if (!ptep)
+			goto next;
+
+		VM_WARN_ON_ONCE(!page_count(virt_to_page(ptep)));
+
+		old = READ_ONCE(*ptep);
+		if (!pte_present(old) || !pte_young(old))
+			goto next;
+
+		new = pte_mkold(old);
+
+		/* see the comments on the generic kvm_arch_has_test_clear_young() */
+		if (__test_and_change_bit(lsb_gfn - gfn, bitmap))
+			pte_xchg(ptep, old, new);
+next:
+		gfn += shift ? BIT(shift - PAGE_SHIFT) : 1;
+	}
+unlock:
+	rcu_read_unlock();
+
+	return success;
+}
+
 /* Returns the number of PAGE_SIZE pages that are dirty */
 static int kvm_radix_test_clear_dirty(struct kvm *kvm,
 				struct kvm_memory_slot *memslot, int pagenum)
@@ -1464,13 +1536,15 @@ int kvmppc_radix_init(void)
 {
 	unsigned long size = sizeof(void *) << RADIX_PTE_INDEX_SIZE;
 
-	kvm_pte_cache = kmem_cache_create("kvm-pte", size, size, 0, pte_ctor);
+	kvm_pte_cache = kmem_cache_create("kvm-pte", size, size,
+					  SLAB_TYPESAFE_BY_RCU, pte_ctor);
 	if (!kvm_pte_cache)
 		return -ENOMEM;
 
 	size = sizeof(void *) << RADIX_PMD_INDEX_SIZE;
 
-	kvm_pmd_cache = kmem_cache_create("kvm-pmd", size, size, 0, pmd_ctor);
+	kvm_pmd_cache = kmem_cache_create("kvm-pmd", size, size,
+					  SLAB_TYPESAFE_BY_RCU, pmd_ctor);
 	if (!kvm_pmd_cache) {
 		kmem_cache_destroy(kvm_pte_cache);
 		return -ENOMEM;
