@@ -17,6 +17,9 @@
 # also from my experience either custom settings or defaults building with ccache substantially increases
 # compilation time even if i have many GB ccache. just some personal notes from my experience. you be the judge.
 
+# IMPORTANT OPTIONS:
+CANYOUBOOT=yes # yes/no
+
 DATE_START=$(date +"%s")
 yellow="\033[1;93m"
 magenta="\033[05;1;95m"
@@ -186,7 +189,13 @@ elif $x86 --help | grep -q "v3 (supported" ; then sudo sed -i 's/# CONFIG_GENERI
 elif $x86 --help | grep -q "v2 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU2.*/CONFIG_GENERIC_CPU2=y/g' $PWD/.config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/.config  
 else sudo sed -i 's/# CONFIG_MCORE2.*/CONFIG_MCORE2=y/g' $PWD/.config    
   fi
+  
+if [ $CANYOUBOOT = no ] ; then if ! grep -q CONFIG_RETPOLINE $PWD/.config ; then echo CONFIG_RETPOLINE=y | sudo tee -a $PWD/.config ; else sudo sed -i 's/# CONFIG_RETPOLINE.*/CONFIG_RETPOLINE=y/g' $PWD/.config ; fi ; fi
+
+if ! grep -q CONFIG_STACKDEPOT $PWD/.config ; then echo CONFIG_STACKDEPOT=y | sudo tee -a $PWD/.config ; else sudo sed -i 's/CONFIG_STACKDEPOT=y/CONFIG_STACKDEPOT=n/g' $PWD/.config ; fi 
+
 grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config 
+
 
 Keys.ENTER | sudo make $THREADS $VERBOSE $CLANG $LD
 Keys.ENTER | sudo make $THREADS $VERBOSE $CLANG $LD modules
@@ -203,7 +212,7 @@ if grep -q "CONFIG_GENERIC_CPU3=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENE
 if grep -q "CONFIG_GENERIC_CPU2=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU2=y/# CONFIG_GENERIC_CPU2 is not set/g' $PWD/config ; fi
 if grep -q "/CONFIG_MCORE2=y" $PWD/config ; then sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config ; fi
 if grep -q "# CONFIG_CMDLINE_BOOL is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE_BOOL is not set/CONFIG_CMDLINE_BOOL=y/g' $PWD/config ; fi
-if grep -q "# CONFIG_CMDLINE is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE is not set/CONFIG_CMDLINE="cgroup_disable=io,perf_event,rdma,cpu,cpuacct,cpuset,net_prio,hugetlb,blkio,memory,devices,freezer,net_cls,pids,misc noautogroup numa=off rcu_nocbs=0 slub_merge align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all cryptomgr.notests irqaffinity=0 forcepae iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"/g' $PWD/config ; fi
+if grep -q "# CONFIG_CMDLINE is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE is not set/CONFIG_CMDLINE="rcu_nocbs=0 align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all irqaffinity=0 forcepae iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"/g' $PWD/config ; fi
 
 grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config 
 

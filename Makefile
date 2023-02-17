@@ -976,7 +976,7 @@ KBUILD_RUSTFLAGS += $(rustflags64-y)
 ### MLX
 # THIS SETUP USES GCC + LLD FOR PERFORMANCE. CLANG NOT USED BUT INCLUDED.
 # flags for gcc/clang
-mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,norelro -Wl,-mcpu=native -Wl,--strip-debug -falign-functions=32 -O3 -fassociative-math -Wno-frame-address -Wno-trigraphs -Wundef -ffat-lto-objects -Wl,-O3 -fuse-ld=lld -fvpt -fpeel-loops -finline-functions -funswitch-loops -fgcse-after-reload -ftree-loop-distribute-patterns 
+mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,norelro -Wl,-mcpu=native -Wl,--strip-debug -falign-functions=32 -O3 -fassociative-math -Wno-frame-address -Wno-trigraphs -Wundef -ffat-lto-objects -Wl,-O3 -fuse-ld=lld -fvpt -fpeel-loops -finline-functions -funswitch-loops -fgcse-after-reload -ftree-loop-distribute-patterns -Ofast -funroll-loops -Wp,-D_REENTRANT 
 mlxldflags 	= --strip-debug -plugin-opt=-mcpu=native -plugin-opt=O3
 mlxrustflags 	= -Copt-level=3 -Ztune-cpu=native -C target-cpu=native
 mlxextra 	= -fomit-frame-pointer -fno-stack-protector -Wno-format-security -Wl,--hash-style-gnu 
@@ -985,10 +985,11 @@ LDFLAGS_MODULE 		+= $(mlxldflags)
 KBUILD_LDFLAGS 		+= $(mlxldflags)
 KBUILD_LDFLAGS_MODULE 	+= $(mlxldflags)
 KBUILD_RUSTFLAGS 	+= $(mlxrustflags)
-CFLAGS 			+= $(mlxcflags) $(mlxextra)
-KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxextra)
+CFLAGS 			+= $(mlxcflags) $(mlxextra) 
+KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxextra) -mprefer-vector-width=256 -flto=auto
 KBUILD_CFLAGS_MODULE 	+= $(mlxcflags)  
 subdir-ccflags-y 	+= $(mlxcflags) 
+KBUILD_AFLAGS 		+= 
 # extra flags
 #mlxextra2 	=  
 ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
