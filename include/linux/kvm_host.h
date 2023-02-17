@@ -2281,4 +2281,33 @@ static inline void kvm_account_pgtable_pages(void *virt, int nr)
 /* Max number of entries allowed for each kvm dirty ring */
 #define  KVM_DIRTY_RING_MAX_ENTRIES  65536
 
+/*
+ * Architectures that implement kvm_arch_test_clear_young() should override
+ * kvm_arch_has_test_clear_young().
+ *
+ * kvm_arch_has_test_clear_young() is allowed to return false positive. It can
+ * return true if kvm_arch_test_clear_young() is supported but disabled due to
+ * some runtime constraint. In this case, kvm_arch_test_clear_young() should
+ * return false.
+ *
+ * The last parameter to kvm_arch_test_clear_young() is a bitmap with the
+ * following specifications:
+ * 1. The offset of each bit is relative to the second to the last parameter
+ *    lsb_gfn. E.g., the offset corresponding to gfn is lsb_gfn-gfn. This is to
+ *    better suit batching while forward looping.
+ * 2. For each KVM PTE with the accessed bit set, the implementation should flip
+ *    the corresponding bit in the bitmap. It should only clear the accessed bit
+ *    if the old value is 1. This allows the caller to test or test and clear
+ *    the accessed bit.
+ */
+#ifndef kvm_arch_has_test_clear_young
+static inline bool kvm_arch_has_test_clear_young(void)
+{
+	return false;
+}
+#endif
+
+bool kvm_arch_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range,
+			       gfn_t lsb_gfn, unsigned long *bitmap);
+
 #endif
