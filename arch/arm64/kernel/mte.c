@@ -41,17 +41,19 @@ static void mte_sync_page_tags(struct page *page, pte_t old_pte,
 	if (check_swap && is_swap_pte(old_pte)) {
 		swp_entry_t entry = pte_to_swp_entry(old_pte);
 
-		if (!non_swap_entry(entry))
-			mte_restore_tags(entry, page);
+		if (!non_swap_entry(entry) && mte_restore_tags(entry, page))
+			return;
 	}
 
 	if (!pte_is_tagged)
 		return;
 
-	if (try_page_mte_tagging(page)) {
+	/*
+	 * Test PG_mte_tagged again in case it was racing with another
+	 * set_pte_at().
+	 */
+	if (!test_and_set_bit(PG_mte_tagged, &page->flags))
 		mte_clear_page_tags(page_address(page));
-		set_page_mte_tagged(page);
-	}
 }
 
 void mte_sync_tags(pte_t old_pte, pte_t pte)
@@ -67,11 +69,9 @@ void mte_sync_tags(pte_t old_pte, pte_t pte)
 
 	/* if PG_mte_tagged is set, tags have already been initialised */
 	for (i = 0; i < nr_pages; i++, page++) {
-		if (!page_mte_tagged(page)) {
+		if (!test_bit(PG_mte_tagged, &page->flags))
 			mte_sync_page_tags(page, old_pte, check_swap,
 					   pte_is_tagged);
-			set_page_mte_tagged(page);
-		}
 	}
 
 	/* ensure the tags are visible before the PTE is set */
@@ -96,7 +96,8 @@ int memcmp_pages(struct page *page1, struct page *page2)
 	 * pages is tagged, set_pte_at() may zero or change the tags of the
 	 * other page via mte_sync_tags().
 	 */
-	if (page_mte_tagged(page1) || page_mte_tagged(page2))
+	if (test_bit(PG_mte_tagged, &page1->flags) ||
+	    test_bit(PG_mte_tagged, &page2->flags))
 		return addr1 != addr2;
 
 	return ret;
@@ -453,7 +454,7 @@ static int __access_remote_tags(struct mm_struct *mm, unsigned long addr,
 			put_page(page);
 			break;
 		}
-		WARN_ON_ONCE(!page_mte_tagged(page));
+		WARN_ON_ONCE(!test_bit(PG_mte_tagged, &page->flags));
 
 		/* limit access to the end of the page */
 		offset = offset_in_page(addr);

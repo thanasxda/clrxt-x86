@@ -927,7 +927,7 @@ void __init early_xdbc_register_console(void)
 
 static void xdbc_unregister_console(void)
 {
-	if (console_is_registered(&early_xdbc_console))
+	if (early_xdbc_console.flags & CON_ENABLED)
 		unregister_console(&early_xdbc_console);
 }
 

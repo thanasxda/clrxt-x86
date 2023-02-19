@@ -1373,6 +1373,7 @@ static void
 __lpfc_sli_release_iocbq_s4(struct lpfc_hba *phba, struct lpfc_iocbq *iocbq)
 {
 	struct lpfc_sglq *sglq;
+	size_t start_clean = offsetof(struct lpfc_iocbq, wqe);
 	unsigned long iflag = 0;
 	struct lpfc_sli_ring *pring;
 
@@ -1429,7 +1430,7 @@ out:
 	/*
 	 * Clean all volatile data fields, preserve iotag and node struct.
 	 */
-	memset_startat(iocbq, 0, wqe);
+	memset((char *)iocbq + start_clean, 0, sizeof(*iocbq) - start_clean);
 	iocbq->sli4_lxritag = NO_XRI;
 	iocbq->sli4_xritag = NO_XRI;
 	iocbq->cmd_flag &= ~(LPFC_IO_NVME | LPFC_IO_NVMET | LPFC_IO_CMF |
@@ -1452,11 +1453,12 @@ out:
 static void
 __lpfc_sli_release_iocbq_s3(struct lpfc_hba *phba, struct lpfc_iocbq *iocbq)
 {
+	size_t start_clean = offsetof(struct lpfc_iocbq, iocb);
 
 	/*
 	 * Clean all volatile data fields, preserve iotag and node struct.
 	 */
-	memset_startat(iocbq, 0, iocb);
+	memset((char*)iocbq + start_clean, 0, sizeof(*iocbq) - start_clean);
 	iocbq->sli4_xritag = NO_XRI;
 	list_add_tail(&iocbq->list, &phba->lpfc_iocb_list);
 }
@@ -1846,24 +1848,6 @@ lpfc_cmf_sync_cmpl(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
 				  phba->cmf_link_byte_count);
 		bwpcent = div64_u64(bw * 100 + slop,
 				    phba->cmf_link_byte_count);
-		/* Because of bytes adjustment due to shorter timer in
-		 * lpfc_cmf_timer() the cmf_link_byte_count can be shorter and
-		 * may seem like BW is above 100%.
-		 */
-		if (bwpcent > 100)
-			bwpcent = 100;
-
-		if (phba->cmf_max_bytes_per_interval < bw &&
-		    bwpcent > 95)
-			lpfc_printf_log(phba, KERN_INFO, LOG_CGN_MGMT,
-					"6208 Congestion bandwidth "
-					"limits removed\n");
-		else if ((phba->cmf_max_bytes_per_interval > bw) &&
-			 ((bwpcent + pcent) <= 100) && ((bwpcent + pcent) > 95))
-			lpfc_printf_log(phba, KERN_INFO, LOG_CGN_MGMT,
-					"6209 Congestion bandwidth "
-					"limits in effect\n");
-
 		if (asig) {
 			lpfc_printf_log(phba, KERN_INFO, LOG_CGN_MGMT,
 					"6237 BW Threshold %lld%% (%lld): "
@@ -8370,7 +8354,6 @@ no_cmf:
 			phba->cgn_i = NULL;
 			/* Ensure CGN Mode is off */
 			phba->cmf_active_mode = LPFC_CFG_OFF;
-			sli4_params->cmf = 0;
 			return 0;
 		}
 	}

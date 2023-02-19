@@ -489,7 +489,7 @@ static void imx_uart_stop_tx(struct uart_port *port)
 static void imx_uart_stop_rx(struct uart_port *port)
 {
 	struct imx_port *sport = (struct imx_port *)port;
-	u32 ucr1, ucr2, ucr4, uts;
+	u32 ucr1, ucr2, ucr4;
 
 	ucr1 = imx_uart_readl(sport, UCR1);
 	ucr2 = imx_uart_readl(sport, UCR2);
@@ -505,18 +505,7 @@ static void imx_uart_stop_rx(struct uart_port *port)
 	imx_uart_writel(sport, ucr1, UCR1);
 	imx_uart_writel(sport, ucr4, UCR4);
 
-	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
-	if (port->rs485.flags & SER_RS485_ENABLED &&
-	    port->rs485.flags & SER_RS485_RTS_ON_SEND &&
-	    sport->have_rtscts && !sport->have_rtsgpio) {
-		uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
-		uts |= UTS_LOOP;
-		imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
-		ucr2 |= UCR2_RXEN;
-	} else {
-		ucr2 &= ~UCR2_RXEN;
-	}
-
+	ucr2 &= ~UCR2_RXEN;
 	imx_uart_writel(sport, ucr2, UCR2);
 }
 
@@ -574,7 +563,8 @@ static inline void imx_uart_transmit_buffer(struct imx_port *sport)
 		/* send xmit->buf[xmit->tail]
 		 * out the port here */
 		imx_uart_writel(sport, xmit->buf[xmit->tail], URTX0);
-		uart_xmit_advance(&sport->port, 1);
+		xmit->tail = (xmit->tail + 1) & (UART_XMIT_SIZE - 1);
+		sport->port.icount.tx++;
 	}
 
 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
@@ -600,7 +590,9 @@ static void imx_uart_dma_tx_callback(void *data)
 	ucr1 &= ~UCR1_TXDMAEN;
 	imx_uart_writel(sport, ucr1, UCR1);
 
-	uart_xmit_advance(&sport->port, sport->tx_bytes);
+	/* update the stat */
+	xmit->tail = (xmit->tail + sport->tx_bytes) & (UART_XMIT_SIZE - 1);
+	sport->port.icount.tx += sport->tx_bytes;
 
 	dev_dbg(sport->port.dev, "we finish the TX DMA.\n");
 
@@ -1401,7 +1393,7 @@ static int imx_uart_startup(struct uart_port *port)
 	int retval, i;
 	unsigned long flags;
 	int dma_is_inited = 0;
-	u32 ucr1, ucr2, ucr3, ucr4, uts;
+	u32 ucr1, ucr2, ucr3, ucr4;
 
 	retval = clk_prepare_enable(sport->clk_per);
 	if (retval)
@@ -1506,11 +1498,6 @@ static int imx_uart_startup(struct uart_port *port)
 		imx_uart_writel(sport, ucr2, UCR2);
 	}
 
-	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
-	uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
-	uts &= ~UTS_LOOP;
-	imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
-
 	spin_unlock_irqrestore(&sport->port.lock, flags);
 
 	return 0;
@@ -1520,7 +1507,7 @@ static void imx_uart_shutdown(struct uart_port *port)
 {
 	struct imx_port *sport = (struct imx_port *)port;
 	unsigned long flags;
-	u32 ucr1, ucr2, ucr4, uts;
+	u32 ucr1, ucr2, ucr4;
 
 	if (sport->dma_is_enabled) {
 		dmaengine_terminate_sync(sport->dma_chan_tx);
@@ -1564,18 +1551,7 @@ static void imx_uart_shutdown(struct uart_port *port)
 	spin_lock_irqsave(&sport->port.lock, flags);
 
 	ucr1 = imx_uart_readl(sport, UCR1);
-	ucr1 &= ~(UCR1_TRDYEN | UCR1_RRDYEN | UCR1_RTSDEN | UCR1_RXDMAEN | UCR1_ATDMAEN);
-	/* See SER_RS485_ENABLED/UTS_LOOP comment in imx_uart_probe() */
-	if (port->rs485.flags & SER_RS485_ENABLED &&
-	    port->rs485.flags & SER_RS485_RTS_ON_SEND &&
-	    sport->have_rtscts && !sport->have_rtsgpio) {
-		uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
-		uts |= UTS_LOOP;
-		imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
-		ucr1 |= UCR1_UARTEN;
-	} else {
-		ucr1 &= ~UCR1_UARTEN;
-	}
+	ucr1 &= ~(UCR1_TRDYEN | UCR1_RRDYEN | UCR1_RTSDEN | UCR1_UARTEN | UCR1_RXDMAEN | UCR1_ATDMAEN);
 	imx_uart_writel(sport, ucr1, UCR1);
 
 	ucr4 = imx_uart_readl(sport, UCR4);
@@ -2237,7 +2213,7 @@ static int imx_uart_probe(struct platform_device *pdev)
 	void __iomem *base;
 	u32 dma_buf_conf[2];
 	int ret = 0;
-	u32 ucr1, ucr2, uts;
+	u32 ucr1;
 	struct resource *res;
 	int txirq, rxirq, rtsirq;
 
@@ -2373,31 +2349,6 @@ static int imx_uart_probe(struct platform_device *pdev)
 	ucr1 = imx_uart_readl(sport, UCR1);
 	ucr1 &= ~(UCR1_ADEN | UCR1_TRDYEN | UCR1_IDEN | UCR1_RRDYEN | UCR1_RTSDEN);
 	imx_uart_writel(sport, ucr1, UCR1);
-
-	/*
-	 * In case RS485 is enabled without GPIO RTS control, the UART IP
-	 * is used to control CTS signal. Keep both the UART and Receiver
-	 * enabled, otherwise the UART IP pulls CTS signal always HIGH no
-	 * matter how the UCR2 CTSC and CTS bits are set. To prevent any
-	 * data from being fed into the RX FIFO, enable loopback mode in
-	 * UTS register, which disconnects the RX path from external RXD
-	 * pin and connects it to the Transceiver, which is disabled, so
-	 * no data can be fed to the RX FIFO that way.
-	 */
-	if (sport->port.rs485.flags & SER_RS485_ENABLED &&
-	    sport->have_rtscts && !sport->have_rtsgpio) {
-		uts = imx_uart_readl(sport, imx_uart_uts_reg(sport));
-		uts |= UTS_LOOP;
-		imx_uart_writel(sport, uts, imx_uart_uts_reg(sport));
-
-		ucr1 = imx_uart_readl(sport, UCR1);
-		ucr1 |= UCR1_UARTEN;
-		imx_uart_writel(sport, ucr1, UCR1);
-
-		ucr2 = imx_uart_readl(sport, UCR2);
-		ucr2 |= UCR2_RXEN;
-		imx_uart_writel(sport, ucr2, UCR2);
-	}
 
 	if (!imx_uart_is_imx1(sport) && sport->dte_mode) {
 		/*

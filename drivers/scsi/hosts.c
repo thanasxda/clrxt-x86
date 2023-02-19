@@ -519,8 +519,7 @@ struct Scsi_Host *scsi_host_alloc(struct scsi_host_template *sht, int privsize)
 			     "failed to create tmf workq\n");
 		goto fail;
 	}
-	if (scsi_proc_hostdir_add(shost->hostt) < 0)
-		goto fail;
+	scsi_proc_hostdir_add(shost->hostt);
 	return shost;
  fail:
 	/*

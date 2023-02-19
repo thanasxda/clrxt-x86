@@ -101,10 +101,8 @@ int intel_pasid_alloc_table(struct device *dev)
 
 	might_sleep();
 	info = dev_iommu_priv_get(dev);
-	if (WARN_ON(!info || !dev_is_pci(dev)))
-		return -ENODEV;
-	if (WARN_ON(info->pasid_table))
-		return -EEXIST;
+	if (WARN_ON(!info || !dev_is_pci(dev) || info->pasid_table))
+		return -EINVAL;
 
 	pasid_table = kzalloc(sizeof(*pasid_table), GFP_KERNEL);
 	if (!pasid_table)

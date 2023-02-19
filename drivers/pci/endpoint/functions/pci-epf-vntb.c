@@ -11,7 +11,7 @@
  * Author: Kishon Vijay Abraham I <kishon@ti.com>
  */
 
-/*
+/**
  * +------------+         +---------------------------------------+
  * |            |         |                                       |
  * +------------+         |                        +--------------+
@@ -99,20 +99,20 @@ enum epf_ntb_bar {
  *       NTB Driver               NTB Driver
  */
 struct epf_ntb_ctrl {
-	u32 command;
-	u32 argument;
-	u16 command_status;
-	u16 link_status;
-	u32 topology;
-	u64 addr;
-	u64 size;
-	u32 num_mws;
-	u32 reserved;
-	u32 spad_offset;
-	u32 spad_count;
-	u32 db_entry_size;
-	u32 db_data[MAX_DB_COUNT];
-	u32 db_offset[MAX_DB_COUNT];
+	u32     command;
+	u32     argument;
+	u16     command_status;
+	u16     link_status;
+	u32     topology;
+	u64     addr;
+	u64     size;
+	u32     num_mws;
+	u32	reserved;
+	u32     spad_offset;
+	u32     spad_count;
+	u32	db_entry_size;
+	u32     db_data[MAX_DB_COUNT];
+	u32     db_offset[MAX_DB_COUNT];
 } __packed;
 
 struct epf_ntb {
@@ -136,7 +136,8 @@ struct epf_ntb {
 
 	struct epf_ntb_ctrl *reg;
 
-	u32 *epf_db;
+	phys_addr_t epf_db_phy;
+	void __iomem *epf_db;
 
 	phys_addr_t vpci_mw_phy[MAX_MW];
 	void __iomem *vpci_mw_addr[MAX_MW];
@@ -155,14 +156,12 @@ static struct pci_epf_header epf_ntb_header = {
 };
 
 /**
- * epf_ntb_link_up() - Raise link_up interrupt to Virtual Host (VHOST)
+ * epf_ntb_link_up() - Raise link_up interrupt to Virtual Host
  * @ntb: NTB device that facilitates communication between HOST and VHOST
  * @link_up: true or false indicating Link is UP or Down
  *
  * Once NTB function in HOST invoke ntb_link_enable(),
- * this NTB function driver will trigger a link event to VHOST.
- *
- * Returns: Zero for success, or an error code in case of failure
+ * this NTB function driver will trigger a link event to vhost.
  */
 static int epf_ntb_link_up(struct epf_ntb *ntb, bool link_up)
 {
@@ -176,9 +175,9 @@ static int epf_ntb_link_up(struct epf_ntb *ntb, bool link_up)
 }
 
 /**
- * epf_ntb_configure_mw() - Configure the Outbound Address Space for VHOST
- *   to access the memory window of HOST
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * epf_ntb_configure_mw() - Configure the Outbound Address Space for vhost
+ *   to access the memory window of host
+ * @ntb: NTB device that facilitates communication between host and vhost
  * @mw: Index of the memory window (either 0, 1, 2 or 3)
  *
  *                          EP Outbound Window
@@ -195,9 +194,7 @@ static int epf_ntb_link_up(struct epf_ntb *ntb, bool link_up)
  * |        |              |           |
  * |        |              |           |
  * +--------+              +-----------+
- *  VHOST                   PCI EP
- *
- * Returns: Zero for success, or an error code in case of failure
+ *  VHost                   PCI EP
  */
 static int epf_ntb_configure_mw(struct epf_ntb *ntb, u32 mw)
 {
@@ -222,7 +219,7 @@ static int epf_ntb_configure_mw(struct epf_ntb *ntb, u32 mw)
 
 /**
  * epf_ntb_teardown_mw() - Teardown the configured OB ATU
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * @ntb: NTB device that facilitates communication between HOST and vHOST
  * @mw: Index of the memory window (either 0, 1, 2 or 3)
  *
  * Teardown the configured OB ATU configured in epf_ntb_configure_mw() using
@@ -237,12 +234,12 @@ static void epf_ntb_teardown_mw(struct epf_ntb *ntb, u32 mw)
 }
 
 /**
- * epf_ntb_cmd_handler() - Handle commands provided by the NTB HOST
+ * epf_ntb_cmd_handler() - Handle commands provided by the NTB Host
  * @work: work_struct for the epf_ntb_epc
  *
  * Workqueue function that gets invoked for the two epf_ntb_epc
  * periodically (once every 5ms) to see if it has received any commands
- * from NTB HOST. The HOST can send commands to configure doorbell or
+ * from NTB host. The host can send commands to configure doorbell or
  * configure memory window or to update link status.
  */
 static void epf_ntb_cmd_handler(struct work_struct *work)
@@ -257,10 +254,12 @@ static void epf_ntb_cmd_handler(struct work_struct *work)
 	ntb = container_of(work, struct epf_ntb, cmd_handler.work);
 
 	for (i = 1; i < ntb->db_count; i++) {
-		if (ntb->epf_db[i]) {
-			ntb->db |= 1 << (i - 1);
+		if (readl(ntb->epf_db + i * 4)) {
+			if (readl(ntb->epf_db + i * 4))
+				ntb->db |= 1 << (i - 1);
+
 			ntb_db_event(&ntb->ntb, i);
-			ntb->epf_db[i] = 0;
+			writel(0, ntb->epf_db + i * 4);
 		}
 	}
 
@@ -322,8 +321,8 @@ reset_handler:
 
 /**
  * epf_ntb_config_sspad_bar_clear() - Clear Config + Self scratchpad BAR
- * @ntb: EPC associated with one of the HOST which holds peer's outbound
- *	 address.
+ * @ntb_epc: EPC associated with one of the HOST which holds peer's outbound
+ *	     address.
  *
  * Clear BAR0 of EP CONTROLLER 1 which contains the HOST1's config and
  * self scratchpad region (removes inbound ATU configuration). While BAR0 is
@@ -332,10 +331,8 @@ reset_handler:
  * used for self scratchpad from epf_ntb_bar[BAR_CONFIG].
  *
  * Please note the self scratchpad region and config region is combined to
- * a single region and mapped using the same BAR. Also note VHOST's peer
- * scratchpad is HOST's self scratchpad.
- *
- * Returns: void
+ * a single region and mapped using the same BAR. Also note HOST2's peer
+ * scratchpad is HOST1's self scratchpad.
  */
 static void epf_ntb_config_sspad_bar_clear(struct epf_ntb *ntb)
 {
@@ -350,15 +347,13 @@ static void epf_ntb_config_sspad_bar_clear(struct epf_ntb *ntb)
 
 /**
  * epf_ntb_config_sspad_bar_set() - Set Config + Self scratchpad BAR
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * @ntb: NTB device that facilitates communication between HOST and vHOST
  *
- * Map BAR0 of EP CONTROLLER which contains the VHOST's config and
+ * Map BAR0 of EP CONTROLLER 1 which contains the HOST1's config and
  * self scratchpad region.
  *
  * Please note the self scratchpad region and config region is combined to
  * a single region and mapped using the same BAR.
- *
- * Returns: Zero for success, or an error code in case of failure
  */
 static int epf_ntb_config_sspad_bar_set(struct epf_ntb *ntb)
 {
@@ -385,7 +380,7 @@ static int epf_ntb_config_sspad_bar_set(struct epf_ntb *ntb)
 /**
  * epf_ntb_config_spad_bar_free() - Free the physical memory associated with
  *   config + scratchpad region
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * @ntb: NTB device that facilitates communication between HOST and vHOST
  */
 static void epf_ntb_config_spad_bar_free(struct epf_ntb *ntb)
 {
@@ -398,13 +393,11 @@ static void epf_ntb_config_spad_bar_free(struct epf_ntb *ntb)
 /**
  * epf_ntb_config_spad_bar_alloc() - Allocate memory for config + scratchpad
  *   region
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * @ntb: NTB device that facilitates communication between HOST1 and HOST2
  *
  * Allocate the Local Memory mentioned in the above diagram. The size of
  * CONFIG REGION is sizeof(struct epf_ntb_ctrl) and size of SCRATCHPAD REGION
  * is obtained from "spad-count" configfs entry.
- *
- * Returns: Zero for success, or an error code in case of failure
  */
 static int epf_ntb_config_spad_bar_alloc(struct epf_ntb *ntb)
 {
@@ -431,7 +424,7 @@ static int epf_ntb_config_spad_bar_alloc(struct epf_ntb *ntb)
 	spad_count = ntb->spad_count;
 
 	ctrl_size = sizeof(struct epf_ntb_ctrl);
-	spad_size = 2 * spad_count * sizeof(u32);
+	spad_size = 2 * spad_count * 4;
 
 	if (!align) {
 		ctrl_size = roundup_pow_of_two(ctrl_size);
@@ -461,7 +454,7 @@ static int epf_ntb_config_spad_bar_alloc(struct epf_ntb *ntb)
 	ctrl->num_mws = ntb->num_mws;
 	ntb->spad_size = spad_size;
 
-	ctrl->db_entry_size = sizeof(u32);
+	ctrl->db_entry_size = 4;
 
 	for (i = 0; i < ntb->db_count; i++) {
 		ntb->reg->db_data[i] = 1 + i;
@@ -472,13 +465,11 @@ static int epf_ntb_config_spad_bar_alloc(struct epf_ntb *ntb)
 }
 
 /**
- * epf_ntb_configure_interrupt() - Configure MSI/MSI-X capability
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * epf_ntb_configure_interrupt() - Configure MSI/MSI-X capaiblity
+ * @ntb: NTB device that facilitates communication between HOST and vHOST
  *
  * Configure MSI/MSI-X capability for each interface with number of
  * interrupts equal to "db_count" configfs entry.
- *
- * Returns: Zero for success, or an error code in case of failure
  */
 static int epf_ntb_configure_interrupt(struct epf_ntb *ntb)
 {
@@ -520,9 +511,7 @@ static int epf_ntb_configure_interrupt(struct epf_ntb *ntb)
 
 /**
  * epf_ntb_db_bar_init() - Configure Doorbell window BARs
- * @ntb: NTB device that facilitates communication between HOST and VHOST
- *
- * Returns: Zero for success, or an error code in case of failure
+ * @ntb: NTB device that facilitates communication between HOST and vHOST
  */
 static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
 {
@@ -533,7 +522,7 @@ static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
 	struct pci_epf_bar *epf_bar;
 	void __iomem *mw_addr;
 	enum pci_barno barno;
-	size_t size = sizeof(u32) * ntb->db_count;
+	size_t size = 4 * ntb->db_count;
 
 	epc_features = pci_epc_get_features(ntb->epf->epc,
 					    ntb->epf->func_no,
@@ -577,7 +566,7 @@ static void epf_ntb_mw_bar_clear(struct epf_ntb *ntb, int num_mws);
 /**
  * epf_ntb_db_bar_clear() - Clear doorbell BAR and free memory
  *   allocated in peer's outbound address space
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * @ntb: NTB device that facilitates communication between HOST and vHOST
  */
 static void epf_ntb_db_bar_clear(struct epf_ntb *ntb)
 {
@@ -593,9 +582,8 @@ static void epf_ntb_db_bar_clear(struct epf_ntb *ntb)
 
 /**
  * epf_ntb_mw_bar_init() - Configure Memory window BARs
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * @ntb: NTB device that facilitates communication between HOST and vHOST
  *
- * Returns: Zero for success, or an error code in case of failure
  */
 static int epf_ntb_mw_bar_init(struct epf_ntb *ntb)
 {
@@ -651,7 +639,7 @@ err_alloc_mem:
 
 /**
  * epf_ntb_mw_bar_clear() - Clear Memory window BARs
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * @ntb: NTB device that facilitates communication between HOST and vHOST
  */
 static void epf_ntb_mw_bar_clear(struct epf_ntb *ntb, int num_mws)
 {
@@ -674,7 +662,7 @@ static void epf_ntb_mw_bar_clear(struct epf_ntb *ntb, int num_mws)
 
 /**
  * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * @ntb: NTB device that facilitates communication between HOST and vHOST
  *
  * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
  */
@@ -687,9 +675,7 @@ static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
 /**
  * epf_ntb_init_epc_bar() - Identify BARs to be used for each of the NTB
  * constructs (scratchpad region, doorbell, memorywindow)
- * @ntb: NTB device that facilitates communication between HOST and VHOST
- *
- * Returns: Zero for success, or an error code in case of failure
+ * @ntb: NTB device that facilitates communication between HOST and vHOST
  */
 static int epf_ntb_init_epc_bar(struct epf_ntb *ntb)
 {
@@ -730,13 +716,11 @@ static int epf_ntb_init_epc_bar(struct epf_ntb *ntb)
 
 /**
  * epf_ntb_epc_init() - Initialize NTB interface
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * @ntb: NTB device that facilitates communication between HOST and vHOST2
  *
  * Wrapper to initialize a particular EPC interface and start the workqueue
- * to check for commands from HOST. This function will write to the
+ * to check for commands from host. This function will write to the
  * EP controller HW for configuring it.
- *
- * Returns: Zero for success, or an error code in case of failure
  */
 static int epf_ntb_epc_init(struct epf_ntb *ntb)
 {
@@ -803,7 +787,7 @@ err_config_interrupt:
 
 /**
  * epf_ntb_epc_cleanup() - Cleanup all NTB interfaces
- * @ntb: NTB device that facilitates communication between HOST and VHOST
+ * @ntb: NTB device that facilitates communication between HOST1 and HOST2
  *
  * Wrapper to cleanup all NTB interfaces.
  */
@@ -967,8 +951,6 @@ static const struct config_item_type ntb_group_type = {
  *
  * Add configfs directory specific to NTB. This directory will hold
  * NTB specific properties like db_count, spad_count, num_mws etc.,
- *
- * Returns: Pointer to config_group
  */
 static struct config_group *epf_ntb_add_cfs(struct pci_epf *epf,
 					    struct config_group *group)
@@ -1119,11 +1101,11 @@ static int vntb_epf_link_enable(struct ntb_dev *ntb,
 static u32 vntb_epf_spad_read(struct ntb_dev *ndev, int idx)
 {
 	struct epf_ntb *ntb = ntb_ndev(ndev);
-	int off = ntb->reg->spad_offset, ct = ntb->reg->spad_count * sizeof(u32);
+	int off = ntb->reg->spad_offset, ct = ntb->reg->spad_count * 4;
 	u32 val;
-	void __iomem *base = (void __iomem *)ntb->reg;
+	void __iomem *base = ntb->reg;
 
-	val = readl(base + off + ct + idx * sizeof(u32));
+	val = readl(base + off + ct + idx * 4);
 	return val;
 }
 
@@ -1131,10 +1113,10 @@ static int vntb_epf_spad_write(struct ntb_dev *ndev, int idx, u32 val)
 {
 	struct epf_ntb *ntb = ntb_ndev(ndev);
 	struct epf_ntb_ctrl *ctrl = ntb->reg;
-	int off = ctrl->spad_offset, ct = ctrl->spad_count * sizeof(u32);
-	void __iomem *base = (void __iomem *)ntb->reg;
+	int off = ctrl->spad_offset, ct = ctrl->spad_count * 4;
+	void __iomem *base = ntb->reg;
 
-	writel(val, base + off + ct + idx * sizeof(u32));
+	writel(val, base + off + ct + idx * 4);
 	return 0;
 }
 
@@ -1143,10 +1125,10 @@ static u32 vntb_epf_peer_spad_read(struct ntb_dev *ndev, int pidx, int idx)
 	struct epf_ntb *ntb = ntb_ndev(ndev);
 	struct epf_ntb_ctrl *ctrl = ntb->reg;
 	int off = ctrl->spad_offset;
-	void __iomem *base = (void __iomem *)ntb->reg;
+	void __iomem *base = ntb->reg;
 	u32 val;
 
-	val = readl(base + off + idx * sizeof(u32));
+	val = readl(base + off + idx * 4);
 	return val;
 }
 
@@ -1155,9 +1137,9 @@ static int vntb_epf_peer_spad_write(struct ntb_dev *ndev, int pidx, int idx, u32
 	struct epf_ntb *ntb = ntb_ndev(ndev);
 	struct epf_ntb_ctrl *ctrl = ntb->reg;
 	int off = ctrl->spad_offset;
-	void __iomem *base = (void __iomem *)ntb->reg;
+	void __iomem *base = ntb->reg;
 
-	writel(val, base + off + idx * sizeof(u32));
+	writel(val, base + off + idx * 4);
 	return 0;
 }
 
@@ -1310,8 +1292,6 @@ static struct pci_driver vntb_pci_driver = {
  * Invoked when a primary interface or secondary interface is bound to EPC
  * device. This function will succeed only when EPC is bound to both the
  * interfaces.
- *
- * Returns: Zero for success, or an error code in case of failure
  */
 static int epf_ntb_bind(struct pci_epf *epf)
 {
@@ -1397,8 +1377,6 @@ static struct pci_epf_ops epf_ntb_ops = {
  *
  * Probe NTB function driver when endpoint function bus detects a NTB
  * endpoint function.
- *
- * Returns: Zero for success, or an error code in case of failure
  */
 static int epf_ntb_probe(struct pci_epf *epf)
 {

@@ -271,7 +271,7 @@ static int swsusp_mte_save_tags(void)
 			if (!page)
 				continue;
 
-			if (!page_mte_tagged(page))
+			if (!test_bit(PG_mte_tagged, &page->flags))
 				continue;
 
 			ret = save_tags(page, pfn);

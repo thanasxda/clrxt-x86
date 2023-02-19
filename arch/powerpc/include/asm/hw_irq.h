@@ -173,15 +173,6 @@ static inline notrace unsigned long irq_soft_mask_or_return(unsigned long mask)
 	return flags;
 }
 
-static inline notrace unsigned long irq_soft_mask_andc_return(unsigned long mask)
-{
-	unsigned long flags = irq_soft_mask_return();
-
-	irq_soft_mask_set(flags & ~mask);
-
-	return flags;
-}
-
 static inline unsigned long arch_local_save_flags(void)
 {
 	return irq_soft_mask_return();
@@ -340,11 +331,10 @@ bool power_pmu_wants_prompt_pmi(void);
  * is a different soft-masked interrupt pending that requires hard
  * masking.
  */
-static inline bool should_hard_irq_enable(struct pt_regs *regs)
+static inline bool should_hard_irq_enable(void)
 {
 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
-		WARN_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
-		WARN_ON(!(get_paca()->irq_happened & PACA_IRQ_HARD_DIS));
+		WARN_ON(irq_soft_mask_return() == IRQS_ENABLED);
 		WARN_ON(mfmsr() & MSR_EE);
 	}
 
@@ -357,17 +347,8 @@ static inline bool should_hard_irq_enable(struct pt_regs *regs)
 	 *
 	 * TODO: Add test for 64e
 	 */
-	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64)) {
-		if (!power_pmu_wants_prompt_pmi())
-			return false;
-		/*
-		 * If PMIs are disabled then IRQs should be disabled as well,
-		 * so we shouldn't see this condition, check for it just in
-		 * case because we are about to enable PMIs.
-		 */
-		if (WARN_ON_ONCE(regs->softe & IRQS_PMI_DISABLED))
-			return false;
-	}
+	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && !power_pmu_wants_prompt_pmi())
+		return false;
 
 	if (get_paca()->irq_happened & PACA_IRQ_MUST_HARD_MASK)
 		return false;
@@ -377,16 +358,18 @@ static inline bool should_hard_irq_enable(struct pt_regs *regs)
 
 /*
  * Do the hard enabling, only call this if should_hard_irq_enable is true.
- * This allows PMI interrupts to profile irq handlers.
  */
 static inline void do_hard_irq_enable(void)
 {
+	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
+		WARN_ON(irq_soft_mask_return() == IRQS_ENABLED);
+		WARN_ON(get_paca()->irq_happened & PACA_IRQ_MUST_HARD_MASK);
+		WARN_ON(mfmsr() & MSR_EE);
+	}
 	/*
-	 * Asynch interrupts come in with IRQS_ALL_DISABLED,
-	 * PACA_IRQ_HARD_DIS, and MSR[EE]=0.
+	 * This allows PMI interrupts (and watchdog soft-NMIs) through.
+	 * There is no other reason to enable this way.
 	 */
-	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64))
-		irq_soft_mask_andc_return(IRQS_PMI_DISABLED);
 	get_paca()->irq_happened &= ~PACA_IRQ_HARD_DIS;
 	__hard_irq_enable();
 }
@@ -469,7 +452,7 @@ static inline bool arch_irq_disabled_regs(struct pt_regs *regs)
 	return !(regs->msr & MSR_EE);
 }
 
-static __always_inline bool should_hard_irq_enable(struct pt_regs *regs)
+static __always_inline bool should_hard_irq_enable(void)
 {
 	return false;
 }
