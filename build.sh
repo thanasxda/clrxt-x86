@@ -89,14 +89,14 @@ export PATH=""$xpath":$PATH"
 export LD_LIBRARY_PATH=""$xpath"/../lib:"$xpath"/../lib64:$LD_LIBRARY_PATH"
 export PATH=""$path2":$PATH"
 export LD_LIBRARY_PATH=""$path2"/../lib:"$path2"/../lib64:$LD_LIBRARY_PATH"
- CLANG="AR=$xpath/llvm-ar
-        NM=$xpath/llvm-nm
-        OBJCOPY=$xpath/llvm-objcopy
-        OBJDUMP=$xpath/llvm-objdump
-        READELF=$xpath/llvm-readelf
-        OBJSIZE=$xpath/llvm-size
-        STRIP=$xpath/llvm-strip
-        LD=$xpath/ld.lld"
+ #CLANG="AR=$xpath/llvm-ar
+ #       NM=$xpath/llvm-nm
+ #       OBJCOPY=$xpath/llvm-objcopy
+ #       OBJDUMP=$xpath/llvm-objdump
+ #       READELF=$xpath/llvm-readelf
+ #       OBJSIZE=$xpath/llvm-size
+ #       STRIP=$xpath/llvm-strip
+ #       LD=$xpath/ld.lld"
 
 
 if [ -z $xtc ] ; then xtc=no ; fi
