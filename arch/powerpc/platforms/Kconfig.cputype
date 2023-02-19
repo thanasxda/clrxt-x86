@@ -135,7 +135,6 @@ config GENERIC_CPU
 	depends on PPC_BOOK3S_64 && CPU_LITTLE_ENDIAN
 	select ARCH_HAS_FAST_MULTIPLIER
 	select PPC_64S_HASH_MMU
-	select PPC_HAS_LBARX_LHARX
 
 config POWERPC_CPU
 	bool "Generic 32 bits powerpc"
@@ -161,20 +160,17 @@ config POWER7_CPU
 	depends on PPC_BOOK3S_64
 	select ARCH_HAS_FAST_MULTIPLIER
 	select PPC_64S_HASH_MMU
-	select PPC_HAS_LBARX_LHARX
 
 config POWER8_CPU
 	bool "POWER8"
 	depends on PPC_BOOK3S_64
 	select ARCH_HAS_FAST_MULTIPLIER
 	select PPC_64S_HASH_MMU
-	select PPC_HAS_LBARX_LHARX
 
 config POWER9_CPU
 	bool "POWER9"
 	depends on PPC_BOOK3S_64
 	select ARCH_HAS_FAST_MULTIPLIER
-	select PPC_HAS_LBARX_LHARX
 
 config POWER10_CPU
 	bool "POWER10"
@@ -188,7 +184,6 @@ config E5500_CPU
 config E6500_CPU
 	bool "Freescale e6500"
 	depends on PPC64 && PPC_E500
-	select PPC_HAS_LBARX_LHARX
 
 config 405_CPU
 	bool "40x family"
@@ -580,10 +575,10 @@ config CPU_LITTLE_ENDIAN
 endchoice
 
 config PPC64_ELF_ABI_V1
-	def_bool PPC64 && (CPU_BIG_ENDIAN && !PPC64_BIG_ENDIAN_ELF_ABI_V2)
+	def_bool PPC64 && CPU_BIG_ENDIAN
 
 config PPC64_ELF_ABI_V2
-	def_bool PPC64 && !PPC64_ELF_ABI_V1
+	def_bool PPC64 && CPU_LITTLE_ENDIAN
 
 config PPC64_BOOT_WRAPPER
 	def_bool n

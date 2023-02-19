@@ -410,7 +410,7 @@ static void end_discard(struct discard_op *op, int r)
 		 * need to wait for the chain to complete.
 		 */
 		bio_chain(op->bio, op->parent_bio);
-		op->bio->bi_opf = REQ_OP_DISCARD;
+		bio_set_op_attrs(op->bio, REQ_OP_DISCARD, 0);
 		submit_bio(op->bio);
 	}
 

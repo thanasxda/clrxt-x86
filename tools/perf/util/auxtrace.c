@@ -59,7 +59,6 @@
 #include <linux/ctype.h>
 #include "symbol/kallsyms.h"
 #include <internal/lib.h>
-#include "util/sample.h"
 
 /*
  * Make a group from 'leader' to 'last', requiring that the events were not

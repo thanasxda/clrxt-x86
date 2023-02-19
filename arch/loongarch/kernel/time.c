@@ -115,17 +115,12 @@ static unsigned long __init get_loops_per_jiffy(void)
 	return lpj;
 }
 
-static long init_offset __nosavedata;
-
-void save_counter(void)
-{
-	init_offset = drdtime();
-}
+static long init_timeval;
 
 void sync_counter(void)
 {
 	/* Ensure counter begin at 0 */
-	csr_write64(init_offset, LOONGARCH_CSR_CNTC);
+	csr_write64(-init_timeval, LOONGARCH_CSR_CNTC);
 }
 
 static int get_timer_irq(void)
@@ -224,7 +219,7 @@ void __init time_init(void)
 	else
 		const_clock_freq = calc_const_freq();
 
-	init_offset = -(drdtime() - csr_read64(LOONGARCH_CSR_CNTC));
+	init_timeval = drdtime() - csr_read64(LOONGARCH_CSR_CNTC);
 
 	constant_clockevent_init();
 	constant_clocksource_init();

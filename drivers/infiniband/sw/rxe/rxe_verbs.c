@@ -172,6 +172,10 @@ static int rxe_create_ah(struct ib_ah *ibah,
 		ah->is_user = false;
 	}
 
+	err = rxe_av_chk_attr(rxe, init_attr->ah_attr);
+	if (err)
+		return err;
+
 	err = rxe_add_to_pool_ah(&rxe->ah_pool, ah,
 			init_attr->flags & RDMA_CREATE_AH_SLEEPABLE);
 	if (err)
@@ -179,12 +183,6 @@ static int rxe_create_ah(struct ib_ah *ibah,
 
 	/* create index > 0 */
 	ah->ah_num = ah->elem.index;
-
-	err = rxe_ah_chk_attr(ah, init_attr->ah_attr);
-	if (err) {
-		rxe_cleanup(ah);
-		return err;
-	}
 
 	if (uresp) {
 		/* only if new user provider */
@@ -208,9 +206,10 @@ static int rxe_create_ah(struct ib_ah *ibah,
 static int rxe_modify_ah(struct ib_ah *ibah, struct rdma_ah_attr *attr)
 {
 	int err;
+	struct rxe_dev *rxe = to_rdev(ibah->device);
 	struct rxe_ah *ah = to_rah(ibah);
 
-	err = rxe_ah_chk_attr(ah, attr);
+	err = rxe_av_chk_attr(rxe, attr);
 	if (err)
 		return err;
 
@@ -239,6 +238,7 @@ static int rxe_destroy_ah(struct ib_ah *ibah, u32 flags)
 
 static int post_one_recv(struct rxe_rq *rq, const struct ib_recv_wr *ibwr)
 {
+	int err;
 	int i;
 	u32 length;
 	struct rxe_recv_wqe *recv_wqe;
@@ -246,11 +246,15 @@ static int post_one_recv(struct rxe_rq *rq, const struct ib_recv_wr *ibwr)
 	int full;
 
 	full = queue_full(rq->queue, QUEUE_TYPE_TO_DRIVER);
-	if (unlikely(full))
-		return -ENOMEM;
+	if (unlikely(full)) {
+		err = -ENOMEM;
+		goto err1;
+	}
 
-	if (unlikely(num_sge > rq->max_sge))
-		return -EINVAL;
+	if (unlikely(num_sge > rq->max_sge)) {
+		err = -EINVAL;
+		goto err1;
+	}
 
 	length = 0;
 	for (i = 0; i < num_sge; i++)
@@ -271,6 +275,9 @@ static int post_one_recv(struct rxe_rq *rq, const struct ib_recv_wr *ibwr)
 	queue_advance_producer(rq->queue, QUEUE_TYPE_TO_DRIVER);
 
 	return 0;
+
+err1:
+	return err;
 }
 
 static int rxe_create_srq(struct ib_srq *ibsrq, struct ib_srq_init_attr *init,
@@ -336,7 +343,10 @@ static int rxe_modify_srq(struct ib_srq *ibsrq, struct ib_srq_attr *attr,
 	if (err)
 		return err;
 
-	return rxe_srq_from_attr(rxe, srq, attr, mask, &ucmd, udata);
+	err = rxe_srq_from_attr(rxe, srq, attr, mask, &ucmd, udata);
+	if (err)
+		return err;
+	return 0;
 }
 
 static int rxe_query_srq(struct ib_srq *ibsrq, struct ib_srq_attr *attr)
@@ -443,11 +453,11 @@ static int rxe_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 
 	err = rxe_qp_chk_attr(rxe, qp, attr, mask);
 	if (err)
-		return err;
+		goto err1;
 
 	err = rxe_qp_from_attr(qp, attr, mask, udata);
 	if (err)
-		return err;
+		goto err1;
 
 	if ((mask & IB_QP_AV) && (attr->ah_attr.ah_flags & IB_AH_GRH))
 		qp->src_port = rdma_get_udp_sport(attr->ah_attr.grh.flow_label,
@@ -455,6 +465,9 @@ static int rxe_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 						  qp->attr.dest_qp_num);
 
 	return 0;
+
+err1:
+	return err;
 }
 
 static int rxe_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
@@ -488,21 +501,24 @@ static int validate_send_wr(struct rxe_qp *qp, const struct ib_send_wr *ibwr,
 	struct rxe_sq *sq = &qp->sq;
 
 	if (unlikely(num_sge > sq->max_sge))
-		return -EINVAL;
+		goto err1;
 
 	if (unlikely(mask & WR_ATOMIC_MASK)) {
 		if (length < 8)
-			return -EINVAL;
+			goto err1;
 
 		if (atomic_wr(ibwr)->remote_addr & 0x7)
-			return -EINVAL;
+			goto err1;
 	}
 
 	if (unlikely((ibwr->send_flags & IB_SEND_INLINE) &&
 		     (length > sq->max_inline)))
-		return -EINVAL;
+		goto err1;
 
 	return 0;
+
+err1:
+	return -EINVAL;
 }
 
 static void init_send_wr(struct rxe_qp *qp, struct rxe_send_wr *wr,
@@ -679,9 +695,9 @@ static int rxe_post_send_kernel(struct rxe_qp *qp, const struct ib_send_wr *wr,
 		wr = next;
 	}
 
-	rxe_sched_task(&qp->req.task);
+	rxe_run_task(&qp->req.task, 1);
 	if (unlikely(qp->req.state == QP_STATE_ERROR))
-		rxe_sched_task(&qp->comp.task);
+		rxe_run_task(&qp->comp.task, 1);
 
 	return err;
 }
@@ -703,7 +719,7 @@ static int rxe_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 
 	if (qp->is_user) {
 		/* Utilize process context to do protocol processing */
-		rxe_run_task(&qp->req.task);
+		rxe_run_task(&qp->req.task, 0);
 		return 0;
 	} else
 		return rxe_post_send_kernel(qp, wr, bad_wr);
@@ -719,12 +735,14 @@ static int rxe_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 
 	if (unlikely((qp_state(qp) < IB_QPS_INIT) || !qp->valid)) {
 		*bad_wr = wr;
-		return -EINVAL;
+		err = -EINVAL;
+		goto err1;
 	}
 
 	if (unlikely(qp->srq)) {
 		*bad_wr = wr;
-		return -EINVAL;
+		err = -EINVAL;
+		goto err1;
 	}
 
 	spin_lock_irqsave(&rq->producer_lock, flags);
@@ -741,8 +759,9 @@ static int rxe_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 	spin_unlock_irqrestore(&rq->producer_lock, flags);
 
 	if (qp->resp.state == QP_STATE_ERROR)
-		rxe_sched_task(&qp->resp.task);
+		rxe_run_task(&qp->resp.task, 1);
 
+err1:
 	return err;
 }
 
@@ -807,9 +826,16 @@ static int rxe_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata)
 
 	err = rxe_cq_chk_attr(rxe, cq, cqe, 0);
 	if (err)
-		return err;
+		goto err1;
 
-	return rxe_cq_resize_queue(cq, cqe, uresp, udata);
+	err = rxe_cq_resize_queue(cq, cqe, uresp, udata);
+	if (err)
+		goto err1;
+
+	return 0;
+
+err1:
+	return err;
 }
 
 static int rxe_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc)
@@ -876,7 +902,6 @@ static struct ib_mr *rxe_get_dma_mr(struct ib_pd *ibpd, int access)
 
 	rxe_get(pd);
 	mr->ibmr.pd = ibpd;
-	mr->ibmr.device = ibpd->device;
 
 	rxe_mr_init_dma(access, mr);
 	rxe_finalize(mr);
@@ -896,23 +921,26 @@ static struct ib_mr *rxe_reg_user_mr(struct ib_pd *ibpd,
 	struct rxe_mr *mr;
 
 	mr = rxe_alloc(&rxe->mr_pool);
-	if (!mr)
-		return ERR_PTR(-ENOMEM);
+	if (!mr) {
+		err = -ENOMEM;
+		goto err2;
+	}
+
 
 	rxe_get(pd);
 	mr->ibmr.pd = ibpd;
-	mr->ibmr.device = ibpd->device;
 
 	err = rxe_mr_init_user(rxe, start, length, iova, access, mr);
 	if (err)
-		goto err1;
+		goto err3;
 
 	rxe_finalize(mr);
 
 	return &mr->ibmr;
 
-err1:
+err3:
 	rxe_cleanup(mr);
+err2:
 	return ERR_PTR(err);
 }
 
@@ -928,23 +956,25 @@ static struct ib_mr *rxe_alloc_mr(struct ib_pd *ibpd, enum ib_mr_type mr_type,
 		return ERR_PTR(-EINVAL);
 
 	mr = rxe_alloc(&rxe->mr_pool);
-	if (!mr)
-		return ERR_PTR(-ENOMEM);
+	if (!mr) {
+		err = -ENOMEM;
+		goto err1;
+	}
 
 	rxe_get(pd);
 	mr->ibmr.pd = ibpd;
-	mr->ibmr.device = ibpd->device;
 
 	err = rxe_mr_init_fast(max_num_sg, mr);
 	if (err)
-		goto err1;
+		goto err2;
 
 	rxe_finalize(mr);
 
 	return &mr->ibmr;
 
-err1:
+err2:
 	rxe_cleanup(mr);
+err1:
 	return ERR_PTR(err);
 }
 
@@ -1104,7 +1134,7 @@ int rxe_register_device(struct rxe_dev *rxe, const char *ibdev_name)
 
 	err = ib_register_device(dev, ibdev_name, NULL);
 	if (err)
-		rxe_dbg(rxe, "failed with error %d\n", err);
+		pr_warn("%s failed with error %d\n", __func__, err);
 
 	/*
 	 * Note that rxe may be invalid at this point if another thread

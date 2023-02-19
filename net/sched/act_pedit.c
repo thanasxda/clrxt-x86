@@ -20,7 +20,6 @@
 #include <net/tc_act/tc_pedit.h>
 #include <uapi/linux/tc_act/tc_pedit.h>
 #include <net/pkt_cls.h>
-#include <net/tc_wrapper.h>
 
 static struct tc_action_ops act_pedit_ops;
 
@@ -320,9 +319,8 @@ static int pedit_skb_hdr_offset(struct sk_buff *skb,
 	return ret;
 }
 
-TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
-				    const struct tc_action *a,
-				    struct tcf_result *res)
+static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+			 struct tcf_result *res)
 {
 	struct tcf_pedit *p = to_pedit(a);
 	u32 max_offset;
