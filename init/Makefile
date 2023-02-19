@@ -2,6 +2,11 @@
 #
 # Makefile for the linux kernel.
 #
+subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
+
+
+
+
 
 ccflags-y := -fno-function-sections -fno-data-sections
 

@@ -140,6 +140,14 @@ __read_mostly int sysctl_resched_latency_warn_once = 1;
 #endif /* CONFIG_SCHED_DEBUG */
 
 /*
+ * Choose the yield level that will perform.
+ * 0: No yield.
+ * 1: Yield only to better priority/deadline tasks.
+ * 2: Re-queue current tasks. (default CFS)
+ */
+__read_mostly int sysctl_sched_yield_type = 0;
+
+/*
  * Number of tasks to iterate in a single balance run.
  * Limited because this is done with IRQs disabled.
  */
@@ -533,7 +541,7 @@ void raw_spin_rq_lock_nested(struct rq *rq, int subclass)
 
 	/* Matches synchronize_rcu() in __sched_core_enable() */
 	preempt_disable();
-	if (sched_core_disabled()) {
+	if (likely(sched_core_disabled())) {
 		raw_spin_lock_nested(&rq->__lock, subclass);
 		/* preempt_count *MUST* be > 1 */
 		preempt_enable_no_resched();
@@ -741,7 +749,7 @@ void update_rq_clock(struct rq *rq)
 #endif
 
 	delta = sched_clock_cpu(cpu_of(rq)) - rq->clock;
-	if (delta < 0)
+	if (unlikely(delta < 0))
 		return;
 	rq->clock += delta;
 	update_rq_clock_task(rq, delta);
@@ -5932,7 +5940,7 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
 	struct rq *rq_i;
 	bool need_sync;
 
-	if (!sched_core_enabled(rq))
+	if (likely(!sched_core_enabled(rq)))
 		return __pick_next_task(rq, prev, rf);
 
 	cpu = cpu_of(rq);
@@ -7119,6 +7127,7 @@ int can_nice(const struct task_struct *p, const int nice)
 {
 	return is_nice_reduction(p, nice) || capable(CAP_SYS_NICE);
 }
+EXPORT_SYMBOL(can_nice);
 
 #ifdef __ARCH_WANT_SYS_NICE
 
@@ -8323,10 +8332,15 @@ static void do_sched_yield(void)
 	struct rq_flags rf;
 	struct rq *rq;
 
+	if (!sysctl_sched_yield_type)
+		return;
+
 	rq = this_rq_lock_irq(&rf);
 
 	schedstat_inc(rq->yld_count);
-	current->sched_class->yield_task(rq);
+
+	if (sysctl_sched_yield_type > 1)
+		current->sched_class->yield_task(rq);
 
 	preempt_disable();
 	rq_unlock_irq(rq, &rf);
@@ -8352,7 +8366,7 @@ SYSCALL_DEFINE0(sched_yield)
 #if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
 int __sched __cond_resched(void)
 {
-	if (should_resched(0)) {
+	if (unlikely(should_resched(0))) {
 		preempt_schedule_common();
 		return 1;
 	}

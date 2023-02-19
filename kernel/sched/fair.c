@@ -19,6 +19,9 @@
  *
  *  Adaptive scheduling granularity, math enhancements by Peter Zijlstra
  *  Copyright (C) 2007 Red Hat, Inc., Peter Zijlstra
+ * 
+ *  Remove energy efficiency functions by Alexandre Frade
+ *  (C) 2021 Alexandre Frade <kernel@xanmod.org>
  */
 #include <linux/energy_model.h>
 #include <linux/mmap_lock.h>
@@ -69,8 +72,8 @@
  *
  * (default: 6ms * (1 + ilog(ncpus)), units: nanoseconds)
  */
-unsigned int sysctl_sched_latency			= 6000000ULL;
-static unsigned int normalized_sysctl_sched_latency	= 6000000ULL;
+unsigned int sysctl_sched_latency			= 40000ULL;
+static unsigned int normalized_sysctl_sched_latency	= 40000ULL;
 
 /*
  * The initial- and re-scaling of tunables is configurable
@@ -7333,6 +7336,7 @@ unlock:
 	return target;
 }
 
+static unsigned int once_in_a_while;
 /*
  * select_task_rq_fair: Select target runqueue for the waking task in domains
  * that have the relevant SD flag set. In practice, this is SD_BALANCE_WAKE,
@@ -7343,6 +7347,10 @@ unlock:
  *
  * Returns the target CPU number.
  */
+
+int best_core = -1;
+int second_best_core = -1;
+
 static int
 select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
 {
@@ -7360,16 +7368,65 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
 	lockdep_assert_held(&p->pi_lock);
 	if (wake_flags & WF_TTWU) {
 		record_wakee(p);
-
-		if (sched_energy_enabled()) {
-			new_cpu = find_energy_efficient_cpu(p, prev_cpu);
-			if (new_cpu >= 0)
-				return new_cpu;
-			new_cpu = prev_cpu;
-		}
-
 		want_affine = !wake_wide(p) && cpumask_test_cpu(cpu, p->cpus_ptr);
 	}
+
+	if (prev_cpu != best_core && prev_cpu != second_best_core &&
+		       cpu_rq(prev_cpu)->nr_running != 0) {
+		if (second_best_core != -1 && cpu_rq(second_best_core)->nr_running == 0 &&
+			       nr_iowait_cpu(second_best_core) < 2 && cpu_to_node(prev_cpu) == cpu_to_node(second_best_core))
+			prev_cpu = second_best_core;
+		if (best_core != -1 && cpu_rq(best_core)->nr_running == 0 &&
+			       nr_iowait_cpu(best_core) < 2  && cpu_to_node(prev_cpu) == cpu_to_node(best_core))
+			prev_cpu = best_core;
+	}
+/*
+	if (prev_cpu > 0 && cpu_rq(prev_cpu)->nr_running != 0 && cpu_rq(prev_cpu - 1)->nr_running == 0)
+		prev_cpu = prev_cpu - 1;
+*/
+
+
+	rcu_read_lock();
+
+	once_in_a_while++;
+
+	if (cpu_rq(prev_cpu)->nr_running || (once_in_a_while & 15) == 0) {
+		int _cpu;
+		int bestprio = -5000;
+		int bestcpu = -1;
+
+		for_each_online_cpu(_cpu) {
+			if (!cpumask_test_cpu(_cpu, p->cpus_ptr)
+				|| cpu_rq(_cpu)->nr_running)
+				continue;
+			if (arch_asym_cpu_priority(_cpu) > bestprio
+				|| (prev_cpu == _cpu
+					&& bestprio == arch_asym_cpu_priority(_cpu))) {
+				bestcpu = _cpu;
+				bestprio = arch_asym_cpu_priority(_cpu);
+			}
+		}
+
+		if (bestcpu >= 0) {
+			rcu_read_unlock();
+			return bestcpu;
+		}
+	}
+
+	if (prev_cpu != best_core && prev_cpu != second_best_core &&
+		       cpu_rq(prev_cpu)->nr_running != 0) {
+		if (second_best_core != -1 && cpu_rq(second_best_core)->nr_running == 0 &&
+			       nr_iowait_cpu(second_best_core) < 2 && cpu_to_node(prev_cpu) == cpu_to_node(second_best_core))
+			prev_cpu = second_best_core;
+		if (best_core != -1 && cpu_rq(best_core)->nr_running == 0 &&
+			       nr_iowait_cpu(best_core) < 2  && cpu_to_node(prev_cpu) == cpu_to_node(best_core))
+			prev_cpu = best_core;
+	}
+/*
+	if (prev_cpu > 0 && cpu_rq(prev_cpu)->nr_running != 0 && cpu_rq(prev_cpu - 1)->nr_running == 0)
+		prev_cpu = prev_cpu - 1;
+*/
+
 
 	rcu_read_lock();
 	for_each_domain(cpu, tmp) {
@@ -9057,12 +9114,10 @@ static bool asym_smt_can_pull_tasks(int dst_cpu, struct sd_lb_stats *sds,
 				    struct sched_group *sg)
 {
 #ifdef CONFIG_SCHED_SMT
-	bool local_is_smt, sg_is_smt;
+	bool local_is_smt;
 	int sg_busy_cpus;
 
 	local_is_smt = sds->local->flags & SD_SHARE_CPUCAPACITY;
-	sg_is_smt = sg->flags & SD_SHARE_CPUCAPACITY;
-
 	sg_busy_cpus = sgs->group_weight - sgs->idle_cpus;
 
 	if (!local_is_smt) {
@@ -9083,25 +9138,16 @@ static bool asym_smt_can_pull_tasks(int dst_cpu, struct sd_lb_stats *sds,
 		return sched_asym_prefer(dst_cpu, sg->asym_prefer_cpu);
 	}
 
-	/* @dst_cpu has SMT siblings. */
-
-	if (sg_is_smt) {
-		int local_busy_cpus = sds->local->group_weight -
-				      sds->local_stat.idle_cpus;
-		int busy_cpus_delta = sg_busy_cpus - local_busy_cpus;
-
-		if (busy_cpus_delta == 1)
-			return sched_asym_prefer(dst_cpu, sg->asym_prefer_cpu);
-
-		return false;
-	}
-
 	/*
-	 * @sg does not have SMT siblings. Ensure that @sds::local does not end
-	 * up with more than one busy SMT sibling and only pull tasks if there
-	 * are not busy CPUs (i.e., no CPU has running tasks).
+	 * @dst_cpu has SMT siblings. When both @dst_cpu and the busiest core
+	 * have one or more busy siblings, moving tasks between them results
+	 * in the same throughput. Only if all the siblings of @dst_cpu are
+	 * idle throughput can increase.
+	 *
+	 * If the difference in the number of busy CPUs is two or more, let
+	 * find_busiest_group() take care of it.
 	 */
-	if (!sds->local_stat.sum_nr_running)
+	if (sg_busy_cpus == 1 && !sds->local_stat.sum_nr_running)
 		return sched_asym_prefer(dst_cpu, sg->asym_prefer_cpu);
 
 	return false;
@@ -10323,9 +10369,14 @@ asym_active_balance(struct lb_env *env)
 	 * ASYM_PACKING needs to force migrate tasks from busy but
 	 * lower priority CPUs in order to pack all tasks in the
 	 * highest priority CPUs.
+	 *
+	 * If the busy CPU has higher priority but is an SMT sibling
+	 * in which other SMT siblings are also busy, a lower-priority
+	 * CPU in a separate core can help.
 	 */
 	return env->idle != CPU_NOT_IDLE && (env->sd->flags & SD_ASYM_PACKING) &&
-	       sched_asym_prefer(env->dst_cpu, env->src_cpu);
+	       (sched_asym_prefer(env->dst_cpu, env->src_cpu) ||
+		!(env->sd->flags & SD_SHARE_CPUCAPACITY));
 }
 
 static inline bool

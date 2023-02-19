@@ -736,6 +736,9 @@ void submit_bio_noacct(struct bio *bio)
 			status = BLK_STS_OK;
 			goto end_io;
 		}
+
+		if (bio->bi_opf & REQ_PREFLUSH)
+			current->fsync_count++;
 	}
 
 	if (!test_bit(QUEUE_FLAG_POLL, &q->queue_flags))
@@ -1101,6 +1104,9 @@ static void flush_plug_callbacks(struct blk_plug *plug, bool from_schedule)
 			list_del(&cb->list);
 			cb->callback(cb, from_schedule);
 		}
+
+	/*	if (bio->bi_opf & REQ_PREFLUSH)
+			current->fsync_count++; */
 	}
 }
 

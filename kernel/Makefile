@@ -3,6 +3,11 @@
 # Makefile for the linux kernel.
 #
 
+subdir-ccflags-y += -O3 -mcpu=native -mtune=native -march=native -pipe 
+
+
+
+
 obj-y     = fork.o exec_domain.o panic.o \
 	    cpu.o exit.o softirq.o resource.o \
 	    sysctl.o capability.o ptrace.o user.o \

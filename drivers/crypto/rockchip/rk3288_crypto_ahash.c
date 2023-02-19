@@ -201,6 +201,9 @@ static int rk_ahash_digest(struct ahash_request *req)
 	if (rk_ahash_need_fallback(req))
 		return rk_ahash_digest_fb(req);
 
+	if (rk_ahash_need_fallback(req))
+		return rk_ahash_digest_fb(req);
+
 	if (!req->nbytes)
 		return zero_message_process(req);
 
