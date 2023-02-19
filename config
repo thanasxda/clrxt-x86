@@ -528,7 +528,7 @@ CONFIG_HOTPLUG_CPU=y
 # CONFIG_LEGACY_VSYSCALL_XONLY is not set
 CONFIG_LEGACY_VSYSCALL_NONE=y
 CONFIG_CMDLINE_BOOL=y
-CONFIG_CMDLINE="rcu_nocbs=0 align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all irqaffinity=0 forcepae iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"
+CONFIG_CMDLINE="rcu_nocbs=0 align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all irqaffinity=0 iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"
 # CONFIG_CMDLINE_OVERRIDE is not set
 
 CONFIG_STRICT_SIGALTSTACK_SIZE=y

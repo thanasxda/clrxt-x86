@@ -462,8 +462,6 @@ endif
 HOSTRUSTC = rustc
 HOSTPKG_CONFIG	= pkg-config
 
-
-
 KBUILD_USERHOSTCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
 			 -O3 -fomit-frame-pointer -std=gnu11 \
 			 -Wdeclaration-after-statement
@@ -486,9 +484,9 @@ export rust_common_flags := --edition=2021 \
 			    -Dclippy::needless_continue \
 			    -Wclippy::dbg_macro
 
-KBUILD_HOSTCFLAGS   := -O3 $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
+KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
 KBUILD_HOSTCXXFLAGS := -Wall -O3 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
-KBUILD_HOSTRUSTFLAGS := $(rust_common_flags) -O -Cstrip=debuginfo \
+KBUILD_HOSTRUSTFLAGS := $(rust_common_flags) -O3 -Cstrip=debuginfo \
 			-Zallow-features= $(HOSTRUSTFLAGS)
 KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
 KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
@@ -775,7 +773,7 @@ export CFLAGS_GCOV
 
 # The arch Makefiles can override CC_FLAGS_FTRACE. We may also append it later.
 ifdef CONFIG_FUNCTION_TRACER
-  CC_FLAGS_FTRACE := -pg
+  #CC_FLAGS_FTRACE := -pg
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
@@ -973,39 +971,10 @@ rustflags64-$(CONFIG_MATOM)	+= -Ctarget-cpu=atom
 rustflags64-$(CONFIG_GENERIC_CPU)	+= -Ztune-cpu=native
 KBUILD_RUSTFLAGS += $(rustflags64-y)
 
-### MLX
-# THIS SETUP USES GCC + LLD FOR PERFORMANCE. CLANG NOT USED BUT INCLUDED.
-# flags for gcc/clang
-mlxcflags 	= -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,norelro -Wl,-mcpu=native -Wl,--strip-debug -falign-functions=32 -O3 -fassociative-math -Wno-frame-address -Wno-trigraphs -Wundef -ffat-lto-objects -Wl,-O3 -fuse-ld=lld -fvpt -fpeel-loops -finline-functions -funswitch-loops -fgcse-after-reload -ftree-loop-distribute-patterns -Ofast -funroll-loops -Wp,-D_REENTRANT -ftree-loop-optimize -foptimize-sibling-calls -fdelete-null-pointer-checks -faggressive-loop-optimizations
-mlxldflags 	= --strip-debug -plugin-opt=-mcpu=native -plugin-opt=O3
-mlxrustflags 	= -Copt-level=3 -Ztune-cpu=native -C target-cpu=native
-mlxextra 	= -fomit-frame-pointer -fno-stack-protector -Wno-format-security -Wl,--hash-style-gnu 
-LDFLAGS 		+= $(mlxldflags)
-LDFLAGS_MODULE 		+= $(mlxldflags)
-KBUILD_LDFLAGS 		+= $(mlxldflags)
-KBUILD_LDFLAGS_MODULE 	+= $(mlxldflags)
-KBUILD_RUSTFLAGS 	+= $(mlxrustflags)
-CFLAGS 			+= $(mlxcflags) $(mlxextra) 
-KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxextra) -mprefer-vector-width=256 -flto=auto
-KBUILD_CFLAGS_MODULE 	+= $(mlxcflags)  
-subdir-ccflags-y 	+= $(mlxcflags) 
-KBUILD_AFLAGS 		+= 
-# extra flags
-#mlxextra2 	=  
 ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
-# GCC
-# graphite and more
-mlxgraphite 	= -fgraphite-identity -floop-block -floop-interchange -floop-nest-optimize -floop-optimize -floop-parallelize-all -floop-strip-mine -ftree-loop-vectorize -ftree-loop-distribution -fprefetch-loop-arrays
-CFLAGS 			+= $(mlxgraphite) 
-KBUILD_CFLAGS  		+= $(mlxgraphite) 
-KBUILD_CFLAGS_MODULE 	+= $(mlxgraphite) 
-subdir-ccflags-y 	+= $(mlxgraphite) 
-# flto needs to be passed to vmlinux and experimental with gcc, not working as is
+
 else ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
-# CLANG
-# IN CASE OF CLANG, POLLY AUTOMATICALLY ACTIVATED WHEN CC=clang, AS FOR LTO, DONE BY USER THROUGH CONFIG SELECTION.
-mlxclangflags 	= -flto=auto -flto-partition=none 
-KBUILD_CFLAGS 		+= $(mlxclangflags) 
+
 endif
 
 # Always set `debug-assertions` and `overflow-checks` because their default
@@ -1026,7 +995,7 @@ ifdef CONFIG_READABLE_ASM
 # reorder blocks reorders the control in the function
 # ipa clone creates specialized cloned functions
 # partial inlining inlines only parts of functions
-KBUILD_CFLAGS += -fno-reorder-blocks -fno-ipa-cp-clone -fno-partial-inlining
+#KBUILD_CFLAGS += -fno-reorder-blocks -fno-ipa-cp-clone -fno-partial-inlining
 endif
 
 ifneq ($(CONFIG_FRAME_WARN),0)
@@ -1046,7 +1015,31 @@ KBUILD_CFLAGS-$(CONFIG_CC_NO_ARRAY_BOUNDS) += -Wno-array-bounds
 KBUILD_RUSTFLAGS-$(CONFIG_WERROR) += -Dwarnings
 KBUILD_RUSTFLAGS += $(KBUILD_RUSTFLAGS-y)
 
+### MLX
+# THIS SETUP USES GCC + LLD FOR PERFORMANCE. CLANG NOT USED BUT INCLUDED.
+# flags for gcc/clang
+mlxcflags 	= -Wimplicit-fallthrough=0 -fasynchronous-unwind-tables -feliminate-unused-debug-types -ffast-math -fforce-addr -fno-semantic-interposition -fno-signed-zeros -fno-strict-aliasing -fno-trapping-math -fopenmp -funsafe-math-optimizations -fwrapv -lcrypt -ldl -lhmmer -lm -lncurses -lpgcommon -lpgport -lpq -lpthread -lrt -lsquid -m64 -march=native -mcpu=native -mtune=native -pipe -pthread -g0 -fuse-linker-plugin -Wl,--as-needed -Wl,--sort-common -Wl,norelro -Wl,-mcpu=native -Wl,--strip-debug -falign-functions=32 -O3 -fassociative-math -Wno-frame-address -Wno-trigraphs -Wundef -ffat-lto-objects -Wl,-O3 -fuse-ld=lld -fvpt -fpeel-loops -finline-functions -funswitch-loops -fgcse-after-reload -ftree-loop-distribute-patterns -Ofast -funroll-loops -Wp,-D_REENTRANT -ftree-loop-optimize -foptimize-sibling-calls -fdelete-null-pointer-checks -faggressive-loop-optimizations       
+
+mlxldflags 	= --strip-debug -plugin-opt=-mcpu=native -plugin-opt=O3 
+mlxrustflags 	= -Copt-level=3 -Ztune-cpu=native -C target-cpu=native -Cstrip=debuginfo
+mlxextra 	= -fomit-frame-pointer -fno-stack-protector -Wno-format-security -Wl,--hash-style-gnu 
+LDFLAGS 		+= $(mlxldflags) 
+LDFLAGS_MODULE 		+= $(mlxldflags) 
+KBUILD_LDFLAGS 		+= $(mlxldflags) 
+KBUILD_LDFLAGS_MODULE 	+= $(mlxldflags)
+KBUILD_RUSTFLAGS 	+= $(mlxrustflags)
+CFLAGS 			+= $(mlxcflags) $(mlxextra) -mprefer-vector-width=256
+KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxextra)  
+KBUILD_CFLAGS_MODULE 	+= $(mlxcflags) 
+subdir-ccflags-y 	+= $(mlxcflags) 
+KBUILD_AFLAGS 		+= 
+# extra flags
+#mlxextra2 	=  -flto-partition=none 
 ifdef CONFIG_CC_IS_CLANG
+# CLANG
+# IN CASE OF CLANG, POLLY AUTOMATICALLY ACTIVATED WHEN CC=clang, AS FOR LTO, DONE BY USER THROUGH CONFIG SELECTION.
+mlxclangflags 	=  
+KBUILD_CFLAGS 		+= $(mlxclangflags) 
 KBUILD_CPPFLAGS += -Qunused-arguments
 KBUILD_CFLAGS+=  -mllvm -polly \
                         -mllvm -polly-run-inliner \
@@ -1063,7 +1056,15 @@ LDFLAGS+=-plugin LLVMPolly.so
 # The kernel builds with '-std=gnu11' so use of GNU extensions is acceptable.
 KBUILD_CFLAGS += -Wno-gnu
 else
-
+# GCC
+# graphite and more
+mlxgraphite 	= -fgraphite-identity -floop-block -floop-interchange -floop-nest-optimize -floop-optimize -floop-parallelize-all -floop-strip-mine -ftree-loop-vectorize -ftree-loop-distribution -fprefetch-loop-arrays 
+mlxgcc 		= -fvpt -ftree-loop-distribute-patterns -ftree-loop-optimize -faggressive-loop-optimizations -fuse-linker-plugin -ffat-lto-objects -fpeel-loops -funswitch-loops -fgcse-after-reload
+CFLAGS 			+= $(mlxgraphite) $(mlxgcc)
+KBUILD_CFLAGS  		+= $(mlxgraphite) $(mlxgcc) -flto=auto
+KBUILD_CFLAGS_MODULE 	+= $(mlxgraphite) $(mlxgcc) -flto=auto
+subdir-ccflags-y 	+= $(mlxgraphite) $(mlxgcc) 
+# flto needs to be passed to vmlinux and experimental with gcc, not working as is
 # gcc inanely warns about local variables called 'main'
 KBUILD_CFLAGS += -Wno-main
 endif
@@ -1077,8 +1078,8 @@ KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
 KBUILD_CFLAGS += $(call cc-disable-warning, dangling-pointer)
 
 ifdef CONFIG_FRAME_POINTER
-KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
-KBUILD_RUSTFLAGS += -Cforce-frame-pointers=y
+#KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
+#KBUILD_RUSTFLAGS += -Cforce-frame-pointers=y
 else
 # Some targets (ARM with Thumb2, for example), can't be built with frame
 # pointers.  For those, we don't have FUNCTION_TRACER automatically
@@ -1099,7 +1100,7 @@ endif
 
 # Initialize all stack variables with a zero value.
 ifdef CONFIG_INIT_STACK_ALL_ZERO
-KBUILD_CFLAGS	+= -ftrivial-auto-var-init=zero
+#KBUILD_CFLAGS	+= -ftrivial-auto-var-init=zero
 ifdef CONFIG_CC_HAS_AUTO_VAR_INIT_ZERO_ENABLER
 # https://github.com/llvm/llvm-project/issues/44842
 KBUILD_CFLAGS	+= -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang
@@ -1112,7 +1113,7 @@ KBUILD_CFLAGS	+= $(call cc-option, -fno-stack-clash-protection)
 
 # Clear used registers at func exit (to reduce data lifetime and ROP gadgets).
 ifdef CONFIG_ZERO_CALL_USED_REGS
-KBUILD_CFLAGS	+= -fzero-call-used-regs=used-gpr
+#KBUILD_CFLAGS	+= -fzero-call-used-regs=used-gpr
 endif
 
 ifdef CONFIG_FUNCTION_TRACER
@@ -1314,7 +1315,7 @@ LDFLAGS_vmlinux	+= -X
 endif
 
 ifeq ($(CONFIG_RELR),y)
-LDFLAGS_vmlinux	+= --pack-dyn-relocs=relr --use-android-relr-tags
+#LDFLAGS_vmlinux	+= --pack-dyn-relocs=relr --use-android-relr-tags
 endif
 
 # We never want expected sections to be placed heuristically by the
