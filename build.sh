@@ -50,8 +50,8 @@ LIBOMPTARGET_OMPT_SUPPORT=1
 sudo export USE_CCACHE=1
 sudo export CCACHE_RECACHE=yes
 sudo export USE_PREBUILT_CACHE=1
-sudo export PREBUILT_CACHE_DIR=/var/cache/ccache
-sudo export CCACHE_DIR=/var/cache/ccache
+sudo export PREBUILT_CACHE_DIR=~/.ccache
+sudo export CCACHE_DIR=~/.ccache
 sudo ccache -M 30G
 sudo ccache --set-config=locale,time_macros,file_stat_matches,include_file_ctime,include_file_mtime
 
@@ -136,12 +136,14 @@ fi
 
 THREADS=-j$(nproc --all)
 
+xcpu=$(if lscpu | grep -qi intel ; then echo " ibpb=off kvm-intel.vmentry_l1d_flush=never mds=off noibrs nopti l1tf=off kvm-intel.nested=1 intel_iommu=on,igfx_off tsx=on intel_pstate=hwp_only" ; elif lscpu | grep -qi amd ; then echo " mds=off noibrs nopti l1tf=off ibpb=off amd_iommu=pgtbl_v2 kvm-amd.avic=1 amd_iommu_intr=vapic amd_pstate=passive" ; fi)
+
 bls=no
 if [ $bls = yes ] || grep -q thanas /etc/rc.local ; then
 #if [ $bls = yes ] ; then
 sudo sed -i 's/CONFIG_CMDLINE_BOOL=.*/# CONFIG_CMDLINE_BOOL is not set/g' $PWD/config
 sudo sed -i 's/CONFIG_CMDLINE=.*/# CONFIG_CMDLINE is not set/g' $PWD/config
-fi
+elif grep -q "# CONFIG_CMDLINE is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE is not set/CONFIG_CMDLINE="rcu_nocbs=0'"$xcpu"' align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all irqaffinity=0 iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"/g' $PWD/config ; fi
 
 grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
  x86="/lib/ld-linux-x86-64.so.2" 
@@ -181,7 +183,7 @@ grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
 
 #if lscpu | grep -qi intel ; then sudo sed -i 's/# CONFIG_MNATIVE_INTEL.*/CONFIG_MNATIVE_INTEL=y/g' $PWD/config ; fi
 #if lscpu | grep -qi amd ; then sudo sed -i 's/# CONFIG_MNATIVE_AMD.*/CONFIG_MNATIVE_AMD=y/g' $PWD/config ; fi
-  
+  # these are now overriden by march=native since kernel meant to be compiled locally anyway
   if $x86 --help | grep -q "v4 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU4.*/CONFIG_GENERIC_CPU4=y/g' $PWD/.config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/.config 
 elif $x86 --help | grep -q "v3 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU3.*/CONFIG_GENERIC_CPU3=y/g' $PWD/.config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/.config  
 elif $x86 --help | grep -q "v2 (supported" ; then sudo sed -i 's/# CONFIG_GENERIC_CPU2.*/CONFIG_GENERIC_CPU2=y/g' $PWD/.config ; sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/.config  
@@ -190,7 +192,7 @@ else sudo sed -i 's/# CONFIG_MCORE2.*/CONFIG_MCORE2=y/g' $PWD/.config
   
 if [ $CANYOUBOOT = no ] ; then if ! grep -q CONFIG_RETPOLINE $PWD/.config ; then echo CONFIG_RETPOLINE=y | sudo tee -a $PWD/.config ; else sudo sed -i 's/# CONFIG_RETPOLINE.*/CONFIG_RETPOLINE=y/g' $PWD/.config ; fi ; fi
 
-if ! grep -q CONFIG_STACKDEPOT $PWD/.config ; then echo CONFIG_STACKDEPOT=y | sudo tee -a $PWD/.config ; else sudo sed -i 's/CONFIG_STACKDEPOT=y/CONFIG_STACKDEPOT=n/g' $PWD/.config ; fi 
+if ! grep -q CONFIG_STACKDEPOT $PWD/.config ; then echo CONFIG_STACKDEPOT=n | sudo tee -a $PWD/.config ; else sudo sed -i 's/CONFIG_STACKDEPOT=y/CONFIG_STACKDEPOT=n/g' $PWD/.config ; fi 
 
 grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config 
 
@@ -210,7 +212,7 @@ if grep -q "CONFIG_GENERIC_CPU3=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENE
 if grep -q "CONFIG_GENERIC_CPU2=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU2=y/# CONFIG_GENERIC_CPU2 is not set/g' $PWD/config ; fi
 if grep -q "/CONFIG_MCORE2=y" $PWD/config ; then sudo sed -i 's/CONFIG_MCORE2=y/# CONFIG_MCORE2 is not set/g' $PWD/config ; fi
 if grep -q "# CONFIG_CMDLINE_BOOL is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE_BOOL is not set/CONFIG_CMDLINE_BOOL=y/g' $PWD/config ; fi
-if grep -q "# CONFIG_CMDLINE is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE is not set/CONFIG_CMDLINE="rcu_nocbs=0 align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all irqaffinity=0 iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"/g' $PWD/config ; fi
+if grep -q "# CONFIG_CMDLINE is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE is not set/CONFIG_CMDLINE="rcu_nocbs=0 ibpb=off kvm-intel.vmentry_l1d_flush=never mds=off noibrs nopti l1tf=off kvm-intel.nested=1 intel_iommu=on,igfx_off tsx=on intel_pstate=hwp_only amd_iommu=pgtbl_v2 kvm-amd.avic=1 amd_iommu_intr=vapic amd_pstate=passive align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all irqaffinity=0 iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"/g' $PWD/config ; fi
 
 grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config 
 

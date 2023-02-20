@@ -105,7 +105,7 @@ CONFIG_NO_HZ_FULL=y
 CONFIG_CONTEXT_TRACKING_USER=n
 # CONFIG_CONTEXT_TRACKING_USER_FORCE is not set
 CONFIG_NO_HZ=y
-CONFIG_HIGH_RES_TIMERS=n
+CONFIG_HIGH_RES_TIMERS=y
 CONFIG_CLOCKSOURCE_WATCHDOG_MAX_SKEW_US=100
 # end of Timers subsystem
 
@@ -528,7 +528,7 @@ CONFIG_HOTPLUG_CPU=y
 # CONFIG_LEGACY_VSYSCALL_XONLY is not set
 CONFIG_LEGACY_VSYSCALL_NONE=y
 CONFIG_CMDLINE_BOOL=y
-CONFIG_CMDLINE="rcu_nocbs=0 align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all irqaffinity=0 iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"
+CONFIG_CMDLINE="rcu_nocbs=0 ibpb=off kvm-intel.vmentry_l1d_flush=never mds=off noibrs nopti l1tf=off kvm-intel.nested=1 intel_iommu=on,igfx_off tsx=on intel_pstate=hwp_only amd_iommu=pgtbl_v2 kvm-amd.avic=1 amd_iommu_intr=vapic amd_pstate=passive align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all irqaffinity=0 iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"
 # CONFIG_CMDLINE_OVERRIDE is not set
 
 CONFIG_STRICT_SIGALTSTACK_SIZE=y
@@ -4719,11 +4719,11 @@ CONFIG_THERMAL_WRITABLE_TRIPS=y
 CONFIG_THERMAL_DEFAULT_GOV_STEP_WISE=y
 # CONFIG_THERMAL_DEFAULT_GOV_FAIR_SHARE is not set
 # CONFIG_THERMAL_DEFAULT_GOV_USER_SPACE is not set
-CONFIG_THERMAL_GOV_FAIR_SHARE=y
-CONFIG_THERMAL_GOV_STEP_WISE=y
-CONFIG_THERMAL_GOV_BANG_BANG=y
-CONFIG_THERMAL_GOV_USER_SPACE=y
-CONFIG_THERMAL_GOV_POWER_ALLOCATOR=y
+CONFIG_THERMAL_GOV_FAIR_SHARE=m
+CONFIG_THERMAL_GOV_STEP_WISE=m
+CONFIG_THERMAL_GOV_BANG_BANG=m
+CONFIG_THERMAL_GOV_USER_SPACE=m
+CONFIG_THERMAL_GOV_POWER_ALLOCATOR=m
 CONFIG_DEVFREQ_THERMAL=y
 CONFIG_THERMAL_EMULATION=y
 
@@ -9047,7 +9047,7 @@ CONFIG_SQUASHFS_FRAGMENT_CACHE_SIZE=3
 # CONFIG_QNX4FS_FS is not set
 # CONFIG_QNX6FS_FS is not set
 # CONFIG_ROMFS_FS is not set
-CONFIG_PSTORE=y
+CONFIG_PSTORE=n
 CONFIG_PSTORE_DEFAULT_KMSG_BYTES=10240
 CONFIG_PSTORE_DEFLATE_COMPRESS=m
 CONFIG_PSTORE_LZO_COMPRESS=m
