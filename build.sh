@@ -34,9 +34,9 @@ defconfig=config
 sudo /usr/sbin/update-ccache-symlinks
 sudo ln -sfT $(which dash) $(which sh)
 export PATH="/usr/lib/ccache/bin:${PATH}"
-export CCACHE_DIR="/var/cache/ccache"
+export CCACHE_DIR="~/.ccache"
 himri=$(who | head -n1 | awk '{print $1}')
-sudo chown $himri /var/cache/ccache ; sudo chown $himri /var/cache/ccache/* ; sudo chmod 775 /var/cache/ccache
+#sudo chown $himri /var/cache/ccache ; sudo chown $himri /var/cache/ccache/* ; sudo chmod 775 /var/cache/ccache
 LLVM_ENABLE_RUNTIMES=openmp
 LLVM_ENABLE_PROJECTS=ON
 LLVM_ENABLE_ASSERTIONS=ON
@@ -89,14 +89,13 @@ export PATH=""$xpath":$PATH"
 export LD_LIBRARY_PATH=""$xpath"/../lib:"$xpath"/../lib64:$LD_LIBRARY_PATH"
 export PATH=""$path2":$PATH"
 export LD_LIBRARY_PATH=""$path2"/../lib:"$path2"/../lib64:$LD_LIBRARY_PATH"
- #CLANG="AR=$xpath/llvm-ar
- #       NM=$xpath/llvm-nm
- #       OBJCOPY=$xpath/llvm-objcopy
- #       OBJDUMP=$xpath/llvm-objdump
- #       READELF=$xpath/llvm-readelf
- #       OBJSIZE=$xpath/llvm-size
- #       STRIP=$xpath/llvm-strip
- #       LD=$xpath/ld.lld"
+ CLANG="AR=$xpath/llvm-ar
+        NM=$xpath/llvm-nm
+        OBJCOPY=$xpath/llvm-objcopy
+        OBJDUMP=$xpath/llvm-objdump
+        READELF=$xpath/llvm-readelf
+        OBJSIZE=$xpath/llvm-size
+        STRIP=$xpath/llvm-strip"
 
 
 if [ -z $xtc ] ; then xtc=no ; fi
@@ -109,8 +108,7 @@ CLANG="CC=$xpath/clang
         OBJDUMP=$xpath/llvm-objdump
         READELF=$xpath/llvm-readelf
         OBJSIZE=$xpath/llvm-size
-        STRIP=$xpath/llvm-strip
-        LD=$xpath/ld.lld"
+        STRIP=$xpath/llvm-strip"
         fi
 
 tc=gcc
@@ -216,7 +214,7 @@ if grep -q "# CONFIG_CMDLINE is not set" $PWD/config ; then sudo sed -i 's/# CON
 
 grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config 
 
-
+systemd-machine-id-setup >/dev/null ; if [ $? = 0 ] ; then 
 if [ ! -e /usr/sbin/bls-schedlatency.bash ] ; then
 echo '[Unit]
 Description=Set sched_latency_ns in accordance with basic-linux-setup
@@ -245,6 +243,7 @@ sudo chmod +x /usr/sbin/bls-schedlatency.bash
 sudo systemctl enable bls-schedlatency
 sudo systemctl start bls-schedlatency
 fi
+fi
 
 if [ -e $source/arch/x86/boot/vmlinux.bin ] ; then
 sudo make $THREADS modules_install
@@ -253,7 +252,13 @@ sudo make $THREADS install
 sudo cp $PWD/arch/x86/boot/bzImage /boot/vmlinuz-"${KERNELVERSION}"
 sudo dracut -f -v /boot/initramfs-"${KERNELVERSION}".img "${KERNELVERSION}"
 #sudo kernel-install add /boot/initramfs-"${KERNELVERSION}".img /boot/vmlinuz-"${KERNELVERSION}"
-sudo dracut --regenerate-all --lz4 --uefi -f 
+dracut --version ; if [ $? = 0 ] ; then 
+sudo dracut --regenerate-all -f --lz4$(if [ -e /boot/efi ] || [ -e /efi ] || [ -e /boot/EFI ] ; then echo " --uefi" ; fi) 
+else
+cd /boot
+sudo mkinitramfs -ko initrd.img-"${KERNELVERSION}" "${KERNELVERSION}"
+cd $PWD
+fi
 #sudo refind-install ; sudo refind-mkdefault
 sudo sed -i 's/timeout .*/timeout 1/g' /boot/EFI/refind/refind.conf
 #sudo bootctl install

@@ -1029,7 +1029,7 @@ KBUILD_LDFLAGS 		+= $(mlxldflags)
 KBUILD_LDFLAGS_MODULE 	+= $(mlxldflags)
 KBUILD_RUSTFLAGS 	+= $(mlxrustflags)
 CFLAGS 			+= $(mlxcflags) $(mlxextra) -mprefer-vector-width=256
-KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxextra)  
+KBUILD_CFLAGS  		+= $(mlxcflags) $(mlxextra) -mprefer-vector-width=256 
 KBUILD_CFLAGS_MODULE 	+= $(mlxcflags) 
 subdir-ccflags-y 	+= $(mlxcflags) 
 KBUILD_AFLAGS 		+= 
