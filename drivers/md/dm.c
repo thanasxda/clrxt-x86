@@ -1008,7 +1008,6 @@ static void dm_wq_requeue_work(struct work_struct *work)
 		io->next = NULL;
 		__dm_io_complete(io, false);
 		io = next;
-		cond_resched();
 	}
 }
 
@@ -2570,7 +2569,6 @@ static void dm_wq_work(struct work_struct *work)
 			break;
 
 		submit_bio_noacct(bio);
-		cond_resched();
 	}
 }
 
