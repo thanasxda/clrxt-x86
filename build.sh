@@ -18,7 +18,7 @@
 # compilation time even if i have many GB ccache. just some personal notes from my experience. you be the judge.
 
 # IMPORTANT OPTIONS:
-CANYOUBOOT=yes # yes/no
+CANYOUBOOT=yes # yes/no # if you still cant boot check the commit that converted inbuilt stuff to modules. or change the config to your hardware. setup tries to debloat as much as possible so can happen. unfortunately localmodconfig sometimes strips out modules. alternatively try localyesconfig, but know it as some performance impact.
 
 DATE_START=$(date +"%s")
 yellow="\033[1;93m"
