@@ -16,6 +16,7 @@
 #include <asm/cacheflush.h>
 #include <asm/realmode.h>
 #include <asm/hypervisor.h>
+#include <asm/smp.h>
 
 #include <linux/ftrace.h>
 #include "../../realmode/rm/wakeup.h"
@@ -57,6 +58,7 @@ asmlinkage acpi_status __visible x86_acpi_enter_sleep_state(u8 state)
  */
 int x86_acpi_suspend_lowlevel(void)
 {
+	unsigned int __maybe_unused saved_smpboot_ctrl;
 	struct wakeup_header *header =
 		(struct wakeup_header *) __va(real_mode_header->wakeup_header);
 
@@ -115,6 +117,8 @@ int x86_acpi_suspend_lowlevel(void)
 	early_gdt_descr.address =
 			(unsigned long)get_cpu_gdt_rw(smp_processor_id());
 	initial_gs = per_cpu_offset(smp_processor_id());
+	/* Force the startup into boot mode */
+	saved_smpboot_ctrl = xchg(&smpboot_control, 0);
 #endif
 	initial_code = (unsigned long)wakeup_long64;
        saved_magic = 0x123456789abcdef0L;
@@ -127,6 +131,9 @@ int x86_acpi_suspend_lowlevel(void)
 	pause_graph_tracing();
 	do_suspend_lowlevel();
 	unpause_graph_tracing();
+
+	if (IS_ENABLED(CONFIG_64BIT) && IS_ENABLED(CONFIG_SMP))
+		smpboot_control = saved_smpboot_ctrl;
 	return 0;
 }
 
