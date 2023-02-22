@@ -99,7 +99,7 @@
 };
 
 &adsp_pil {
-	firmware-name = "qcom/sda660/adsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &blsp_i2c6 {

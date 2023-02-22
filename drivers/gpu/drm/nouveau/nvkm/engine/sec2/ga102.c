@@ -147,30 +147,7 @@ ga102_sec2 = {
 	.unit_unload = NV_SEC2_UNIT_V2_UNLOAD,
 };
 
-MODULE_FIRMWARE("nvidia/ga102/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/ga102/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/ga102/sec2/sig.bin");
-MODULE_FIRMWARE("nvidia/ga102/sec2/hs_bl_sig.bin");
-
-MODULE_FIRMWARE("nvidia/ga103/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/ga103/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/ga103/sec2/sig.bin");
-MODULE_FIRMWARE("nvidia/ga103/sec2/hs_bl_sig.bin");
-
-MODULE_FIRMWARE("nvidia/ga104/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/ga104/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/ga104/sec2/sig.bin");
-MODULE_FIRMWARE("nvidia/ga104/sec2/hs_bl_sig.bin");
-
-MODULE_FIRMWARE("nvidia/ga106/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/ga106/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/ga106/sec2/sig.bin");
-MODULE_FIRMWARE("nvidia/ga106/sec2/hs_bl_sig.bin");
-
-MODULE_FIRMWARE("nvidia/ga107/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/ga107/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/ga107/sec2/sig.bin");
-MODULE_FIRMWARE("nvidia/ga107/sec2/hs_bl_sig.bin");
+/*(DEBLOBBED)*/
 
 static int
 ga102_sec2_load(struct nvkm_sec2 *sec2, int ver,

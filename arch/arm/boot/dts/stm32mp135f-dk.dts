@@ -152,7 +152,7 @@
 		/* Internal pull-up on PI2 */
 		pinctrl-names = "default";
 		pinctrl-0 = <&stm32g0_intn_pins_a>;
-		firmware-name = "stm32g0-ucsi.mp135f-dk.fw";
+		firmware-name = "/*(DEBLOBBED)*/";
 		connector {
 			compatible = "usb-c-connector";
 			label = "USB-C";

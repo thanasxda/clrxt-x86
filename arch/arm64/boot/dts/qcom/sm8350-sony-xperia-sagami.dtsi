@@ -88,7 +88,7 @@
 
 &adsp {
 	status = "okay";
-	firmware-name = "qcom/sm8350/Sony/sagami/adsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &apps_rsc {
@@ -433,7 +433,7 @@
 
 &cdsp {
 	status = "okay";
-	firmware-name = "qcom/sm8350/Sony/sagami/cdsp.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &i2c1 {
@@ -526,12 +526,12 @@
 &ipa {
 	status = "okay";
 	memory-region = <&pil_ipa_fw_mem>;
-	firmware-name = "qcom/sm8350/Sony/sagami/ipa_fws.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &mpss {
 	status = "okay";
-	firmware-name = "qcom/sm8350/Sony/sagami/modem.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &pmk8350_rtc {
@@ -573,7 +573,7 @@
 
 &slpi {
 	status = "okay";
-	firmware-name = "qcom/sm8350/Sony/sagami/slpi.mbn";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &spi14 {

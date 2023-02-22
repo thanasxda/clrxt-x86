@@ -3390,7 +3390,7 @@ static int ccs_probe(struct i2c_client *client)
 	}
 
 	rval = snprintf(filename, sizeof(filename),
-			"ccs/ccs-sensor-%4.4x-%4.4x-%4.4x.fw",
+			"/*(DEBLOBBED)*/",
 			sensor->minfo.sensor_mipi_manufacturer_id,
 			sensor->minfo.sensor_model_id,
 			sensor->minfo.sensor_revision_number);
@@ -3399,7 +3399,7 @@ static int ccs_probe(struct i2c_client *client)
 		goto out_power_off;
 	}
 
-	rval = request_firmware(&fw, filename, &client->dev);
+	rval = reject_firmware(&fw, filename, &client->dev);
 	if (!rval) {
 		ccs_data_parse(&sensor->sdata, fw->data, fw->size, &client->dev,
 			       true);
@@ -3407,7 +3407,7 @@ static int ccs_probe(struct i2c_client *client)
 	}
 
 	rval = snprintf(filename, sizeof(filename),
-			"ccs/ccs-module-%4.4x-%4.4x-%4.4x.fw",
+			"/*(DEBLOBBED)*/",
 			sensor->minfo.mipi_manufacturer_id,
 			sensor->minfo.model_id,
 			sensor->minfo.revision_number);
@@ -3416,7 +3416,7 @@ static int ccs_probe(struct i2c_client *client)
 		goto out_release_sdata;
 	}
 
-	rval = request_firmware(&fw, filename, &client->dev);
+	rval = reject_firmware(&fw, filename, &client->dev);
 	if (!rval) {
 		ccs_data_parse(&sensor->mdata, fw->data, fw->size, &client->dev,
 			       true);

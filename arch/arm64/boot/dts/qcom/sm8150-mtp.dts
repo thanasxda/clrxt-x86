@@ -373,22 +373,22 @@
 
 &remoteproc_adsp {
 	status = "okay";
-	firmware-name = "qcom/sm8150/adsp.mdt";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &remoteproc_cdsp {
 	status = "okay";
-	firmware-name = "qcom/sm8150/cdsp.mdt";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &remoteproc_mpss {
 	status = "okay";
-	firmware-name = "qcom/sm8150/modem.mdt";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &remoteproc_slpi {
 	status = "okay";
-	firmware-name = "qcom/sm8150/slpi.mdt";
+	firmware-name = "/*(DEBLOBBED)*/";
 };
 
 &tlmm {

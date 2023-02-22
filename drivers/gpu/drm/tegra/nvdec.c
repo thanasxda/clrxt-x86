@@ -396,7 +396,7 @@ static const struct tegra_drm_client_ops nvdec_ops = {
 	.can_use_memory_ctx = nvdec_can_use_memory_ctx,
 };
 
-#define NVIDIA_TEGRA_210_NVDEC_FIRMWARE "nvidia/tegra210/nvdec.bin"
+#define NVIDIA_TEGRA_210_NVDEC_FIRMWARE "/*(DEBLOBBED)*/"
 
 static const struct nvdec_config nvdec_t210_config = {
 	.firmware = NVIDIA_TEGRA_210_NVDEC_FIRMWARE,
@@ -404,7 +404,7 @@ static const struct nvdec_config nvdec_t210_config = {
 	.supports_sid = false,
 };
 
-#define NVIDIA_TEGRA_186_NVDEC_FIRMWARE "nvidia/tegra186/nvdec.bin"
+#define NVIDIA_TEGRA_186_NVDEC_FIRMWARE "/*(DEBLOBBED)*/"
 
 static const struct nvdec_config nvdec_t186_config = {
 	.firmware = NVIDIA_TEGRA_186_NVDEC_FIRMWARE,
@@ -412,7 +412,7 @@ static const struct nvdec_config nvdec_t186_config = {
 	.supports_sid = true,
 };
 
-#define NVIDIA_TEGRA_194_NVDEC_FIRMWARE "nvidia/tegra194/nvdec.bin"
+#define NVIDIA_TEGRA_194_NVDEC_FIRMWARE "/*(DEBLOBBED)*/"
 
 static const struct nvdec_config nvdec_t194_config = {
 	.firmware = NVIDIA_TEGRA_194_NVDEC_FIRMWARE,
@@ -589,11 +589,11 @@ struct platform_driver tegra_nvdec_driver = {
 };
 
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC)
-MODULE_FIRMWARE(NVIDIA_TEGRA_210_NVDEC_FIRMWARE);
+/*(DEBLOBBED)*/
 #endif
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_186_SOC)
-MODULE_FIRMWARE(NVIDIA_TEGRA_186_NVDEC_FIRMWARE);
+/*(DEBLOBBED)*/
 #endif
 #if IS_ENABLED(CONFIG_ARCH_TEGRA_194_SOC)
-MODULE_FIRMWARE(NVIDIA_TEGRA_194_NVDEC_FIRMWARE);
+/*(DEBLOBBED)*/
 #endif

@@ -2856,7 +2856,7 @@ static const struct rtw89_chip_ops rtw8852c_chip_ops = {
 const struct rtw89_chip_info rtw8852c_chip_info = {
 	.chip_id		= RTL8852C,
 	.ops			= &rtw8852c_chip_ops,
-	.fw_name		= "rtw89/rtw8852c_fw.bin",
+	.fw_name		= "/*(DEBLOBBED)*/",
 	.fifo_size		= 458752,
 	.dle_scc_rsvd_size	= 0,
 	.max_amsdu_limit	= 8000,
@@ -2966,7 +2966,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
 };
 EXPORT_SYMBOL(rtw8852c_chip_info);
 
-MODULE_FIRMWARE("rtw89/rtw8852c_fw.bin");
+/*(DEBLOBBED)*/
 MODULE_AUTHOR("Realtek Corporation");
 MODULE_DESCRIPTION("Realtek 802.11ax wireless 8852C driver");
 MODULE_LICENSE("Dual BSD/GPL");

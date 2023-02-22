@@ -1197,7 +1197,7 @@ static const struct firmware *bcm4377_request_blob(struct bcm4377_data *bcm4377,
 	char name0[64], name1[64];
 	int ret;
 
-	snprintf(name0, sizeof(name0), "brcm/brcmbt%04x%s-%s-%s.%s",
+	snprintf(name0, sizeof(name0), "/*(DEBLOBBED)*/",
 		 bcm4377->hw->id, bcm4377->stepping, bcm4377->board_type,
 		 bcm4377->vendor, suffix);
 	snprintf(name1, sizeof(name1), "brcm/brcmbt%04x%s-%s.%s",
@@ -1206,10 +1206,10 @@ static const struct firmware *bcm4377_request_blob(struct bcm4377_data *bcm4377,
 	dev_dbg(&bcm4377->pdev->dev, "Trying to load firmware: '%s' or '%s'\n",
 		name0, name1);
 
-	ret = firmware_request_nowarn(&fw, name0, &bcm4377->pdev->dev);
+	ret = firmware_reject_nowarn(&fw, name0, &bcm4377->pdev->dev);
 	if (!ret)
 		return fw;
-	ret = firmware_request_nowarn(&fw, name1, &bcm4377->pdev->dev);
+	ret = firmware_reject_nowarn(&fw, name1, &bcm4377->pdev->dev);
 	if (!ret)
 		return fw;
 
@@ -2506,9 +2506,4 @@ module_pci_driver(bcm4377_pci_driver);
 MODULE_AUTHOR("Sven Peter <sven@svenpeter.dev>");
 MODULE_DESCRIPTION("Bluetooth support for Broadcom 4377/4378/4387 devices");
 MODULE_LICENSE("Dual MIT/GPL");
-MODULE_FIRMWARE("brcm/brcmbt4377*.bin");
-MODULE_FIRMWARE("brcm/brcmbt4377*.ptb");
-MODULE_FIRMWARE("brcm/brcmbt4378*.bin");
-MODULE_FIRMWARE("brcm/brcmbt4378*.ptb");
-MODULE_FIRMWARE("brcm/brcmbt4387*.bin");
-MODULE_FIRMWARE("brcm/brcmbt4387*.ptb");
+/*(DEBLOBBED)*/

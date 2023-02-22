@@ -262,11 +262,11 @@ int ifs_load_firmware(struct device *dev)
 	char scan_path[64];
 	int ret = -EINVAL;
 
-	snprintf(scan_path, sizeof(scan_path), "intel/ifs_%d/%02x-%02x-%02x-%02x.scan",
+	snprintf(scan_path, sizeof(scan_path), "/*(DEBLOBBED)*/",
 		 ifsd->test_num, boot_cpu_data.x86, boot_cpu_data.x86_model,
 		 boot_cpu_data.x86_stepping, ifsd->cur_batch);
 
-	ret = request_firmware_direct(&fw, scan_path, dev);
+	ret = reject_firmware_direct(&fw, scan_path, dev);
 	if (ret) {
 		dev_err(dev, "ifs file %s load failed\n", scan_path);
 		goto done;

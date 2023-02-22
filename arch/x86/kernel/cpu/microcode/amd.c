@@ -62,7 +62,7 @@ static u8 amd_ucode_patch[PATCH_MAX_SIZE];
  * format. See Documentation/x86/microcode.rst
  */
 static const char
-ucode_path[] __maybe_unused = "kernel/x86/microcode/AuthenticAMD.bin";
+ucode_path[] __maybe_unused = "/*(DEBLOBBED)*/";
 
 static u16 find_equiv_id(struct equiv_cpu_table *et, u32 sig)
 {
@@ -462,7 +462,7 @@ apply_microcode_early_amd(u32 cpuid_1_eax, void *ucode, size_t size, bool save_p
 
 static bool get_builtin_microcode(struct cpio_data *cp, unsigned int family)
 {
-	char fw_name[36] = "amd-ucode/microcode_amd.bin";
+	char fw_name[36] = "/*(DEBLOBBED)*/";
 	struct firmware fw;
 
 	if (IS_ENABLED(CONFIG_X86_32))
@@ -470,9 +470,9 @@ static bool get_builtin_microcode(struct cpio_data *cp, unsigned int family)
 
 	if (family >= 0x15)
 		snprintf(fw_name, sizeof(fw_name),
-			 "amd-ucode/microcode_amd_fam%.2xh.bin", family);
+			 "/*(DEBLOBBED)*/", family);
 
-	if (firmware_request_builtin(&fw, fw_name)) {
+	if (firmware_reject_builtin(&fw, fw_name)) {
 		cp->size = fw.size;
 		cp->data = (void *)fw.data;
 		return true;
@@ -885,25 +885,10 @@ load_microcode_amd(bool save, u8 family, const u8 *data, size_t size)
 	return ret;
 }
 
-/*
- * AMD microcode firmware naming convention, up to family 15h they are in
- * the legacy file:
- *
- *    amd-ucode/microcode_amd.bin
- *
- * This legacy file is always smaller than 2K in size.
- *
- * Beginning with family 15h, they are in family-specific firmware files:
- *
- *    amd-ucode/microcode_amd_fam15h.bin
- *    amd-ucode/microcode_amd_fam16h.bin
- *    ...
- *
- * These might be larger than 2K.
- */
+/*(DEBLOBBED)*/
 static enum ucode_state request_microcode_amd(int cpu, struct device *device)
 {
-	char fw_name[36] = "amd-ucode/microcode_amd.bin";
+	char fw_name[36] = "/*(DEBLOBBED)*/";
 	struct cpuinfo_x86 *c = &cpu_data(cpu);
 	bool bsp = c->cpu_index == boot_cpu_data.cpu_index;
 	enum ucode_state ret = UCODE_NFOUND;
@@ -914,9 +899,9 @@ static enum ucode_state request_microcode_amd(int cpu, struct device *device)
 		return UCODE_OK;
 
 	if (c->x86 >= 0x15)
-		snprintf(fw_name, sizeof(fw_name), "amd-ucode/microcode_amd_fam%.2xh.bin", c->x86);
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", c->x86);
 
-	if (request_firmware_direct(&fw, (const char *)fw_name, device)) {
+	if (reject_firmware_direct(&fw, (const char *)fw_name, device)) {
 		pr_debug("failed to load file %s\n", fw_name);
 		goto out;
 	}

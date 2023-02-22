@@ -426,9 +426,9 @@ static int silead_ts_load_fw(struct i2c_client *client)
 	 * succeeds we apply an (optional) set of alternative min/max values from the
 	 * "silead,efi-fw-min-max" property.
 	 */
-	error = firmware_request_nowarn(&fw, data->fw_name, dev);
+	error = firmware_reject_nowarn(&fw, data->fw_name, dev);
 	if (error) {
-		error = firmware_request_platform(&fw, data->fw_name, dev);
+		error = reject_firmware(&fw, data->fw_name, dev);
 		if (error) {
 			dev_err(dev, "Firmware request error %d\n", error);
 			return error;
@@ -600,8 +600,7 @@ static void silead_ts_read_props(struct i2c_client *client)
 
 	error = device_property_read_string(dev, "firmware-name", &str);
 	if (!error)
-		snprintf(data->fw_name, sizeof(data->fw_name),
-			 "silead/%s", str);
+		/*(DEBLOBBED)*/;
 	else
 		dev_dbg(dev, "Firmware file name read error. Using default.");
 
@@ -624,13 +623,13 @@ static int silead_ts_set_default_fw_name(struct silead_ts_data *data,
 			return -ENODEV;
 
 		snprintf(data->fw_name, sizeof(data->fw_name),
-			 "silead/%s.fw", acpi_id->id);
+			 "/*(DEBLOBBED)*/", acpi_id->id);
 
 		for (i = 0; i < strlen(data->fw_name); i++)
 			data->fw_name[i] = tolower(data->fw_name[i]);
 	} else {
 		snprintf(data->fw_name, sizeof(data->fw_name),
-			 "silead/%s.fw", id->name);
+			 "/*(DEBLOBBED)*/", id->name);
 	}
 
 	return 0;
@@ -640,7 +639,7 @@ static int silead_ts_set_default_fw_name(struct silead_ts_data *data,
 					 const struct i2c_device_id *id)
 {
 	snprintf(data->fw_name, sizeof(data->fw_name),
-		 "silead/%s.fw", id->name);
+		 "/*(DEBLOBBED)*/", id->name);
 	return 0;
 }
 #endif

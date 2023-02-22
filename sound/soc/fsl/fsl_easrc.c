@@ -1811,7 +1811,7 @@ static int fsl_easrc_get_firmware(struct fsl_asrc *easrc)
 	easrc_priv = easrc->private;
 	fw_p = &easrc_priv->fw;
 
-	ret = request_firmware(fw_p, easrc_priv->fw_name, &easrc->pdev->dev);
+	ret = reject_firmware(fw_p, easrc_priv->fw_name, &easrc->pdev->dev);
 	if (ret)
 		return ret;
 

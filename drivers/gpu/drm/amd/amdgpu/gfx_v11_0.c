@@ -60,27 +60,7 @@
 #define regRLC_RLCS_BOOTLOAD_STATUS_gc_11_0_1	0x4e7e
 #define regRLC_RLCS_BOOTLOAD_STATUS_gc_11_0_1_BASE_IDX	1
 
-MODULE_FIRMWARE("amdgpu/gc_11_0_0_pfp.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_0_me.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_0_mec.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_0_rlc.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_0_toc.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_1_pfp.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_1_me.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_1_mec.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_1_rlc.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_2_pfp.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_2_me.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_2_mec.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_2_rlc.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_3_pfp.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_3_me.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_3_mec.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_3_rlc.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_4_pfp.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_4_me.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_4_mec.bin");
-MODULE_FIRMWARE("amdgpu/gc_11_0_4_rlc.bin");
+/*(DEBLOBBED)*/
 
 static const struct soc15_reg_golden golden_settings_gc_11_0_1[] =
 {
@@ -456,8 +436,8 @@ static int gfx_v11_0_init_microcode(struct amdgpu_device *adev)
 
 	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_pfp.bin", ucode_prefix);
-	err = request_firmware(&adev->gfx.pfp_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", ucode_prefix);
+	err = reject_firmware(&adev->gfx.pfp_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gfx.pfp_fw);
@@ -476,8 +456,8 @@ static int gfx_v11_0_init_microcode(struct amdgpu_device *adev)
 		amdgpu_gfx_cp_init_microcode(adev, AMDGPU_UCODE_ID_CP_PFP);
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_me.bin", ucode_prefix);
-	err = request_firmware(&adev->gfx.me_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", ucode_prefix);
+	err = reject_firmware(&adev->gfx.me_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gfx.me_fw);
@@ -492,8 +472,8 @@ static int gfx_v11_0_init_microcode(struct amdgpu_device *adev)
 	}
 
 	if (!amdgpu_sriov_vf(adev)) {
-		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_rlc.bin", ucode_prefix);
-		err = request_firmware(&adev->gfx.rlc_fw, fw_name, adev->dev);
+		snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", ucode_prefix);
+		err = reject_firmware(&adev->gfx.rlc_fw, fw_name, adev->dev);
 		if (err)
 			goto out;
 		err = amdgpu_ucode_validate(adev->gfx.rlc_fw);
@@ -507,8 +487,8 @@ static int gfx_v11_0_init_microcode(struct amdgpu_device *adev)
 			goto out;
 	}
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_mec.bin", ucode_prefix);
-	err = request_firmware(&adev->gfx.mec_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", ucode_prefix);
+	err = reject_firmware(&adev->gfx.mec_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 	err = amdgpu_ucode_validate(adev->gfx.mec_fw);
@@ -555,8 +535,8 @@ static int gfx_v11_0_init_toc_microcode(struct amdgpu_device *adev)
 
 	amdgpu_ucode_ip_version_decode(adev, GC_HWIP, ucode_prefix, sizeof(ucode_prefix));
 
-	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_toc.bin", ucode_prefix);
-	err = request_firmware(&adev->psp.toc_fw, fw_name, adev->dev);
+	snprintf(fw_name, sizeof(fw_name), "/*(DEBLOBBED)*/", ucode_prefix);
+	err = reject_firmware(&adev->psp.toc_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
 

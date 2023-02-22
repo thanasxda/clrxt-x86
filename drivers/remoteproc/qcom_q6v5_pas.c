@@ -583,7 +583,7 @@ static int adsp_remove(struct platform_device *pdev)
 
 static const struct adsp_data adsp_resource_init = {
 		.crash_reason_smem = 423,
-		.firmware_name = "adsp.mdt",
+		.firmware_name = "/*(DEBLOBBED)*/",
 		.pas_id = 1,
 		.has_aggre2_clk = false,
 		.auto_boot = true,
@@ -594,7 +594,7 @@ static const struct adsp_data adsp_resource_init = {
 
 static const struct adsp_data sdm845_adsp_resource_init = {
 		.crash_reason_smem = 423,
-		.firmware_name = "adsp.mdt",
+		.firmware_name = "/*(DEBLOBBED)*/",
 		.pas_id = 1,
 		.has_aggre2_clk = false,
 		.auto_boot = true,
@@ -606,7 +606,7 @@ static const struct adsp_data sdm845_adsp_resource_init = {
 
 static const struct adsp_data sm6350_adsp_resource = {
 	.crash_reason_smem = 423,
-	.firmware_name = "adsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 1,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -623,7 +623,7 @@ static const struct adsp_data sm6350_adsp_resource = {
 
 static const struct adsp_data sm8150_adsp_resource = {
 		.crash_reason_smem = 423,
-		.firmware_name = "adsp.mdt",
+		.firmware_name = "/*(DEBLOBBED)*/",
 		.pas_id = 1,
 		.has_aggre2_clk = false,
 		.auto_boot = true,
@@ -639,7 +639,7 @@ static const struct adsp_data sm8150_adsp_resource = {
 
 static const struct adsp_data sm8250_adsp_resource = {
 	.crash_reason_smem = 423,
-	.firmware_name = "adsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 1,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -656,7 +656,7 @@ static const struct adsp_data sm8250_adsp_resource = {
 
 static const struct adsp_data sm8350_adsp_resource = {
 	.crash_reason_smem = 423,
-	.firmware_name = "adsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 1,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -673,7 +673,7 @@ static const struct adsp_data sm8350_adsp_resource = {
 
 static const struct adsp_data msm8996_adsp_resource = {
 		.crash_reason_smem = 423,
-		.firmware_name = "adsp.mdt",
+		.firmware_name = "/*(DEBLOBBED)*/",
 		.pas_id = 1,
 		.has_aggre2_clk = false,
 		.auto_boot = true,
@@ -688,7 +688,7 @@ static const struct adsp_data msm8996_adsp_resource = {
 
 static const struct adsp_data cdsp_resource_init = {
 	.crash_reason_smem = 601,
-	.firmware_name = "cdsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 18,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -699,7 +699,7 @@ static const struct adsp_data cdsp_resource_init = {
 
 static const struct adsp_data sdm845_cdsp_resource_init = {
 	.crash_reason_smem = 601,
-	.firmware_name = "cdsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 18,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -711,7 +711,7 @@ static const struct adsp_data sdm845_cdsp_resource_init = {
 
 static const struct adsp_data sm6350_cdsp_resource = {
 	.crash_reason_smem = 601,
-	.firmware_name = "cdsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 18,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -728,7 +728,7 @@ static const struct adsp_data sm6350_cdsp_resource = {
 
 static const struct adsp_data sm8150_cdsp_resource = {
 	.crash_reason_smem = 601,
-	.firmware_name = "cdsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 18,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -744,7 +744,7 @@ static const struct adsp_data sm8150_cdsp_resource = {
 
 static const struct adsp_data sm8250_cdsp_resource = {
 	.crash_reason_smem = 601,
-	.firmware_name = "cdsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 18,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -760,7 +760,7 @@ static const struct adsp_data sm8250_cdsp_resource = {
 
 static const struct adsp_data sc8280xp_nsp0_resource = {
 	.crash_reason_smem = 601,
-	.firmware_name = "cdsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 18,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -775,7 +775,7 @@ static const struct adsp_data sc8280xp_nsp0_resource = {
 
 static const struct adsp_data sc8280xp_nsp1_resource = {
 	.crash_reason_smem = 633,
-	.firmware_name = "cdsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 30,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -790,7 +790,7 @@ static const struct adsp_data sc8280xp_nsp1_resource = {
 
 static const struct adsp_data sm8350_cdsp_resource = {
 	.crash_reason_smem = 601,
-	.firmware_name = "cdsp.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 18,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -807,7 +807,7 @@ static const struct adsp_data sm8350_cdsp_resource = {
 
 static const struct adsp_data mpss_resource_init = {
 	.crash_reason_smem = 421,
-	.firmware_name = "modem.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 4,
 	.minidump_id = 3,
 	.has_aggre2_clk = false,
@@ -825,7 +825,7 @@ static const struct adsp_data mpss_resource_init = {
 
 static const struct adsp_data sc8180x_mpss_resource = {
 	.crash_reason_smem = 421,
-	.firmware_name = "modem.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 4,
 	.has_aggre2_clk = false,
 	.auto_boot = false,
@@ -841,7 +841,7 @@ static const struct adsp_data sc8180x_mpss_resource = {
 
 static const struct adsp_data slpi_resource_init = {
 		.crash_reason_smem = 424,
-		.firmware_name = "slpi.mdt",
+		.firmware_name = "/*(DEBLOBBED)*/",
 		.pas_id = 12,
 		.has_aggre2_clk = true,
 		.auto_boot = true,
@@ -856,7 +856,7 @@ static const struct adsp_data slpi_resource_init = {
 
 static const struct adsp_data sm8150_slpi_resource = {
 		.crash_reason_smem = 424,
-		.firmware_name = "slpi.mdt",
+		.firmware_name = "/*(DEBLOBBED)*/",
 		.pas_id = 12,
 		.has_aggre2_clk = false,
 		.auto_boot = true,
@@ -873,7 +873,7 @@ static const struct adsp_data sm8150_slpi_resource = {
 
 static const struct adsp_data sm8250_slpi_resource = {
 	.crash_reason_smem = 424,
-	.firmware_name = "slpi.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 12,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -890,7 +890,7 @@ static const struct adsp_data sm8250_slpi_resource = {
 
 static const struct adsp_data sm8350_slpi_resource = {
 	.crash_reason_smem = 424,
-	.firmware_name = "slpi.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 12,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -907,7 +907,7 @@ static const struct adsp_data sm8350_slpi_resource = {
 
 static const struct adsp_data wcss_resource_init = {
 	.crash_reason_smem = 421,
-	.firmware_name = "wcnss.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 6,
 	.auto_boot = true,
 	.ssr_name = "mpss",
@@ -917,7 +917,7 @@ static const struct adsp_data wcss_resource_init = {
 
 static const struct adsp_data sdx55_mpss_resource = {
 	.crash_reason_smem = 421,
-	.firmware_name = "modem.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 4,
 	.has_aggre2_clk = false,
 	.auto_boot = true,
@@ -933,7 +933,7 @@ static const struct adsp_data sdx55_mpss_resource = {
 
 static const struct adsp_data sm8450_mpss_resource = {
 	.crash_reason_smem = 421,
-	.firmware_name = "modem.mdt",
+	.firmware_name = "/*(DEBLOBBED)*/",
 	.pas_id = 4,
 	.minidump_id = 3,
 	.has_aggre2_clk = false,

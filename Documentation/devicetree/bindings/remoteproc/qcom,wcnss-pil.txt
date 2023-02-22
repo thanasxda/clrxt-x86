@@ -38,7 +38,7 @@ on the Qualcomm WCNSS core.
 	Usage: optional
 	Value type: <string>
 	Definition: must list the relative firmware image path for the
-		    WCNSS core. Defaults to "wcnss.mdt".
+		    WCNSS core. Defaults to "/*(DEBLOBBED)*/".
 
 - vddmx-supply: (deprecated for qcom,pronto-v1/2-pil)
 - vddcx-supply: (deprecated for qcom,pronto-v1/2-pil)

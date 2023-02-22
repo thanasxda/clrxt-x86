@@ -857,8 +857,8 @@ hp_i2c: &i2c9 {
 	memory-region = <&mba_mem &mpss_mem>;
 
 	/* This gets overridden for SKUs with LTE support. */
-	firmware-name = "qcom/sc7180-trogdor/modem-nolte/mba.mbn",
-			"qcom/sc7180-trogdor/modem-nolte/qdsp6sw.mbn";
+	firmware-name = "/*(DEBLOBBED)*/",
+			"/*(DEBLOBBED)*/";
 };
 
 &sdhc_1 {

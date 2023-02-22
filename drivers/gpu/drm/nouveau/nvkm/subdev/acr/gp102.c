@@ -175,17 +175,7 @@ gp102_acr_wpr_parse(struct nvkm_acr *acr)
 	return 0;
 }
 
-MODULE_FIRMWARE("nvidia/gp102/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/gp102/acr/ucode_unload.bin");
-
-MODULE_FIRMWARE("nvidia/gp104/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/gp104/acr/ucode_unload.bin");
-
-MODULE_FIRMWARE("nvidia/gp106/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/gp106/acr/ucode_unload.bin");
-
-MODULE_FIRMWARE("nvidia/gp107/acr/unload_bl.bin");
-MODULE_FIRMWARE("nvidia/gp107/acr/ucode_unload.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 gp102_acr_unload_fwif[] = {
@@ -222,17 +212,7 @@ gp102_acr_load_0 = {
 	.boot = gm200_flcn_fw_boot,
 };
 
-MODULE_FIRMWARE("nvidia/gp102/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gp102/acr/ucode_load.bin");
-
-MODULE_FIRMWARE("nvidia/gp104/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gp104/acr/ucode_load.bin");
-
-MODULE_FIRMWARE("nvidia/gp106/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gp106/acr/ucode_load.bin");
-
-MODULE_FIRMWARE("nvidia/gp107/acr/bl.bin");
-MODULE_FIRMWARE("nvidia/gp107/acr/ucode_load.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_acr_hsf_fwif
 gp102_acr_load_fwif[] = {

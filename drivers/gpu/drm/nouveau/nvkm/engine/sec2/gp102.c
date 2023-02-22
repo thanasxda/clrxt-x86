@@ -224,18 +224,7 @@ gp102_sec2 = {
 	.initmsg = gp102_sec2_initmsg,
 };
 
-MODULE_FIRMWARE("nvidia/gp102/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/gp102/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/gp102/sec2/sig.bin");
-MODULE_FIRMWARE("nvidia/gp104/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/gp104/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/gp104/sec2/sig.bin");
-MODULE_FIRMWARE("nvidia/gp106/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/gp106/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/gp106/sec2/sig.bin");
-MODULE_FIRMWARE("nvidia/gp107/sec2/desc.bin");
-MODULE_FIRMWARE("nvidia/gp107/sec2/image.bin");
-MODULE_FIRMWARE("nvidia/gp107/sec2/sig.bin");
+/*(DEBLOBBED)*/
 
 void
 gp102_sec2_acr_bld_patch_1(struct nvkm_acr *acr, u32 bld, s64 adjust)
@@ -289,18 +278,7 @@ gp102_sec2_load(struct nvkm_sec2 *sec2, int ver,
 						    ver, fwif->acr);
 }
 
-MODULE_FIRMWARE("nvidia/gp102/sec2/desc-1.bin");
-MODULE_FIRMWARE("nvidia/gp102/sec2/image-1.bin");
-MODULE_FIRMWARE("nvidia/gp102/sec2/sig-1.bin");
-MODULE_FIRMWARE("nvidia/gp104/sec2/desc-1.bin");
-MODULE_FIRMWARE("nvidia/gp104/sec2/image-1.bin");
-MODULE_FIRMWARE("nvidia/gp104/sec2/sig-1.bin");
-MODULE_FIRMWARE("nvidia/gp106/sec2/desc-1.bin");
-MODULE_FIRMWARE("nvidia/gp106/sec2/image-1.bin");
-MODULE_FIRMWARE("nvidia/gp106/sec2/sig-1.bin");
-MODULE_FIRMWARE("nvidia/gp107/sec2/desc-1.bin");
-MODULE_FIRMWARE("nvidia/gp107/sec2/image-1.bin");
-MODULE_FIRMWARE("nvidia/gp107/sec2/sig-1.bin");
+/*(DEBLOBBED)*/
 
 static const struct nvkm_sec2_fwif
 gp102_sec2_fwif[] = {
