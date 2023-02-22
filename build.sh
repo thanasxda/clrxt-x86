@@ -169,6 +169,38 @@ Keys.ENTER | sudo make $CLANG $LD localmodconfig
 if grep -q "CONFIG_SND_HDA is not set" $PWD/.config  ; then sudo sed -i 's/# CONFIG_SND_HDA is not set/CONFIG_SND_HDA=y/g' $PWD/.config ; fi
 if grep -q "CONFIG_SND_USB is not set" $PWD/.config  ; then sudo sed -i 's/# CONFIG_SND_USB is not set/CONFIG_SND_USB=y/g' $PWD/.config ; fi
 if grep -q "CONFIG_SND_USB_AUDIO is not set" $PWD/.config  ; then sudo sed -i 's/# CONFIG_SND_USB_AUDIO is not set/CONFIG_SND_USB_AUDIO=y/g' $PWD/.config ; fi
+#if grep -q CONFIG_INIT_ENV_ARG_LIMIT $PWD/.config ; then sudo sed -i 's/CONFIG_INIT_ENV_ARG_LIMIT=.*/CONFIG_INIT_ENV_ARG_LIMIT=128/g' $PWD/.config ; fi
+#if grep -q CONFIG_HAVE_KERNEL_GZIP $PWD/.config ; then sudo sed -i 's/CONFIG_HAVE_KERNEL_GZIP=.*/CONFIG_HAVE_KERNEL_GZIP=n/g' $PWD/.config ; fi
+#if grep -q CONFIG_HAVE_KERNEL_BZIP2 $PWD/.config ; then sudo sed -i 's/CONFIG_HAVE_KERNEL_BZIP2=.*/CONFIG_HAVE_KERNEL_BZIP2=n/g' $PWD/.config ; fi
+#if grep -q CONFIG_HAVE_KERNEL_LZMA $PWD/.config ; then sudo sed -i 's/CONFIG_HAVE_KERNEL_LZMA=.*/CONFIG_HAVE_KERNEL_LZMA=n/g' $PWD/.config ; fi
+#if grep -q CONFIG_HAVE_KERNEL_LZO $PWD/.config ; then sudo sed -i 's/CONFIG_HAVE_KERNEL_LZO=.*/CONFIG_HAVE_KERNEL_LZO=n/g' $PWD/.config ; fi
+#if grep -q CONFIG_HAVE_KERNEL_XZ $PWD/.config ; then sudo sed -i 's/CONFIG_HAVE_KERNEL_XZ=.*/CONFIG_HAVE_KERNEL_XZ=n/g' $PWD/.config ; fi
+#if grep -q CONFIG_CONTEXT_TRACKING $PWD/.config ; then sudo sed -i 's/CONFIG_CONTEXT_TRACKING=.*/CONFIG_CONTEXT_TRACKING=n/g' $PWD/.config ; fi
+#if grep -q CONFIG_CONTEXT_TRACKING_IDLE $PWD/.config ; then sudo sed -i 's/CONFIG_CONTEXT_TRACKING_IDLE=.*/CONFIG_CONTEXT_TRACKING_IDLE=n/g' $PWD/.config ; fi
+#if grep -q CONFIG_CONTEXT_TRACKING_USER $PWD/.config ; then sudo sed -i 's/CONFIG_CONTEXT_TRACKING_USER=.*/CONFIG_CONTEXT_TRACKING_USER=n/g' $PWD/.config ; fi
+#if ! grep -q CONFIG_BPF_JIT_ALWAYS_ON=y  $PWD/.config ; then echo "CONFIG_BPF_JIT_ALWAYS_ON=y" | sudo tee -a $PWD/.config ; fi
+#if ! grep -q CONFIG_BPF_LSM=y $PWD/.config ; then echo "CONFIG_BPF_LSM=y" | sudo tee -a $PWD/.config ; fi
+#sudo sed -i 's/CONFIG_VIRT_CPU_ACCOUNTING=.*/CONFIG_VIRT_CPU_ACCOUNTING=n/g' $PWD/.config
+#sudo sed -i 's/CONFIG_VIRT_CPU_ACCOUNTING_GEN=.*/CONFIG_VIRT_CPU_ACCOUNTING_GEN=n/g' $PWD/.config
+#echo CONFIG_BPF_JIT_ALWAYS_ON=y | sudo tee -a $PWD/.config
+#sudo sed -i 's/CONFIG_HPET_TIMER=.*/CONFIG_HPET_TIMER=n/g' $PWD/.config
+#sudo sed -i 's/CONFIG_HAVE_LIVEPATCH=.*/CONFIG_HAVE_LIVEPATCH=n/g' $PWD/.config
+#echo CONFIG_HAVE_EBPF_JIT=y | sudo tee -a $PWD/.config
+#sudo sed -i 's/CONFIG_HAVE_PERF_EVENTS=.*/CONFIG_HAVE_PERF_EVENTS=n/g' $PWD/.config
+#sudo sed -i 's/CONFIG_GUEST_PERF_EVENTS=.*/CONFIG_GUEST_PERF_EVENTS=n/g' $PWD/.config
+#sudo sed -i 's/CONFIG_PERF_EVENTS=.*/CONFIG_PERF_EVENTS=n/g' $PWD/.config
+#sudo sed -i 's/CONFIG_SCHED_INFO=.*/CONFIG_SCHED_INFO=n/g' $PWD/.config
+#if ! grep -q CONFIG_NFT_FLOW_OFFLOAD=y $PWD/.config ; then echo CONFIG_NFT_FLOW_OFFLOAD=y | sudo tee -a $PWD/.config ; fi
+
+#sudo sed -i 's/.*//g' $PWD/.config
+#sudo sed -i 's/.*//g' $PWD/.config
+#sudo sed -i 's/.*//g' $PWD/.config
+#sudo sed -i 's/.*//g' $PWD/.config
+#sudo sed -i 's/.*//g' $PWD/.config
+
+
+
+
 
 #if [ -e /boot/EFI ] || [ -e /efi ] || [ -e /boot/efi/EFI ] ; then echo " " ; else 
 #if grep -q " is not set" $PWD/.config ; then sudo sed -i 's/#  is not =y/g' $PWD/.config ; else
@@ -205,8 +237,8 @@ cd $source
 
 grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
 if grep -q "CONFIG_GENERIC_CPU=y" $PWD/.config ; then sudo sed -i 's/CONFIG_GENERIC_CPU=y/# CONFIG_GENERIC_CPU is not set/g' $PWD/.config ; fi
-if grep -q "CONFIG_MNATIVE_INTEL=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_INTEL=y/# CONFIG_MNATIVE_INTEL is not set/g' $PWD/config ; fi
-if grep -q "CONFIG_MNATIVE_AMD=y" $PWD/config ; then sed -i 's/CONFIG_MNATIVE_AMD=y/# CONFIG_MNATIVE_AMD is not set/g' $PWD/config ; fi
+if grep -q "CONFIG_MNATIVE_INTEL=y" $PWD/config ; then sudo sed -i 's/CONFIG_MNATIVE_INTEL=y/# CONFIG_MNATIVE_INTEL is not set/g' $PWD/config ; fi
+if grep -q "CONFIG_MNATIVE_AMD=y" $PWD/config ; then sudo sed -i 's/CONFIG_MNATIVE_AMD=y/# CONFIG_MNATIVE_AMD is not set/g' $PWD/config ; fi
 if grep -q "CONFIG_GENERIC_CPU4=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU4=y/# CONFIG_GENERIC_CPU4 is not set/g' $PWD/config ; fi
 if grep -q "CONFIG_GENERIC_CPU3=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU3=y/# CONFIG_GENERIC_CPU3 is not set/g' $PWD/config ; fi
 if grep -q "CONFIG_GENERIC_CPU2=y" $PWD/config ; then sudo sed -i 's/CONFIG_GENERIC_CPU2=y/# CONFIG_GENERIC_CPU2 is not set/g' $PWD/config ; fi
