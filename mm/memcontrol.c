@@ -611,7 +611,7 @@ static inline void memcg_rstat_updated(struct mem_cgroup *memcg, int val)
 	cgroup_rstat_updated(memcg->css.cgroup, smp_processor_id());
 
 	x = __this_cpu_add_return(stats_updates, abs(val));
-	if (unlikely(x > MEMCG_CHARGE_BATCH * 128)) {
+	if (x > MEMCG_CHARGE_BATCH * 128) {
 		/*
 		 * If stats_flush_threshold exceeds the threshold
 		 * (>num_online_cpus()), cgroup stats update will be triggered
@@ -819,7 +819,7 @@ void __mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
 	__mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
 
 	/* Update memcg and lruvec */
-	if (likely(!mem_cgroup_disabled()))
+	if (!mem_cgroup_disabled())
 		__mod_memcg_lruvec_state(lruvec, idx, val);
 }
 
@@ -2140,7 +2140,7 @@ void lock_page_memcg(struct page *page)
 
 static void __folio_memcg_unlock(struct mem_cgroup *memcg)
 {
-	if (likely(memcg && memcg->move_lock_task == current)) {
+	if (memcg && memcg->move_lock_task == current) {
 		unsigned long flags = memcg->move_lock_flags;
 
 		memcg->move_lock_task = NULL;

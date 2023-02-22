@@ -2,7 +2,7 @@
 VERSION = 6
 PATCHLEVEL = 2
 SUBLEVEL = 0
-EXTRAVERSION = -rc8-gnu
+EXTRAVERSION = -gnu
 NAME = Hurr durr I'ma ninja sloth
 
 # *DOCUMENTATION*
@@ -1168,8 +1168,6 @@ KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
 endif
 export CC_FLAGS_SCS
 endif
-
-
 
 ifdef CONFIG_LTO_CLANG
 ifdef CONFIG_LTO_CLANG_THIN
