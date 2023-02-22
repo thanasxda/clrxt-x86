@@ -448,7 +448,7 @@ static struct cpuidle_state ivb_cstates[] __initdata = {
 		.desc = "MWAIT 0x01",
 		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
 		.exit_latency = 10,
-		.target_residency = 20,
+		.target_residency = 120,
 		.enter = &intel_idle,
 		.enter_s2idle = intel_idle_s2idle, },
 	{
@@ -984,11 +984,25 @@ static struct cpuidle_state adl_l_cstates[] __initdata = {
 
 static struct cpuidle_state adl_n_cstates[] __initdata = {
 	{
+		.name = "C0.1",
+		.desc = "UMWAIT C0.1",
+		.flags = MWAIT2flg(TPAUSE_C01_STATE),
+		.exit_latency = 1,
+		.target_residency = 1,
+		.enter = &intel_idle_umwait, },
+	{
+		.name = "C0.2",
+		.desc = "UMWAIT C0.2",
+		.flags = MWAIT2flg(TPAUSE_C02_STATE),
+		.exit_latency = 1,
+		.target_residency = 2,
+		.enter = &intel_idle_umwait, },
+	{
 		.name = "C1",
 		.desc = "MWAIT 0x00",
 		.flags = MWAIT2flg(0x00) | CPUIDLE_FLAG_UNUSABLE,
-		.exit_latency = 1,
-		.target_residency = 1,
+		.exit_latency = 2,
+		.target_residency = 2,
 		.enter = &intel_idle,
 		.enter_s2idle = intel_idle_s2idle, },
 	{
@@ -1206,7 +1220,7 @@ static struct cpuidle_state bxt_cstates[] __initdata = {
 		.desc = "MWAIT 0x01",
 		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
 		.exit_latency = 10,
-		.target_residency = 20,
+		.target_residency = 120,
 		.enter = &intel_idle,
 		.enter_s2idle = intel_idle_s2idle, },
 	{
@@ -1267,7 +1281,7 @@ static struct cpuidle_state dnv_cstates[] __initdata = {
 		.desc = "MWAIT 0x01",
 		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
 		.exit_latency = 10,
-		.target_residency = 20,
+		.target_residency = 120,
 		.enter = &intel_idle,
 		.enter_s2idle = intel_idle_s2idle, },
 	{
