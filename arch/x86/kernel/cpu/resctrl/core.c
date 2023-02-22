@@ -908,6 +908,22 @@ static int __init resctrl_late_init(void)
 	 */
 	rdt_init_res_defs();
 
+	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL) {
+		if (boot_cpu_data.x86_model == INTEL_FAM6_ALDERLAKE)
+			return -ENODEV;
+		if (boot_cpu_data.x86_model == INTEL_FAM6_ALDERLAKE_L)
+			return -ENODEV;
+		if (boot_cpu_data.x86_model == INTEL_FAM6_ALDERLAKE_N)
+			return -ENODEV;
+		if (boot_cpu_data.x86_model == INTEL_FAM6_RAPTORLAKE)
+			return -ENODEV;
+		if (boot_cpu_data.x86_model == INTEL_FAM6_RAPTORLAKE_P)
+			return -ENODEV;
+		if (boot_cpu_data.x86_model == INTEL_FAM6_RAPTORLAKE_S)
+			return -ENODEV;
+	}
+
+
 	check_quirks();
 
 	if (!get_rdt_resources())

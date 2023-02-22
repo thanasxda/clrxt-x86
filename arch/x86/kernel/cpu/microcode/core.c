@@ -44,6 +44,8 @@
 
 static struct microcode_ops	*microcode_ops;
 static bool dis_ucode_ldr = true;
+bool ucode_rollback = false;
+int enable_rollback = 0;
 
 bool initrd_gone;
 
@@ -79,6 +81,26 @@ static u32 final_levels[] = {
 	0x010000af,
 	0, /* T-101 terminator */
 };
+
+static int __init ucode_setup(char *str)
+{
+	if (!str)
+		return -EINVAL;
+
+	while (*str) {
+		if (!strncmp(str, "rollback", 8)) {
+			enable_rollback = 1;
+			pr_info("Microcode Rollback Enabled\n");
+		}
+		str += strcspn(str, ",");
+		while (*str == ',')
+			str++;
+	}
+	return 0;
+}
+
+__setup("ucode=", ucode_setup);
+
 
 /*
  * Check the current patch level on this CPU.
@@ -459,6 +481,7 @@ static ssize_t reload_store(struct device *dev,
 			    struct device_attribute *attr,
 			    const char *buf, size_t size)
 {
+	struct cpuinfo_x86 *c = &boot_cpu_data;
 	enum ucode_state tmp_ret = UCODE_OK;
 	int bsp = boot_cpu_data.cpu_index;
 	unsigned long val;
@@ -468,7 +491,7 @@ static ssize_t reload_store(struct device *dev,
 	if (ret)
 		return ret;
 
-	if (val != 1)
+	if (!val || val > 2)
 		return size;
 
 	cpus_read_lock();
@@ -486,6 +509,7 @@ static ssize_t reload_store(struct device *dev,
 	mutex_unlock(&microcode_mutex);
 
 put:
+	ucode_rollback = false;
 	cpus_read_unlock();
 
 	if (ret == 0)
