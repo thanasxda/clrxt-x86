@@ -595,10 +595,11 @@ static enum ucode_state apply_microcode_intel(int cpu)
 	 * already.
 	 */
 	rev = intel_get_microcode_revision();
-	if (rev >= mc->hdr.rev) {
+	if (!ucode_rollback && rev >= mc->hdr.rev) {
 		ret = UCODE_OK;
 		goto out;
-	}
+	} else if (ucode_rollback)
+		ret = UCODE_OK;
 
 	/*
 	 * Writeback and invalidate caches before updating microcode to avoid
@@ -617,7 +618,7 @@ static enum ucode_state apply_microcode_intel(int cpu)
 		return UCODE_ERROR;
 	}
 
-	if (bsp && rev != prev_rev) {
+	if (bsp && ((rev != prev_rev) || ucode_rollback)) {
 		pr_info("updated to revision 0x%x, date = %04x-%02x-%02x\n",
 			rev,
 			mc->hdr.date & 0xffff,
