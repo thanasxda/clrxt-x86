@@ -205,32 +205,6 @@ static __cpuidle int intel_idle_xstate(struct cpuidle_device *dev,
 }
 
 /**
- * intel_idle_umwait - request C0.2 using the 'umwait' instruction.
- * @dev: cpuidle device of the target CPU.
- * @drv: cpuidle driver (assumed to point to intel_idle_driver).
- * @index: Target idle state index.
- *
- * Enter an idle state using the 'umwait' CPU instruction. This instruction
- * puts the CPU to C0.1 or C0.2 state.
- */
-static __cpuidle int intel_idle_umwait(struct cpuidle_device *dev,
-				       struct cpuidle_driver *drv, int index)
-{
-	struct cpuidle_state *state = &drv->states[index];
-
-	if (state->flags & CPUIDLE_FLAG_IRQ_ENABLE)
-		local_irq_enable();
-
-	/*
-	 * Request C0.2 with a large enough TSC quanta (50ms on a system with
-	 * 2GHz TSC frequency). But we cannot exceed the global limits in
-	 * 'MSR_IA32_UMWAIT_CONTROL'.
-	 */
-	umwait_idle(__builtin_ia32_rdtsc() + 100000000, flg2MWAIT(state->flags));
-	return index;
-}
-
-/**
  * intel_idle_s2idle - Ask the processor to enter the given idle state.
  * @dev: cpuidle device of the target CPU.
  * @drv: cpuidle driver (assumed to point to intel_idle_driver).
@@ -866,32 +840,18 @@ static struct cpuidle_state icx_cstates[] __initdata = {
  */
 static struct cpuidle_state adl_cstates[] __initdata = {
 	{
-		.name = "C0.1",
-		.desc = "UMWAIT C0.1",
-		.flags = MWAIT2flg(TPAUSE_C01_STATE),
-		.exit_latency = 1,
-		.target_residency = 1,
-		.enter = &intel_idle_umwait, },
-	{
-		.name = "C0.2",
-		.desc = "UMWAIT C0.2",
-		.flags = MWAIT2flg(TPAUSE_C02_STATE),
-		.exit_latency = 1,
-		.target_residency = 2,
-		.enter = &intel_idle_umwait, },
-	{
 		.name = "C1",
 		.desc = "MWAIT 0x00",
 		.flags = MWAIT2flg(0x00) | CPUIDLE_FLAG_UNUSABLE,
-		.exit_latency = 2,
-		.target_residency = 2,
+		.exit_latency = 1,
+		.target_residency = 1,
 		.enter = &intel_idle,
 		.enter_s2idle = intel_idle_s2idle, },
 	{
 		.name = "C1E",
 		.desc = "MWAIT 0x01",
 		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
-		.exit_latency = 3,
+		.exit_latency = 2,
 		.target_residency = 4,
 		.enter = &intel_idle,
 		.enter_s2idle = intel_idle_s2idle, },
@@ -925,32 +885,18 @@ static struct cpuidle_state adl_cstates[] __initdata = {
 
 static struct cpuidle_state adl_l_cstates[] __initdata = {
 	{
-		.name = "C0.1",
-		.desc = "UMWAIT C0.1",
-		.flags = MWAIT2flg(TPAUSE_C01_STATE),
-		.exit_latency = 1,
-		.target_residency = 1,
-		.enter = &intel_idle_umwait, },
-	{
-		.name = "C0.2",
-		.desc = "UMWAIT C0.2",
-		.flags = MWAIT2flg(TPAUSE_C02_STATE),
-		.exit_latency = 1,
-		.target_residency = 2,
-		.enter = &intel_idle_umwait, },
-	{
 		.name = "C1",
 		.desc = "MWAIT 0x00",
 		.flags = MWAIT2flg(0x00) | CPUIDLE_FLAG_UNUSABLE,
-		.exit_latency = 2,
-		.target_residency = 2,
+		.exit_latency = 1,
+		.target_residency = 1,
 		.enter = &intel_idle,
 		.enter_s2idle = intel_idle_s2idle, },
 	{
 		.name = "C1E",
 		.desc = "MWAIT 0x01",
 		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
-		.exit_latency = 3,
+		.exit_latency = 2,
 		.target_residency = 4,
 		.enter = &intel_idle,
 		.enter_s2idle = intel_idle_s2idle, },
@@ -1029,32 +975,18 @@ static struct cpuidle_state adl_n_cstates[] __initdata = {
 
 static struct cpuidle_state spr_cstates[] __initdata = {
 	{
-		.name = "C0.1",
-		.desc = "UMWAIT C0.1",
-		.flags = MWAIT2flg(TPAUSE_C01_STATE),
-		.exit_latency = 1,
-		.target_residency = 1,
-		.enter = &intel_idle_umwait, },
-	{
-		.name = "C0.2",
-		.desc = "UMWAIT C0.2",
-		.flags = MWAIT2flg(TPAUSE_C02_STATE),
-		.exit_latency = 1,
-		.target_residency = 2,
-		.enter = &intel_idle_umwait, },
-	{
 		.name = "C1",
 		.desc = "MWAIT 0x00",
 		.flags = MWAIT2flg(0x00),
-		.exit_latency = 2,
-		.target_residency = 2,
+		.exit_latency = 1,
+		.target_residency = 1,
 		.enter = &intel_idle,
 		.enter_s2idle = intel_idle_s2idle, },
 	{
 		.name = "C1E",
 		.desc = "MWAIT 0x01",
 		.flags = MWAIT2flg(0x01) | CPUIDLE_FLAG_ALWAYS_ENABLE,
-		.exit_latency = 3,
+		.exit_latency = 2,
 		.target_residency = 4,
 		.enter = &intel_idle,
 		.enter_s2idle = intel_idle_s2idle, },

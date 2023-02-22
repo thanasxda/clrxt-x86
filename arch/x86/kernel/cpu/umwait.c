@@ -16,7 +16,7 @@
  * Cache IA32_UMWAIT_CONTROL MSR. This is a systemwide control. By default,
  * umwait max time is 100000 in TSC-quanta and C0.2 is enabled
  */
-static u32 umwait_control_cached = UMWAIT_CTRL_VAL(10000000, UMWAIT_C02_ENABLE);
+static u32 umwait_control_cached = UMWAIT_CTRL_VAL(100000, UMWAIT_C02_ENABLE);
 
 /*
  * Cache the original IA32_UMWAIT_CONTROL MSR value which is configured by

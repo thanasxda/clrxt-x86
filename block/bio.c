@@ -19,7 +19,6 @@
 #include <linux/sched/sysctl.h>
 #include <linux/blk-crypto.h>
 #include <linux/xarray.h>
-#include <linux/powerbump.h>
 
 #include <trace/events/block.h>
 #include "blk.h"
@@ -1354,7 +1353,6 @@ EXPORT_SYMBOL_GPL(bio_iov_iter_get_pages);
 
 static void submit_bio_wait_endio(struct bio *bio)
 {
-	give_power_bump(BUMP_FOR_DISK);
 	complete(bio->bi_private);
 }
 
@@ -1379,8 +1377,6 @@ int submit_bio_wait(struct bio *bio)
 	bio->bi_end_io = submit_bio_wait_endio;
 	bio->bi_opf |= REQ_SYNC;
 	submit_bio(bio);
-
-	give_power_bump(BUMP_FOR_DISK);
 
 	/* Prevent hang_check timer from firing at us during very long I/O */
 	hang_check = sysctl_hung_task_timeout_secs;

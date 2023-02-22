@@ -5,9 +5,7 @@
 
 
 /* bump time constants, in msec */
-#define BUMP_FOR_DISK		3
-#define BUMP_FOR_NETWORK	3
-#define BUMP_FOR_FUTEX		3
+#define BUMP_FOR_DISK	3
 
 
 

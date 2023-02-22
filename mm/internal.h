@@ -239,7 +239,7 @@ struct alloc_context {
 static inline unsigned int buddy_order(struct page *page)
 {
 	/* PageBuddy() must be checked by the caller */
-	return 0;
+	return page_private(page);
 }
 
 /*
