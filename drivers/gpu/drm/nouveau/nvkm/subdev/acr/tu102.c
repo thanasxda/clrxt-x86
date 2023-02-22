@@ -103,15 +103,6 @@ tu102_acr_unload_fwif[] = {
 
 /*(DEBLOBBED)*/
 
-static const struct nvkm_acr_hsf_func
-tu102_acr_asb_0 = {
-	.load = tu102_acr_asb_load,
-	.boot = tu102_acr_hsfw_boot,
-	.bld = gp108_acr_hsfw_bld,
-};
-
-/*(DEBLOBBED)*/
-
 static const struct nvkm_acr_hsf_fwif
 tu102_acr_asb_fwif[] = {
 	{  0, gm200_acr_hsfw_ctor, &gp108_acr_hsfw_0, NVKM_ACR_HSF_GSP, 0, 0x00000000 },

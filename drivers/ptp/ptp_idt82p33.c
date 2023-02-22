@@ -1288,7 +1288,7 @@ static int idt82p33_load_firmware(struct idt82p33 *idt82p33)
 	if (firmware) /* module parameter */
 		snprintf(fname, sizeof(fname), "%s", firmware);
 
-	err = reject_firmware(&fw, FW_FILENAME, idt82p33->dev);
+	dev_info(idt82p33->dev, "requesting firmware '%s'\n", fname);
 
 	err = reject_firmware(&fw, fname, idt82p33->dev);
 

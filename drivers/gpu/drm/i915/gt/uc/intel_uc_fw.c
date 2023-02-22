@@ -592,7 +592,7 @@ int intel_uc_fw_fetch(struct intel_uc_fw *uc_fw)
 	__force_fw_fetch_failures(uc_fw, -EINVAL);
 	__force_fw_fetch_failures(uc_fw, -ESTALE);
 
-	err = firmware_reject_nowarn(&fw, uc_fw->file_selected.path, dev);
+	err = try_firmware_load(uc_fw, &fw);
 	memcpy(&file_ideal, &uc_fw->file_wanted, sizeof(file_ideal));
 
 	/* Any error is terminal if overriding. Don't bother searching for older versions */
@@ -615,7 +615,7 @@ int intel_uc_fw_fetch(struct intel_uc_fw *uc_fw)
 			break;
 		}
 
-		err = firmware_reject_nowarn(&fw, uc_fw->file_selected.path, dev);
+		err = try_firmware_load(uc_fw, &fw);
 	}
 
 	if (err)
