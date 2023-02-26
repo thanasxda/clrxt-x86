@@ -73,9 +73,6 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
 	if (!arch_check_kprobe(p))
 		return -EILSEQ;
 
-	if (!arch_check_kprobe(p))
-		return -EILSEQ;
-
 	/* copy instruction */
 	p->opcode = (kprobe_opcode_t)(*insn++);
 	if (GET_INSN_LENGTH(p->opcode) == 4)

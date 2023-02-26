@@ -2,7 +2,7 @@
 VERSION = 6
 PATCHLEVEL = 2
 SUBLEVEL = 0
-EXTRAVERSION = -rc8-gnu
+EXTRAVERSION = -gnu
 NAME = Hurr durr I'ma ninja sloth
 
 # *DOCUMENTATION*
@@ -1041,18 +1041,18 @@ ifdef CONFIG_CC_IS_CLANG
 mlxclangflags 	=  
 KBUILD_CFLAGS 		+= $(mlxclangflags) 
 KBUILD_CPPFLAGS += -Qunused-arguments
-KBUILD_CFLAGS+=  -mllvm -polly \
-                        -mllvm -polly-run-inliner \
-                        -mllvm -polly-omp-backend=LLVM \
-                        -mllvm -polly-scheduling=dynamic \
-                        -mllvm -polly-scheduling-chunksize=1 \
-                        -mllvm -polly-opt-maximize-bands=yes \
-                        -mllvm -polly-ast-detect-parallel \
-                        -mllvm -polly-ast-use-context \
-                        -mllvm -polly-opt-simplify-deps=no \
-                        -mllvm -polly-rtc-max-arrays-per-group=40 \
-                        -mllvm -polly-parallel                     
-LDFLAGS+=-plugin LLVMPolly.so
+KBUILD_CFLAGS 	+= -mllvm -polly \
+                   -mllvm -polly-run-inliner \
+                   -mllvm -polly-omp-backend=LLVM \
+                   -mllvm -polly-scheduling=dynamic \
+                   -mllvm -polly-scheduling-chunksize=1 \
+                   -mllvm -polly-opt-maximize-bands=yes \
+                   -mllvm -polly-ast-detect-parallel \
+                   -mllvm -polly-ast-use-context \
+                   -mllvm -polly-opt-simplify-deps=no \
+                   -mllvm -polly-rtc-max-arrays-per-group=40 \
+                   -mllvm -polly-parallel                     
+LDFLAGS 	+= -plugin LLVMPolly.so
 # The kernel builds with '-std=gnu11' so use of GNU extensions is acceptable.
 KBUILD_CFLAGS += -Wno-gnu
 else
@@ -1168,8 +1168,6 @@ KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
 endif
 export CC_FLAGS_SCS
 endif
-
-
 
 ifdef CONFIG_LTO_CLANG
 ifdef CONFIG_LTO_CLANG_THIN

@@ -432,12 +432,13 @@ struct address_space {
 	atomic_t		nr_thps;
 #endif
 	struct rb_root_cached	i_mmap;
+	errseq_t		wb_err;
+	int pad[14];
 	struct rw_semaphore	i_mmap_rwsem;
 	unsigned long		nrpages;
 	pgoff_t			writeback_index;
 	const struct address_space_operations *a_ops;
 	unsigned long		flags;
-	errseq_t		wb_err;
 	spinlock_t		private_lock;
 	struct list_head	private_list;
 	void			*private_data;
@@ -946,6 +947,11 @@ struct file {
 	struct path		f_path;
 	struct inode		*f_inode;	/* cached value */
 	const struct file_operations	*f_op;
+	errseq_t		f_wb_err;
+	errseq_t		f_sb_err; /* for syncfs */
+	fmode_t			f_mode;
+	struct fown_struct	f_owner;
+	int __pad[12];
 
 	/*
 	 * Protects f_ep, f_flags.
@@ -954,10 +960,8 @@ struct file {
 	spinlock_t		f_lock;
 	atomic_long_t		f_count;
 	unsigned int 		f_flags;
-	fmode_t			f_mode;
 	struct mutex		f_pos_lock;
 	loff_t			f_pos;
-	struct fown_struct	f_owner;
 	const struct cred	*f_cred;
 	struct file_ra_state	f_ra;
 
@@ -973,8 +977,6 @@ struct file {
 	struct hlist_head	*f_ep;
 #endif /* #ifdef CONFIG_EPOLL */
 	struct address_space	*f_mapping;
-	errseq_t		f_wb_err;
-	errseq_t		f_sb_err; /* for syncfs */
 } __randomize_layout
   __attribute__((aligned(4)));	/* lest something weird decides that 2 is OK */
 
