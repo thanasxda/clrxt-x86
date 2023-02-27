@@ -288,7 +288,11 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
 	cmpl	(%rbx,%rcx,4), %edx
 	jz	.Linit_cpu_data
 	inc	%ecx
+<<<<<<< HEAD
+#if defined(CONFIG_FORCE_NR_CPUS)
+=======
 #if (NR_CPUS == 1) || defined(CONFIG_FORCE_NR_CPUS)
+>>>>>>> x86/smpboot: also handle CONFIG_FORCE_NR_CPUS
 	cmpl	$NR_CPUS, %ecx
 #else
 	cmpl	nr_cpu_ids(%rip), %ecx
