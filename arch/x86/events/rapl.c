@@ -343,13 +343,14 @@ static int rapl_pmu_event_init(struct perf_event *event)
 	if (event->cpu < 0)
 		return -EINVAL;
 
-	event->event_caps |= PERF_EV_CAP_READ_ACTIVE_PKG;
-
 	if (!cfg || cfg >= NR_RAPL_DOMAINS + 1)
 		return -EINVAL;
 
 	cfg = array_index_nospec((long)cfg, NR_RAPL_DOMAINS + 1);
 	bit = cfg - 1;
+
+	if (bit != PERF_RAPL_PP0)
+		event->event_caps |= PERF_EV_CAP_READ_ACTIVE_PKG;
 
 	/* check event supported */
 	if (!(rapl_cntr_mask & (1 << bit)))
@@ -363,7 +364,15 @@ static int rapl_pmu_event_init(struct perf_event *event)
 	pmu = cpu_to_rapl_pmu(event->cpu);
 	if (!pmu)
 		return -EINVAL;
-	event->cpu = pmu->cpu;
+
+	/*
+	 * FIXME: RAPL PMU considers events are uncore and MSRs can be read from
+	 * the first available CPU of the die. But this is not true for energy-cores
+	 * event. Therefore as a workaround don't consider pmu->cpu here for PERF_RAPL_PP0.
+	 */
+	if (event->event_caps & PERF_EV_CAP_READ_ACTIVE_PKG)
+		event->cpu = pmu->cpu;
+
 	event->pmu_private = pmu;
 	event->hw.event_base = rapl_msrs[bit].msr;
 	event->hw.config = cfg;
