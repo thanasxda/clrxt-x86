@@ -765,7 +765,6 @@ static void avc_audit_post_callback(struct audit_buffer *ab, void *a)
 	}
 }
 
-#ifdef CONFIG_AUDIT
 /*
  * This is the slow part of avc audit with big stack footprint.
  * Note that it is non-blocking and can be called from under
