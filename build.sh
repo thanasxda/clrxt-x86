@@ -30,6 +30,11 @@ makefile=$source/Makefile
 defconfig=config
 
 #sudo ./upgrade.sh
+if grep -qi debian /etc/os-release ; then
+cclm=$(ls /usr/lib | grep 'llvm-' | tail -n 1 | rev | cut -c-3 | rev)
+fi
+PATH=/usr/lib/ccache/bin:/lib/x86_64-linux-gnu:/usr/lib/llvm$cclm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/usr/local/games:/usr/games
+LD_LIBRARY_PATH=$PATH/../lib:$PATH/../lib64:/usr/lib/llvm$cclm/lib:/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 
 sudo /usr/sbin/update-ccache-symlinks
 sudo ln -sfT $(which dash) $(which sh)
@@ -73,7 +78,6 @@ echo -e "${yellow}"
 make kernelversion
 echo -e "${restore}"
 
-cclm=$(ls /usr/lib | grep 'llvm-' | tail -n 1 | rev | cut -c-3 | rev)
 
 path=/usr/bin
 export PATH=""$path":$PATH" ; 
@@ -89,13 +93,13 @@ export PATH=""$xpath":$PATH"
 export LD_LIBRARY_PATH=""$xpath"/../lib:"$xpath"/../lib64:$LD_LIBRARY_PATH"
 export PATH=""$path2":$PATH"
 export LD_LIBRARY_PATH=""$path2"/../lib:"$path2"/../lib64:$LD_LIBRARY_PATH"
- CLANG="AR=$xpath/llvm-ar
-        NM=$xpath/llvm-nm
-        OBJCOPY=$xpath/llvm-objcopy
-        OBJDUMP=$xpath/llvm-objdump
-        READELF=$xpath/llvm-readelf
-        OBJSIZE=$xpath/llvm-size
-        STRIP=$xpath/llvm-strip"
+ CLANG="AR=$xpath/llvm-ar$cclm
+        NM=$xpath/llvm-nm$cclm
+        OBJCOPY=$xpath/llvm-objcopy$cclm
+        OBJDUMP=$xpath/llvm-objdump$cclm
+        READELF=$xpath/llvm-readelf$cclm
+        OBJSIZE=$xpath/llvm-size$cclm
+        STRIP=$xpath/llvm-strip$cclm"
 
 
 if [ -z $xtc ] ; then xtc=no ; fi
