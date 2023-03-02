@@ -295,13 +295,13 @@ sudo make $THREADS install
 sudo cp $PWD/arch/x86/boot/bzImage /boot/vmlinuz-"${KERNELVERSION}"
 sudo dracut -f -v /boot/initramfs-"${KERNELVERSION}".img "${KERNELVERSION}"
 #sudo kernel-install add /boot/initramfs-"${KERNELVERSION}".img /boot/vmlinuz-"${KERNELVERSION}"
-dracut --version ; if [ $? = 0 ] ; then 
+#dracut --version ; if [ $? = 0 ] ; then 
 sudo dracut --regenerate-all -f --lz4$(if [ -e /boot/efi ] || [ -e /efi ] || [ -e /boot/EFI ] ; then echo " --uefi" ; fi) 
-else
+#else
 cd /boot
 sudo mkinitramfs -ko initrd.img-"${KERNELVERSION}" "${KERNELVERSION}"
 cd $PWD
-fi
+#fi
 #sudo refind-install ; sudo refind-mkdefault
 sudo sed -i 's/timeout .*/timeout 1/g' /boot/EFI/refind/refind.conf
 #sudo bootctl install
