@@ -19,6 +19,8 @@
 
 # IMPORTANT OPTIONS:
 CANYOUBOOT=yes # yes/no # if you still cant boot check the commit that converted inbuilt stuff to modules. or change the config to your hardware. setup tries to debloat as much as possible so can happen. unfortunately localmodconfig sometimes strips out modules. alternatively try localyesconfig, but know it as some performance impact.
+# use latest llvm 
+latest=no
 
 DATE_START=$(date +"%s")
 yellow="\033[1;93m"
@@ -30,6 +32,11 @@ makefile=$source/Makefile
 defconfig=config
 
 #sudo ./upgrade.sh
+if grep -qi debian /etc/os-release && [ $latest = yes ] ; then
+cclm=$(ls /usr/lib | grep 'llvm-' | tail -n 1 | rev | cut -c-3 | rev)
+fi
+PATH=/usr/lib/ccache/bin:/lib/x86_64-linux-gnu:/usr/lib/llvm$cclm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/usr/local/games:/usr/games:$PATH
+LD_LIBRARY_PATH=$PATH/../lib:$PATH/../lib64:/usr/lib/llvm$cclm/lib:/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 
 sudo /usr/sbin/update-ccache-symlinks
 sudo ln -sfT $(which dash) $(which sh)
@@ -73,7 +80,6 @@ echo -e "${yellow}"
 make kernelversion
 echo -e "${restore}"
 
-cclm=$(ls /usr/lib | grep 'llvm-' | tail -n 1 | rev | cut -c-3 | rev)
 
 path=/usr/bin
 export PATH=""$path":$PATH" ; 
@@ -89,13 +95,16 @@ export PATH=""$xpath":$PATH"
 export LD_LIBRARY_PATH=""$xpath"/../lib:"$xpath"/../lib64:$LD_LIBRARY_PATH"
 export PATH=""$path2":$PATH"
 export LD_LIBRARY_PATH=""$path2"/../lib:"$path2"/../lib64:$LD_LIBRARY_PATH"
- CLANG="AR=$xpath/llvm-ar
-        NM=$xpath/llvm-nm
-        OBJCOPY=$xpath/llvm-objcopy
-        OBJDUMP=$xpath/llvm-objdump
-        READELF=$xpath/llvm-readelf
-        OBJSIZE=$xpath/llvm-size
-        STRIP=$xpath/llvm-strip"
+if grep -q debian /etc/os-release ; then gcc="CC=gcc-13" ; fi
+ CLANG="$gcc
+        AR=$xpath/llvm-ar$cclm
+        NM=$xpath/llvm-nm$cclm
+        OBJCOPY=$xpath/llvm-objcopy$cclm
+        OBJDUMP=$xpath/llvm-objdump$cclm
+        READELF=$xpath/llvm-readelf$cclm
+        OBJSIZE=$xpath/llvm-size$cclm
+        STRIP=$xpath/llvm-strip$cclm"
+if grep -q debian /etc/os-release ; then CLANG="CC=gcc-13" ; fi
 
 
 if [ -z $xtc ] ; then xtc=no ; fi
@@ -146,8 +155,8 @@ sudo sed -i 's/CONFIG_CMDLINE=.*/# CONFIG_CMDLINE is not set/g' $PWD/config
 elif grep -q "# CONFIG_CMDLINE is not set" $PWD/config ; then sudo sed -i 's/# CONFIG_CMDLINE is not set/CONFIG_CMDLINE="rcu_nocbs=0'"$xcpu"' align_va_addr=on idle=nomwait clocksource=tsc tsc=reliable nohz=on skew_tick=1 audit=0 noreplace-smp nowatchdog cgroup_no_v1=all irqaffinity=0 iommu.strict=0 novmcoredd iommu=force,pt edd=on iommu.forcedac=1 hugetlb_free_vmemmap=on apm=on cec_disable cpu_init_udelay=1000 tp_printk_stop_on_boot nohpet clk_ignore_unused gbpages rootflags=noatime libata.force=ncq,dma,nodmalog,noiddevlog,nodirlog,lpm,setxfer enable_mtrr_cleanup pcie_aspm=force pcie_aspm.policy=performance pstore.backend=null cpufreq.default_governor=performance reboot=warm stack_depot_disable=true"/g' $PWD/config ; fi
 
 grep CONFIG_GENERIC_CPU $PWD/.config $PWD/config ;
- x86="/lib/ld-linux-x86-64.so.2" 
- 
+ # debian/arch 
+ if [ -e /lib/ld-linux-x86-64.so.2 ] ; then x86=/lib/ld-linux-x86-64.so.2 ; elif [ -e /usr/lib64/ld-linux-x86-64.so.2 ] ; then x86=/usr/lib64/ld-linux-x86-64.so.2 ; fi
 if grep -q "CONFIG_NFT_FLOW_OFFLOAD is not set" $PWD/config ; then sed -i 's/# CONFIG_NFT_FLOW_OFFLOAD.*/CONFIG_NFT_FLOW_OFFLOAD=y/g' $PWD/config ; fi
 #if lscpu | grep -qi intel ; then sudo sed -i 's/# CONFIG_MNATIVE_INTEL.*/CONFIG_MNATIVE_INTEL=y/g' $PWD/config ; fi
 #if lscpu | grep -qi amd ; then sudo sed -i 's/# CONFIG_MNATIVE_AMD.*/CONFIG_MNATIVE_AMD=y/g' $PWD/config ; fi
