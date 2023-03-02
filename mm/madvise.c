@@ -31,6 +31,8 @@
 #include <linux/swapops.h>
 #include <linux/shmem_fs.h>
 #include <linux/mmu_notifier.h>
+#include <linux/stackdepot.h>
+#include <trace/events/kmem.h>
 
 #include <asm/tlb.h>
 
@@ -1328,6 +1330,66 @@ int madvise_set_anon_name(struct mm_struct *mm, unsigned long start,
 				 madvise_vma_anon_name);
 }
 #endif /* CONFIG_ANON_VMA_NAME */
+
+static noinline unsigned long my__get_free_page(unsigned long in1, unsigned long in2, size_t size)
+{
+	depot_stack_handle_t handle;
+
+	if (in2)
+		handle = stack_depot_capture_stack(GFP_KERNEL);
+	switch (in1)
+	{
+	case (1):
+		return __get_free_pages(GFP_KERNEL, 0);
+	case (2):
+		return (unsigned long)kmalloc(size, GFP_KERNEL);
+	default:
+		printk("my__get_free_page invoked with args in1=%lu in2=%lu\n",
+			in1, in2);
+		return 0;
+	}
+}
+
+static noinline void my_free_page(unsigned long in1, unsigned long in2, unsigned long addr)
+{
+	switch (in1)
+	{
+	case (1):
+		free_page(addr);
+		break;
+	case (2):
+		kfree((void*)addr);
+		break;
+	default:
+		printk("my_free_page invoked with args in1=%lu in2=%lu\n",
+			in1, in2);
+		break;
+	}
+}
+
+#define MADV_TEST 25
+static int alloc_bench(unsigned long in1, unsigned long in2)
+{
+	int i, batch, iter;
+	unsigned long addr[10];
+
+	for (iter = 0; iter < 1000000; iter++) {
+		size_t size = 8;
+		for (batch = 0; batch < 30; batch++) {
+			for (i = 0; i < 10; i++) {
+				addr[i] = my__get_free_page(in1, in2, size);
+			}
+			for (i = 0; i < 10; i++) {
+				my_free_page(in1, in2, addr[i]);
+			}
+			size += 8;
+		}
+		cond_resched();
+	}
+
+	return 0;
+}
+
 /*
  * The madvise(2) system call.
  *
@@ -1408,6 +1470,9 @@ int do_madvise(struct mm_struct *mm, unsigned long start, size_t len_in, int beh
 	struct blk_plug plug;
 
 	start = untagged_addr(start);
+
+	if (behavior == MADV_TEST)
+		return alloc_bench(start, len_in);
 
 	if (!madvise_behavior_valid(behavior))
 		return -EINVAL;
@@ -1527,3 +1592,116 @@ free_iov:
 out:
 	return ret;
 }
+
+SYSCALL_DEFINE3(pmadv_ksm, int, pidfd, int, behaviour, unsigned int, flags)
+{
+#ifdef CONFIG_KSM
+	ssize_t ret;
+	struct pid *pid;
+	struct task_struct *task;
+	struct mm_struct *mm;
+	unsigned int f_flags;
+	struct vm_area_struct *vma;
+	struct vma_iterator vmi;
+
+	if (flags != 0) {
+		ret = -EINVAL;
+		goto out;
+	}
+
+	switch (behaviour) {
+		case MADV_MERGEABLE:
+		case MADV_UNMERGEABLE:
+			break;
+		default:
+			ret = -EINVAL;
+			goto out;
+			break;
+	}
+
+	pid = pidfd_get_pid(pidfd, &f_flags);
+	if (IS_ERR(pid)) {
+		ret = PTR_ERR(pid);
+		goto out;
+	}
+
+	task = get_pid_task(pid, PIDTYPE_PID);
+	if (!task) {
+		ret = -ESRCH;
+		goto put_pid;
+	}
+
+	/* Require PTRACE_MODE_READ to avoid leaking ASLR metadata. */
+	mm = mm_access(task, PTRACE_MODE_READ_FSCREDS);
+	if (IS_ERR_OR_NULL(mm)) {
+		ret = IS_ERR(mm) ? PTR_ERR(mm) : -ESRCH;
+		goto release_task;
+	}
+
+	/* Require CAP_SYS_NICE for influencing process performance. */
+	if (!capable(CAP_SYS_NICE)) {
+		ret = -EPERM;
+		goto release_mm;
+	}
+
+	if (mmap_write_lock_killable(mm)) {
+		ret = -EINTR;
+		goto release_mm;
+	}
+
+	vma_iter_init(&vmi, mm, 0);
+	for_each_vma(vmi, vma) {
+		switch (behaviour) {
+			case MADV_MERGEABLE:
+				ret = ksm_madvise_merge(vma->vm_mm, vma, &vma->vm_flags);
+				break;
+			case MADV_UNMERGEABLE:
+				ret = ksm_madvise_unmerge(vma, vma->vm_start, vma->vm_end, &vma->vm_flags);
+				break;
+			default:
+				/* look, ma, no brain */
+				break;
+		}
+		if (ret)
+			break;
+	}
+
+	mmap_write_unlock(mm);
+
+release_mm:
+	mmput(mm);
+release_task:
+	put_task_struct(task);
+put_pid:
+	put_pid(pid);
+out:
+	return ret;
+#else /* CONFIG_KSM */
+	return -ENOSYS;
+#endif /* CONFIG_KSM */
+}
+
+#ifdef CONFIG_KSM
+static ssize_t ksm_show(struct kobject *kobj, struct kobj_attribute *attr,
+			 char *buf)
+{
+	return sprintf(buf, "%u\n", __NR_pmadv_ksm);
+}
+static struct kobj_attribute pmadv_ksm_attr = __ATTR_RO(ksm);
+
+static struct attribute *pmadv_sysfs_attrs[] = {
+	&pmadv_ksm_attr.attr,
+	NULL,
+};
+
+static const struct attribute_group pmadv_sysfs_attr_group = {
+	.attrs = pmadv_sysfs_attrs,
+	.name = "pmadv",
+};
+
+static int __init pmadv_sysfs_init(void)
+{
+	return sysfs_create_group(kernel_kobj, &pmadv_sysfs_attr_group);
+}
+subsys_initcall(pmadv_sysfs_init);
+#endif /* CONFIG_KSM */

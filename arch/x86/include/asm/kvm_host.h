@@ -1367,6 +1367,12 @@ struct kvm_arch {
 	 *	the MMU lock in read mode + the tdp_mmu_pages_lock or
 	 *	the MMU lock in write mode
 	 *
+	 * kvm_arch_test_clear_young() is a special case. It relies on two
+	 * techniques, RCU and cmpxchg, to safely test and clear the accessed
+	 * bit without taking the MMU lock. The former protects KVM page tables
+	 * from being freed while the latter clears the accessed bit atomically
+	 * against both the hardware and other software page table walkers.
+	 *
 	 * Roots will remain in the list until their tdp_mmu_root_count
 	 * drops to zero, at which point the thread that decremented the
 	 * count to zero should removed the root from the list and clean
@@ -2170,5 +2176,26 @@ int memslot_rmap_alloc(struct kvm_memory_slot *slot, unsigned long npages);
 	 KVM_X86_QUIRK_MISC_ENABLE_NO_MWAIT |	\
 	 KVM_X86_QUIRK_FIX_HYPERCALL_INSN |	\
 	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS)
+
+extern u64 __read_mostly shadow_accessed_mask;
+
+/*
+ * Returns true if A/D bits are supported in hardware and are enabled by KVM.
+ * When enabled, KVM uses A/D bits for all non-nested MMUs.  Because L1 can
+ * disable A/D bits in EPTP12, SP and SPTE variants are needed to handle the
+ * scenario where KVM is using A/D bits for L1, but not L2.
+ */
+static inline bool kvm_ad_enabled(void)
+{
+	return shadow_accessed_mask;
+}
+
+/* see the comments on the generic kvm_arch_has_test_clear_young() */
+#define kvm_arch_has_test_clear_young kvm_arch_has_test_clear_young
+static inline bool kvm_arch_has_test_clear_young(void)
+{
+	return IS_ENABLED(CONFIG_KVM) && IS_ENABLED(CONFIG_X86_64) &&
+	       (!IS_REACHABLE(CONFIG_KVM) || (kvm_ad_enabled() && tdp_enabled));
+}
 
 #endif /* _ASM_X86_KVM_HOST_H */

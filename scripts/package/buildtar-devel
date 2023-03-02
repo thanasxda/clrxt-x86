@@ -1,0 +1,207 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+
+#
+# (C) 2022 CERN (home.cern)
+# Author Federico Vaga <federico.vaga@cern.ch>
+#
+# This script is used to build a 3rd party kernel module development tarball
+# from the currently prepared kernel.
+#
+
+set -ex
+
+#
+# Some variables and settings used throughout the script
+#
+tmpdir="${abs_objtree}/tar-install-dev"
+tarball="${abs_objtree}/linux-${KERNELRELEASE}-${ARCH}-dev.tar"
+
+#
+# Figure out how to compress, if requested at all
+#
+case "${1}" in
+    dir-pkg-dev|tar-pkg-dev)
+        opts=
+		;;
+	targz-pkg-dev)
+		opts="-I ${KGZIP}"
+		tarball=${tarball}.gz
+		;;
+	tarbz2-pkg-dev)
+		opts="-I ${KBZIP2}"
+		tarball=${tarball}.bz2
+		;;
+	tarxz-pkg-dev)
+		opts="-I ${XZ}"
+		tarball=${tarball}.xz
+		;;
+	tarzst-pkg-dev)
+		opts="-I ${ZSTD}"
+		tarball=${tarball}.zst
+		;;
+	*)
+		echo "Unknown tarball target \"${1}\" requested, please add it to ${0}." >&2
+		exit 1
+		;;
+esac
+
+#
+# Clean-up and re-create the temporary directory
+#
+
+rm -rf -- "${tmpdir}"
+mkdir -p -- "${tmpdir}"
+
+#
+# Copy required files
+#
+FILTER_FILE=$(mktemp)
+cat <<EOF > ${FILTER_FILE}
+
+#
+# Include the following files and directories required to build external modules
+#
+
++ /arch/
++ /arch/${ARCH}/
++ /arch/${ARCH}/**.h
++ /arch/${ARCH}/**/Makefile*
++ /.config
++ /drivers/
++ /drivers/**/Kbuild*
++ /drivers/**/Kconfig*
++ /drivers/**/Makefile*
++ /include/*
++ /include/**/*.h
++ /Kbuild
++ /Kconfig
++ /Makefile
++ /Module.symvers
++ /scripts/Makefile.*
++ /scripts/basic
++ /scripts/basic/fixdep
++ /scripts/bin2c
++ /scripts/checkincludes.pl
++ /scripts/checkstack.pl
++ /scripts/checkversion.pl
++ /scripts/check-local-export
++ /scripts/depmod.sh
++ /scripts/extract-cert
++ /scripts/gcc-goto.sh
++ /scripts/gcc-version.sh
++ /scripts/gcc-x86_32-has-stack-protector.sh
++ /scripts/gcc-x86_64-has-stack-protector.sh
++ /scripts/genksyms
++ /scripts/genksyms/genksyms
++ /scripts/headers_install.sh
++ /scripts/kallsyms
++ /scripts/Kbuild.include
++ /scripts/kconfig
++ /scripts/kconfig/conf
++ /scripts/kernel-doc
++ /scripts/ld-version.sh
++ /scripts/Lindent
++ /scripts/makelst
++ /scripts/mksysmap
++ /scripts/mkuboot.sh
++ /scripts/mod/
++ /scripts/mod/modpost
++ /scripts/module.lds
++ /scripts/patch-kernel
++ /scripts/pahole-flags.sh
++ /scripts/recordmcount
++ /scripts/recordmcount.pl
++ /scripts/setlocalversion
++ /scripts/sign-file
++ /scripts/subarch.include
++ /scripts/unifdef
++ /scripts/ver_linux
++ /tools
++ /tools/objtool/
++ /tools/objtool/objtool
++ /.version
+
+#
+# Completly ignore the following directories
+#
+- /arch/*
+- /Documentation
+- /LICENSES
+- /block
+- /certs
+- /crypto
+- /drivers/*
+- /fs
+- /init
+- /io_uring
+- /ipc
+- /kernel
+- /lib
+- /MAINTAINERS
+- /mm
+- /modules.*
+- /net
+- /README
+- /rust
+- /samples
+- /scripts/*
+- /scripts/basic/Makefile
+- /scripts/genksyms/*
+- /scripts/kconfig/*
+- /scripts/mod/*
+- /security
+- /sound
+- /System.map
+- /tools/*
+- /tools/objtool/*
+- /usr
+- /virt
+
+#
+# Completly ignore intermediate directories
+#
+- /source
+- /tar-install*
+- /${O}
+#
+# Completly ignore the following files
+#
+
+- .*
+- *.a
+- *.c
+- *.o
+- *.S
+- *vmlinux*
+EOF
+
+#
+# Copy from object directory as well when it is not the same as the source one
+#
+if [ "${abs_objtree}" != "${abs_srctree}" ]
+then
+    rsync -a --filter="merge ${FILTER_FILE}" ${abs_objtree}/ ${tmpdir}
+fi
+rsync -a --filter="merge ${FILTER_FILE}" ${abs_srctree}/ ${tmpdir}
+rm ${FILTER_FILE}
+
+if [ "${1}" = dir-pkg-dev ]; then
+	echo "Kernel tree successfully created in $tmpdir"
+	exit 0
+fi
+
+#
+# Create the tarball
+#
+if tar --owner=root --group=root --help >/dev/null 2>&1; then
+	opts="$opts --owner=root --group=root"
+fi
+
+opts="$opts"
+
+tar cf $tarball -C $tmpdir $opts .
+
+echo "Tarball successfully created in $tarball"
+
+exit 0

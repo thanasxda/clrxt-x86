@@ -218,7 +218,7 @@ struct page {
 	/* Usage count. *DO NOT USE DIRECTLY*. See page_ref.h */
 	atomic_t _refcount;
 
-#ifdef CONFIG_MEMCG
+#ifdef CONFIG_SLAB_OBJ_EXT
 	unsigned long memcg_data;
 #endif
 
@@ -347,7 +347,7 @@ struct folio {
 			void *private;
 			atomic_t _mapcount;
 			atomic_t _refcount;
-#ifdef CONFIG_MEMCG
+#ifdef CONFIG_SLAB_OBJ_EXT
 			unsigned long memcg_data;
 #endif
 	/* private: the union with struct page is transitional */
@@ -504,6 +504,9 @@ struct vm_region {
 	unsigned long	vm_top;		/* region allocated to here */
 	unsigned long	vm_pgoff;	/* the offset in vm_file corresponding to vm_start */
 	struct file	*vm_file;	/* the backing file or NULL */
+#if IS_ENABLED(CONFIG_AUFS_FS)
+	struct file	*vm_prfile;	/* the virtual backing file or NULL */
+#endif
 
 	int		vm_usage;	/* region usage count (access under nommu_region_sem) */
 	bool		vm_icache_flushed : 1; /* true if the icache has been flushed for
@@ -575,6 +578,9 @@ struct vm_area_struct {
 	unsigned long vm_pgoff;		/* Offset (within vm_file) in PAGE_SIZE
 					   units */
 	struct file * vm_file;		/* File we map to (can be NULL). */
+#if IS_ENABLED(CONFIG_AUFS_FS)
+	struct file *vm_prfile;		/* shadow of vm_file */
+#endif
 	void * vm_private_data;		/* was vm_pte (shared mem) */
 
 #ifdef CONFIG_ANON_VMA_NAME
@@ -645,7 +651,18 @@ struct mm_struct {
 		 * &struct mm_struct is freed.
 		 */
 		atomic_t mm_count;
-
+#ifdef CONFIG_SCHED_MM_CID
+		/**
+		 * @cid_lock: Protect cid bitmap updates vs lookups.
+		 *
+		 * Prevent situations where updates to the cid bitmap happen
+		 * concurrently with lookups. Those can lead to situations
+		 * where a lookup cannot find a free bit simply because it was
+		 * unlucky enough to load, non-atomically, bitmap words as they
+		 * were being concurrently updated by the updaters.
+		 */
+		raw_spinlock_t cid_lock;
+#endif
 #ifdef CONFIG_MMU
 		atomic_long_t pgtables_bytes;	/* PTE page table pages */
 #endif
@@ -776,7 +793,7 @@ struct mm_struct {
 #ifdef CONFIG_KSM
 		/*
 		 * Represent how many pages of this process are involved in KSM
-		 * merging.
+		 * merging (not including ksm_zero_pages_sharing).
 		 */
 		unsigned long ksm_merging_pages;
 		/*
@@ -784,6 +801,11 @@ struct mm_struct {
 		 * including merged and not merged.
 		 */
 		unsigned long ksm_rmap_items;
+		/*
+		 * Represent how many empty pages are merged with kernel zero
+		 * pages when enabling KSM use_zero_pages.
+		 */
+		unsigned long ksm_zero_pages_sharing;
 #endif
 #ifdef CONFIG_LRU_GEN
 		struct {
@@ -908,6 +930,36 @@ static inline void vma_iter_init(struct vma_iterator *vmi,
 	vmi->mas.index = addr;
 	vmi->mas.node = MAS_START;
 }
+
+#ifdef CONFIG_SCHED_MM_CID
+/* Accessor for struct mm_struct's cidmask. */
+static inline cpumask_t *mm_cidmask(struct mm_struct *mm)
+{
+	unsigned long cid_bitmap = (unsigned long)mm;
+
+	cid_bitmap += offsetof(struct mm_struct, cpu_bitmap);
+	/* Skip cpu_bitmap */
+	cid_bitmap += cpumask_size();
+	return (struct cpumask *)cid_bitmap;
+}
+
+static inline void mm_init_cid(struct mm_struct *mm)
+{
+	raw_spin_lock_init(&mm->cid_lock);
+	cpumask_clear(mm_cidmask(mm));
+}
+
+static inline unsigned int mm_cid_size(void)
+{
+	return cpumask_size();
+}
+#else /* CONFIG_SCHED_MM_CID */
+static inline void mm_init_cid(struct mm_struct *mm) { }
+static inline unsigned int mm_cid_size(void)
+{
+	return 0;
+}
+#endif /* CONFIG_SCHED_MM_CID */
 
 struct mmu_gather;
 extern void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm);

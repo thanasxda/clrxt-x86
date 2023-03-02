@@ -85,11 +85,13 @@ struct kernel_symbol {
  */
 #define ___EXPORT_SYMBOL(sym, sec, ns)						\
 	extern typeof(sym) sym;							\
-	extern const char __kstrtab_##sym[];					\
-	extern const char __kstrtabns_##sym[];					\
+	extern const char __visible __kstrtab_##sym[];				\
+	extern const char __visible __kstrtabns_##sym[];			\
 	asm("	.section \"__ksymtab_strings\",\"aMS\",%progbits,1	\n"	\
+	    "	.globl __kstrtab_" #sym "				\n"	\
 	    "__kstrtab_" #sym ":					\n"	\
 	    "	.asciz 	\"" #sym "\"					\n"	\
+	    "	.globl __kstrtabns_" #sym "				\n"	\
 	    "__kstrtabns_" #sym ":					\n"	\
 	    "	.asciz 	\"" ns "\"					\n"	\
 	    "	.previous						\n");	\
@@ -118,7 +120,7 @@ struct kernel_symbol {
  * discarded in the final link stage.
  */
 #define __ksym_marker(sym)	\
-	static int __ksym_marker_##sym[0] __section(".discard.ksym") __used
+	int __ksym_marker_##sym[0] __section(".discard.ksym") __used
 
 #define __EXPORT_SYMBOL(sym, sec, ns)					\
 	__ksym_marker(sym);						\

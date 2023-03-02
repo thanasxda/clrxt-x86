@@ -1009,6 +1009,41 @@ config DEBUG_STACKOVERFLOW
 
 	  If in doubt, say "N".
 
+config CODE_TAGGING
+	bool
+	select KALLSYMS
+
+config MEM_ALLOC_PROFILING
+	bool "Enable memory allocation profiling"
+	default n
+	depends on DEBUG_FS
+	select CODE_TAGGING
+	select LAZY_PERCPU_COUNTER
+	select PAGE_EXTENSION
+	select SLAB_OBJ_EXT
+	select STACKDEPOT
+	help
+	  Track allocation source code and record total allocation size
+	  initiated at that code location. The mechanism can be used to track
+	  memory leaks with a low performance impact.
+
+config MEM_ALLOC_PROFILING_DEBUG
+	bool "Memory allocation profiler debugging"
+	default n
+	depends on MEM_ALLOC_PROFILING
+	help
+	  Adds warnings with helpful error messages for memory allocation
+	  profiling.
+
+config CODE_TAG_TESTING
+	bool "Enable code tag testing"
+	default y
+	select MEM_ALLOC_PROFILING
+	select MEM_ALLOC_PROFILING_DEBUG
+	select STAGING
+	help
+	  Enable to test code tagging.
+
 source "lib/Kconfig.kasan"
 source "lib/Kconfig.kfence"
 source "lib/Kconfig.kmsan"
@@ -2013,6 +2048,12 @@ config FAULT_INJECTION_STACKTRACE_FILTER
 	depends on FRAME_POINTER || MIPS || PPC || S390 || MICROBLAZE || ARM || ARC || X86
 	help
 	  Provide stacktrace filter for fault-injection capabilities
+
+config CODETAG_FAULT_INJECTION
+	bool "Code tagging based fault injection"
+	select CODE_TAGGING
+	help
+	  Dynamic fault injection based on code tagging
 
 config ARCH_HAS_KCOV
 	bool

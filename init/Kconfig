@@ -348,6 +348,19 @@ config KERNEL_UNCOMPRESSED
 
 endchoice
 
+menu "ZSTD compression options"
+	depends on KERNEL_ZSTD
+
+config ZSTD_COMPRESSION_LEVEL
+	int "Compression level (1-22)"
+	range 1 22
+	default "22"
+	help
+	  Choose a compression level for zstd kernel compression.
+	  Default is 22, which is the maximum.
+
+endmenu
+
 config DEFAULT_INIT
 	string "Default init path"
 	default ""
@@ -967,10 +980,14 @@ config CGROUP_FAVOR_DYNMODS
 
           Say N if unsure.
 
+config SLAB_OBJ_EXT
+	bool
+
 config MEMCG
 	bool "Memory controller"
 	select PAGE_COUNTER
 	select EVENTFD
+	select SLAB_OBJ_EXT
 	help
 	  Provides control over the memory footprint of tasks in a cgroup.
 
@@ -1043,6 +1060,10 @@ config RT_GROUP_SCHED
 	  See Documentation/scheduler/sched-rt-group.rst for more information.
 
 endif #CGROUP_SCHED
+
+config SCHED_MM_CID
+	def_bool y
+	depends on SMP && RSEQ
 
 config UCLAMP_TASK_GROUP
 	bool "Utilization clamping per group of tasks"

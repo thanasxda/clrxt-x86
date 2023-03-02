@@ -886,4 +886,22 @@ static inline void kvm_arch_exit(void) {}
 static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
 static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
 
+static inline int kvmppc_radix_possible(void)
+{
+	return cpu_has_feature(CPU_FTR_ARCH_300) && radix_enabled();
+}
+
+static inline bool kvmhv_on_pseries(void)
+{
+	return IS_ENABLED(CONFIG_PPC_PSERIES) && !cpu_has_feature(CPU_FTR_HVMODE);
+}
+
+/* see the comments on the generic kvm_arch_has_test_clear_young() */
+#define kvm_arch_has_test_clear_young kvm_arch_has_test_clear_young
+static inline bool kvm_arch_has_test_clear_young(void)
+{
+	return IS_ENABLED(CONFIG_KVM) && IS_ENABLED(CONFIG_KVM_BOOK3S_HV_POSSIBLE) &&
+	       kvmppc_radix_possible() && !kvmhv_on_pseries();
+}
+
 #endif /* __POWERPC_KVM_HOST_H__ */
