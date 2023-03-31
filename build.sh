@@ -21,7 +21,8 @@
 CANYOUBOOT=yes # yes/no # if you still cant boot check the commit that converted inbuilt stuff to modules. or change the config to your hardware. setup tries to debloat as much as possible so can happen. unfortunately localmodconfig sometimes strips out modules. alternatively try localyesconfig, but know it as some performance impact.
 # use latest llvm 
 latest=no
-buildforperformance=yes
+if [ $buildforperformance = no ] ; then echo " building for security..." ; else buildforperformance=yes ; fi
+
 
 DATE_START=$(date +"%s")
 yellow="\033[1;93m"
